@@ -1,54 +1,54 @@
 package com.BSMES.jd.main.controller;
 
+
 import com.BSMES.jd.common.dto.CommonReturn;
-import com.BSMES.jd.main.dto.JmMoMfDTO;
-import com.BSMES.jd.main.service.JmMoMfService;
+import com.BSMES.jd.main.dto.JmWhDTO;
+import com.BSMES.jd.main.dto.JmWorkerDTO;
+import com.BSMES.jd.main.service.JmWhService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * 调度单路由(制令单)
- */
-@RequestMapping("/momf")
 @RestController
-public class JmMoMfController {
+@RequestMapping("/wh")
+public class JmWhController {
 
     @Autowired
-    JmMoMfService jmMoMfService;
+    JmWhService jmWhService;
 
     @GetMapping()
-    public CommonReturn getJmMoMf(JmMoMfDTO dto, Boolean isPage){
+    public CommonReturn getJmWh(JmWhDTO dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
-            result = jmMoMfService.getMoMf(dto);
+            result = jmWhService.getWh(dto);
         }else{
-            result = jmMoMfService.getMoMfPage(dto);
+            QueryWrapper queryWrapper = new QueryWrapper();
+            result = jmWhService.getWhPage(dto,queryWrapper);
         }
         return result;
     }
 
     @PostMapping()
-    public CommonReturn saveJmMoMf(@RequestBody JmMoMfDTO dto){
+    public CommonReturn saveJmWh(@RequestBody JmWhDTO dto){
         CommonReturn result = new CommonReturn();
-        result = jmMoMfService.saveMoMf(dto);
+        result = jmWhService.saveWh(dto);
         return result;
     }
 
     @PutMapping()
-    public CommonReturn editJmMoMf(@RequestBody JmMoMfDTO dto){
+    public CommonReturn editJmWh(@RequestBody JmWhDTO dto){
         CommonReturn result = new CommonReturn();
-        result = jmMoMfService.editMoMf(dto);
+        result = jmWhService.editWh(dto);
         return result;
     }
 
     @DeleteMapping()
-    public CommonReturn delJmMoMf( String[] ids ){
+    public CommonReturn delJmWh( String[] ids ){
         CommonReturn result = new CommonReturn();
         List<String> wkNos = java.util.Arrays.asList(ids);
-        result = jmMoMfService.delMoMf(wkNos);
+        result = jmWhService.delWh(wkNos);
         return result;
     }
 

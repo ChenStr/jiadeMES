@@ -3,19 +3,17 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMouldDao;
-import com.BSMES.jd.main.dto.JmJobDTO;
-import com.BSMES.jd.main.dto.JmMoMfDTO;
 import com.BSMES.jd.main.dto.JmMouldDTO;
-import com.BSMES.jd.main.entity.JmJobEntity;
-import com.BSMES.jd.main.entity.JmMoMfEntity;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEntity , JmMouldDTO> implements JmMouldService {
     @Override
     public void beforeInsert(JmMouldDTO dto) {
@@ -54,7 +52,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
                 this.insert(dto);
                 result.setAll(20000,null,"操作成功");
             }else{
-                result.setAll(10001,null,"生产计划单已经存在，不能新增!");
+                result.setAll(10001,null,"模具号已经存在，不能新增!");
             }
         }else{
             result.setAll(10001,null,"参数错误");
@@ -87,11 +85,40 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
 
     @Override
     public CommonReturn delMould(List<String> sids, List<Integer> cids) {
-        return null;
+        CommonReturn result = new CommonReturn();
+        //判断长度是否相等
+        if (sids!=null && cids!=null && sids.size()!=0 && cids.size()!=0 && sids.size()==cids.size()){
+//        jobQueryWrapper.in("sid",sids);
+//        jobQueryWrapper.and(wrapper -> wrapper.in("cid", cids));
+            for (int i = 0 ; i < sids.size() ; i++){
+                QueryWrapper<JmMouldEntity> mouldQueryWrapper = new QueryWrapper<>();
+                mouldQueryWrapper.eq("md_no",sids.get(i));
+                mouldQueryWrapper.eq("typeid",cids.get(i));
+                try{
+                    this.remove(mouldQueryWrapper);
+                    result.setAll(20000,null,"操作成功");
+                }catch (Exception e) {
+                    result.setAll(20000, null, "操作失败");
+                    return result;
+                }
+            }
+
+        }else{
+            result.setAll(10001,null,"操作失败");
+        }
+
+        return result;
     }
 
     @Override
     public CommonReturn getMoMfPage(JmMouldDTO dto, QueryWrapper queryWrapper) {
-        return null;
+        CommonReturn result = new CommonReturn();
+        List<JmMouldDTO> jmMouldDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        if (jmMouldDTOS==null){
+            result.setAll(10001,null,"参数错误");
+        }else{
+            result.setAll(20000,jmMouldDTOS,"查找成功");
+        }
+        return result;
     }
 }

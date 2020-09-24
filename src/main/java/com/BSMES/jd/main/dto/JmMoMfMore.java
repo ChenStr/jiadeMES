@@ -1,25 +1,23 @@
-package com.BSMES.jd.main.entity;
+package com.BSMES.jd.main.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.BSMES.jd.common.dto.BaseDTO;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 调度单(制令单)映射
+ * 调度单(制令单)更多信息映射
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
-@TableName("jm_mo_mf")
-public class JmMoMfEntity {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class JmMoMfMore extends BaseDTO implements Serializable {
 
     /**
      * 单据代号
      */
-    @TableId
     private String sid;
 
     /**
@@ -36,6 +34,8 @@ public class JmMoMfEntity {
      * 成品代号
      */
     private String prdNo;
+
+    private JmPrdtDTO jmPrdt;
 
     /**
      * 数量
@@ -173,6 +173,11 @@ public class JmMoMfEntity {
      */
     private String sorg;
 
+    /**
+     * 详细部门信息
+     */
+    private InsorgDTO insorg;
+
     private String cusName;
 
     /**
@@ -235,4 +240,5 @@ public class JmMoMfEntity {
      * 车间下达(判断是否是MES下达的数据)
      */
     private Integer astRelease;
+
 }

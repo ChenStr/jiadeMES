@@ -23,6 +23,8 @@ public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getMoMfPage(JmMoMfDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getMoMfPage(JmMoMfDTO dto);
+
+    public String getKey(String val);
 
 }

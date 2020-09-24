@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @TableName("jm_wh")
-public class jmWhEntity {
+public class JmWhEntity {
 
     /**
      * 仓库代号

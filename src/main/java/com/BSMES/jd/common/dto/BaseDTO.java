@@ -23,4 +23,19 @@ public class BaseDTO implements Serializable {
      * 每一页的数量
      */
     public Integer pageSize;
+
+    /**
+     * 排序字段
+     */
+    private Object Ascorder;
+
+    /**
+     * 排序字段
+     */
+    private Object Descorder;
+
+    /**
+     * 总共几页
+     */
+    private Integer total;
 }

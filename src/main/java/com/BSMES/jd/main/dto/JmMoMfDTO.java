@@ -231,4 +231,9 @@ public class JmMoMfDTO extends BaseDTO implements Serializable {
      */
     private Date astDd;
 
+    /**
+     * 车间下达(判断是否是MES下达的数据)
+     */
+    private Integer astRelease;
+
 }

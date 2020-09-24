@@ -166,8 +166,39 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T> , T , D> extends D
         baseMapper.selectPage(Ipage,queryWrapper);
         List<T> pages = Ipage.getRecords();
         List<D> date = ConvertUtils.convert(pages,currentDtoClass());
+//        date.get(0).setPage((Integer) page);
+//        date.get(0).setPageSize((Integer) pageSize);
+//        date.get(0).setTotal(Ipage.getTotal());
         return date;
     }
+
+//    public PageDTO selectPage(Object page, Object pageSize, QueryWrapper<T> queryWrapper){
+//        PageDTO pageDTO = new PageDTO();
+//        if (page == null){
+//            page = 1;
+//        }
+//        if (pageSize == null){
+//            pageSize = 10;
+//        }
+//        int Page,PageSize;
+//        try{
+//            Page = (int) page;
+//            PageSize = (int) pageSize;
+//        }catch (Exception e){
+//            page = 1;
+//            pageSize = 10;
+//        }
+//        IPage<T> Ipage = new Page<>((int)page, (int)pageSize);
+//        //获取页数
+//        baseMapper.selectPage(Ipage,queryWrapper);
+//        List<T> pages = Ipage.getRecords();
+//        List<D> date = ConvertUtils.convert(pages,currentDtoClass());
+//        pageDTO.setCurrent((Integer) page);
+//        pageDTO.setSize((Integer) pageSize);
+//        pageDTO.setTotal(Ipage.getTotal());
+//        pageDTO.setData(date);
+//        return pageDTO;
+//    }
 
     @Override
     public D selectOne(QueryWrapper<T> wrapper) {

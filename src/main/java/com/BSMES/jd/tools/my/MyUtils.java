@@ -1,6 +1,7 @@
 package com.BSMES.jd.tools.my;
 
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -169,6 +170,19 @@ public class MyUtils {
         return instance;
 
     }
+
+    /**
+     * 数字前面自动补零
+     * @param number 数字
+     * @return
+     */
+    public static String geFourNumber(int number,int log){
+        NumberFormat formatter = NumberFormat.getNumberInstance();
+        formatter.setMinimumIntegerDigits(log);
+        formatter.setGroupingUsed(false);
+        return formatter.format(number);
+    }
+
 
 
 }
