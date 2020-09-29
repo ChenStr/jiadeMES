@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * 设备保养检点表身(维修保养项目)
@@ -55,5 +58,16 @@ public class JmMtstdTfEntity {
      * 说明
      */
     public String rem;
+
+    /**
+     * 检点日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date createDate;
+
+    /**
+     * 检点人
+     */
+    public String creator;
 
 }

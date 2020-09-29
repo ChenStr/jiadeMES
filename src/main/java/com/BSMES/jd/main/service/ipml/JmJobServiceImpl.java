@@ -41,7 +41,8 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Autowired
     InsorgService insorgService;
 
-
+    @Autowired
+    JmJobRecService jmJobRecService;
 
     @Override
     public void beforeInsert(JmJobDTO dto) {
@@ -183,13 +184,23 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                 QueryWrapper<JmJobEntity> jobQueryWrapper = new QueryWrapper<>();
                 jobQueryWrapper.eq("sid",sids.get(i));
                 jobQueryWrapper.eq("cid",cids.get(i));
-                try{
-                    this.remove(jobQueryWrapper);
-                    result.setAll(20000,null,"操作成功");
-                }catch (Exception e) {
-                    result.setAll(20000, null, "操作失败");
-                    return result;
+                JmJobDTO jmJobDTO = this.selectOne(jobQueryWrapper);
+                //查看计划单下是否有任务提交有的话不能删除
+                QueryWrapper<JmJobRecEntity> jobRecQueryWrapper = new QueryWrapper<>();
+                jobRecQueryWrapper.eq("jb_no",jmJobDTO.getJbNo());
+                List<JmJobRecDTO> jmJobRecDTOs = jmJobRecService.select(jobRecQueryWrapper);
+                if (jmJobRecDTOs==null || jmJobRecDTOs.size()==0){
+                    try{
+                        this.remove(jobQueryWrapper);
+                        result.setAll(20000,null,"操作成功");
+                    }catch (Exception e) {
+                        result.setAll(10001, null, "操作失败");
+                        return result;
+                    }
+                }else{
+                    result.setAll(10001,null,"该计划单已经有随工单对其提交了,不能删除");
                 }
+
             }
 
         }else{

@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmXjTfEntity;
 import com.BSMES.jd.main.service.JmXjTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,10 @@ import java.util.Map;
 
 @Service
 public class JmXjTfServiceImpl extends BaseServiceImpl<JmXjTfDao , JmXjTfEntity , JmXjTfDTO> implements JmXjTfService {
+
+    @Autowired
+    JmXjTfDao jmXjTfDao;
+
     @Override
     public void beforeInsert(JmXjTfDTO dto) {
 
@@ -63,6 +68,34 @@ public class JmXjTfServiceImpl extends BaseServiceImpl<JmXjTfDao , JmXjTfEntity 
     }
 
     @Override
+    public CommonReturn saveXjTfs(List<JmXjTfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        //判断dto是否为空 判断dto的 md_no 是否有值
+        if (dtos!=null && dtos.size()>0 ){
+            for (int i=0 ; i < dtos.size() ; i++){
+                QueryWrapper<JmXjTfEntity> xjTfQueryWrapper = new QueryWrapper<>();
+                xjTfQueryWrapper.eq("sid",dtos.get(i).getSid());
+                xjTfQueryWrapper.eq("cid",dtos.get(i).getCid());
+                JmXjTfDTO xjTf = this.selectOne(xjTfQueryWrapper);
+                //判断 usrcode 是否重复
+                if (xjTf!=null || xjTf.getSid()!=null){
+                    dtos.remove(dtos.get(i));
+                }
+            }
+            try {
+                jmXjTfDao.insertJmXjTf(dtos);
+                result.setAll(20000,null,"操作成功");
+            }catch (Exception e){
+                result.setAll(20000,null,"操作失败");
+                e.printStackTrace();
+            }
+        }else{
+            result.setAll(10001,null,"参数错误");
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn editXjTf(JmXjTfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 md_no 是否有值
@@ -98,7 +131,7 @@ public class JmXjTfServiceImpl extends BaseServiceImpl<JmXjTfDao , JmXjTfEntity 
                     this.remove(xjTfQueryWrapper);
                     result.setAll(20000,null,"操作成功");
                 }catch (Exception e) {
-                    result.setAll(20000, null, "操作失败");
+                    result.setAll(10001, null, "操作失败");
                     return result;
                 }
             }

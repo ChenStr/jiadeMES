@@ -175,7 +175,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 this.remove(moMfQueryWrapper);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e) {
-                result.setAll(20000, null, "操作失败");
+                result.setAll(10001, null, "操作失败");
             }
         }else{
             result.setAll(40000,null,"该调度单下已经有计划分派了，不能删除");

@@ -46,6 +46,8 @@ public class JmXj1TfServiceImpl extends BaseServiceImpl<JmXj1TfDao , JmXj1TfEnti
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid())){
             QueryWrapper<JmXj1TfEntity> xj1TfQueryWrapper = new QueryWrapper<>();
+            xj1TfQueryWrapper.eq("sid",dto.getSid());
+            xj1TfQueryWrapper.eq("cid",dto.getCid());
             xj1TfQueryWrapper.eq("spc_no",dto.getSpcNo());
             JmXj1TfDTO xjMfs = this.selectOne(xj1TfQueryWrapper);
             //判断 usrcode 是否重复
@@ -85,15 +87,18 @@ public class JmXj1TfServiceImpl extends BaseServiceImpl<JmXj1TfDao , JmXj1TfEnti
     }
 
     @Override
-    public CommonReturn delXj1Tf(List<String> socNos) {
+    public CommonReturn delXj1Tf(List<String> sids , List<Integer> cids , List<String> spcNos) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmXj1TfEntity> xj1TfQueryWrapper = new QueryWrapper<>();
-        xj1TfQueryWrapper.in("spc_no",socNos);
+        xj1TfQueryWrapper.in("spc_no",spcNos);
+        xj1TfQueryWrapper.in("sid",sids);
+        xj1TfQueryWrapper.in("cid",cids);
         try{
             this.remove(xj1TfQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
-            result.setAll(20000, null, "操作失败");
+            result.setAll(10001, null, "操作失败");
+            e.printStackTrace();
         }
         return result;
     }

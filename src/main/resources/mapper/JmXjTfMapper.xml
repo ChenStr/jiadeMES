@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmXjTfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="insertJmXjTf" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
+        insert into jm_xj_tf (sid, cid, chk_no,chk_para , dervi_id , chk_id, derviation, chk_rem, cur_para1, cur_para2, cur_para3,
+        cur_para4 , cur_para5 , cur_para6 , rt_xj , para_min , para_max , rem) values
+        <foreach collection="list" item="dto" index="index" separator=",">
+            (#{dto.sid}, #{dto.cid}, #{dto.chkNo}, #{dto.chkPara},#{dto.derviId},#{dto.chkId},#{dto.derviation},#{dto.chkRem},
+            #{dto.curPara1},#{dto.curPara2},#{dto.curPara3},#{dto.curPara4},#{dto.curPara5},#{dto.curPara6},#{dto.rtXj},
+            #{dto.paraMin},#{dto.paraMax},#{dto.rem})
+        </foreach>
+    </insert>
+
+</mapper>

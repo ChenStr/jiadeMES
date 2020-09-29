@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
 
     @Override
     public void beforeInsert(JmMtstdTfDTO dto) {
-
+        dto.setCreateDate(new Date());
     }
 
     @Override
@@ -102,6 +103,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
+                e.printStackTrace();
             }
         }else{
             result.setAll(10001,null,"参数错误");
@@ -122,7 +124,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
                     this.remove(mtstdTfQueryWrapper);
                     result.setAll(20000,null,"操作成功");
                 }catch (Exception e) {
-                    result.setAll(20000, null, "操作失败");
+                    result.setAll(10001, null, "操作失败");
                     return result;
                 }
             }

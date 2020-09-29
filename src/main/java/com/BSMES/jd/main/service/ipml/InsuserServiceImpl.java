@@ -93,7 +93,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
             this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
-            result.setAll(20000, null, "操作失败");
+            result.setAll(10001, null, "操作失败");
         }
         return result;
     }

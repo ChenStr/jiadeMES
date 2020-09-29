@@ -113,11 +113,12 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
                 QueryWrapper<JmJobRecBEntity> jobRecBQueryWrapper = new QueryWrapper<>();
                 jobRecBQueryWrapper.eq("opsid",opsids.get(i));
                 jobRecBQueryWrapper.eq("cid",cids.get(i));
+                JmJobRecBDTO jmJobRecBDTO = this.selectOne(jobRecBQueryWrapper);
                 try{
                     this.remove(jobRecBQueryWrapper);
                     result.setAll(20000,null,"操作成功");
                 }catch (Exception e) {
-                    result.setAll(20000, null, "操作失败");
+                    result.setAll(10001, null, "操作失败");
                     return result;
                 }
             }

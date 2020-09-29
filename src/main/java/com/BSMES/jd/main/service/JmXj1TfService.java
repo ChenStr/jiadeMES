@@ -18,7 +18,7 @@ public interface JmXj1TfService extends BaseService<JmXj1TfEntity , JmXj1TfDTO> 
 
     public CommonReturn editXj1Tf(JmXj1TfDTO dto);
 
-    public CommonReturn delXj1Tf(List<String> sids);
+    public CommonReturn delXj1Tf(List<String> sids , List<Integer> cids , List<String> spcNos);
 
     /**
      * 获取全部的质检单 分页

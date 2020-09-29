@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sun.istack.internal.NotNull;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 设备保养检点表身(维修保养项目)
@@ -53,5 +56,16 @@ public class JmMtstdTfDTO extends BaseDTO implements Serializable {
      * 说明
      */
     public String rem;
+
+    /**
+     * 检点日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date createDate;
+
+    /**
+     * 检点人
+     */
+    public String creator;
 
 }

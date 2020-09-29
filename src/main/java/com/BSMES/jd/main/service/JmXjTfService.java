@@ -14,6 +14,8 @@ public interface JmXjTfService extends BaseService<JmXjTfEntity , JmXjTfDTO> {
 
     public CommonReturn saveXjTf(JmXjTfDTO dto);
 
+    public CommonReturn saveXjTfs(List<JmXjTfDTO> dtos);
+
     public CommonReturn editXjTf(JmXjTfDTO dto);
 
     public CommonReturn delXjTf(List<String> sids , List<Integer> cids);

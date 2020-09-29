@@ -4,17 +4,17 @@
 <!-- JmJob表的真身 -->
 <mapper namespace="com.BSMES.jd.main.dao.JmMtstdTfDao">
 
-    <update id="UpdateJmMtstdTf" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+    <update id="UpdateJmMtstdTf" parameterType="com.BSMES.jd.main.dto.JmMtstdTfDTO">
         UPDATE jm_mtstd_tf
         <trim prefix="set" suffixOverrides=",">
-            <if test="mtId!=null">Mt_id=#{mtId},</if>
+            <if test="mtId!=null">mt_id=#{mtId},</if>
             <if test="chkStd!=null">chk_std=#{chkStd},</if>
             <if test="devps!=null">devps=#{devps},</if>
             <if test="chkRem!=null">chk_rem=#{chkRem},</if>
             <if test="chkFile!=null">chk_file=#{chkFile},</if>
             <if test="rem!=null">rem=#{rem},</if>
         </trim>
-        WHERE opsid=#{mtstdNo} and cid=#{cid}
+        WHERE mtstd_no=#{mtstdNo} and cid=#{cid}
     </update>
 
 </mapper>

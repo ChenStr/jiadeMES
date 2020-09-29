@@ -150,4 +150,9 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
      */
     public String xjjd;
 
+    /**
+     * 检验依据
+     */
+    public String testBo;
+
 }

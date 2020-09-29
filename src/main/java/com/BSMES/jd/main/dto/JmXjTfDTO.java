@@ -86,4 +86,9 @@ public class JmXjTfDTO extends BaseDTO implements Serializable {
      */
     public String curPara6;
 
+    /**
+     * 类型
+     */
+    public String derviId;
+
 }

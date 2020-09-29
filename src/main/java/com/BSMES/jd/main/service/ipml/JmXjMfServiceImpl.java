@@ -7,9 +7,11 @@ import com.BSMES.jd.main.dto.JmWorkerDTO;
 import com.BSMES.jd.main.dto.JmXjMfDTO;
 import com.BSMES.jd.main.entity.JmWorkerEntity;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmXjMfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,10 @@ import java.util.Map;
 
 @Service
 public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity , JmXjMfDTO> implements JmXjMfService {
+
+    @Autowired
+    InssysvarService inssysvarService;
+
     @Override
     public void beforeInsert(JmXjMfDTO dto) {
 
@@ -43,6 +49,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn saveXjMf(JmXjMfDTO dto) {
         CommonReturn result = new CommonReturn();
+        dto.setSid(this.getKey("JmXjMf","sid",inssysvarService,dto));
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid())){
             QueryWrapper<JmXjMfEntity> xjMfQueryWrapper = new QueryWrapper<>();
@@ -93,7 +100,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             this.remove(xjMfQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
-            result.setAll(20000, null, "操作失败");
+            result.setAll(10001, null, "操作失败");
         }
         return result;
     }

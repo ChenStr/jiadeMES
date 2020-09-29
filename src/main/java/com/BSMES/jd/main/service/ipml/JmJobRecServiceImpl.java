@@ -4,10 +4,13 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobRecDao;
 import com.BSMES.jd.main.dto.JmJobDTO;
+import com.BSMES.jd.main.dto.JmJobRecBDTO;
 import com.BSMES.jd.main.dto.JmJobRecDTO;
 import com.BSMES.jd.main.entity.JmJobEntity;
+import com.BSMES.jd.main.entity.JmJobRecBEntity;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import com.BSMES.jd.main.service.InssysvarService;
+import com.BSMES.jd.main.service.JmJobRecBService;
 import com.BSMES.jd.main.service.JmJobRecService;
 import com.BSMES.jd.main.service.JmJobService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -24,6 +27,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Autowired
     JmJobService jmJobService;
+
+    @Autowired
+    JmJobRecBService jmJobRecBService;
 
     @Autowired
     InssysvarService inssysvarService;
@@ -108,12 +114,21 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmJobRecEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("opsid",opsids);
-        try{
-            this.remove(queryWrapper);
-            result.setAll(20000,null,"操作成功");
-        }catch (Exception e) {
-            result.setAll(20000, null, "操作失败");
+        //查看本张随工单下是否有明细表
+        QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
+        jmJobRecBEntityQueryWrapper.in("opsid",opsids);
+        List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
+        if (jmJobRecBDTOS==null || jmJobRecBDTOS.size()==0){
+            try{
+                this.remove(queryWrapper);
+                result.setAll(20000,null,"操作成功");
+            }catch (Exception e) {
+                result.setAll(10001, null, "操作失败");
+            }
+        }else{
+            result.setAll(10001, null, "本随工单下已经有明细了不能删除");
         }
+
         return result;
     }
 

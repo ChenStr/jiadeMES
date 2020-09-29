@@ -152,4 +152,9 @@ public class JmXjMfEntity {
      */
     public String xjjd;
 
+    /**
+     * 检验依据
+     */
+    public String testBo;
+
 }
