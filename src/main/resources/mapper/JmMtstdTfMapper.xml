@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
+
+    <update id="updateJobRecB" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        UPDATE jm_job_rec_b
+        <trim prefix="set" suffixOverrides=",">
+            <if test="wkNo!=null">wk_no=#{wkNo},</if>
+            <if test="qty!=null">qty=#{qty},</if>
+            <if test="qtyOk!=null">qty_ok=#{qtyOk},</if>
+            <if test="qtyLost!=null">qty_lost=#{qtyLost},</if>
+            <if test="chkRmBn!=null">chk_rm_bn=#{chkRmBn},</if>
+            <if test="chkNo!=null">chk_no=#{chkNo},</if>
+            <if test="process!=null">process=#{process},</if>
+            <if test="spcNo!=null">spc_no=#{spcNo},</if>
+        </trim>
+        WHERE opsid=#{opsid} and cid=#{cid}
+    </update>
+
+</mapper>
