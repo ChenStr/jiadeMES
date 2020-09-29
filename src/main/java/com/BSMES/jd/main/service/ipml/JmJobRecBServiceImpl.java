@@ -27,6 +27,9 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     @Autowired
     JmJobRecService jmJobRecService;
 
+    @Autowired
+    JmJobRecBDao jmJobRecBDao;
+
     @Override
     public void beforeInsert(JmJobRecBDTO dto) {
 
@@ -88,10 +91,12 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             JmJobRecBDTO jobRecB = this.selectOne(jobRecBQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmJobRecBDao.updateJobRecB(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
+                e.printStackTrace();
             }
         }else{
             result.setAll(10001,null,"参数错误");

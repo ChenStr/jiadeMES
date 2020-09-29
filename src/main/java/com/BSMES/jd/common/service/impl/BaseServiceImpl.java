@@ -236,7 +236,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T> , T , D> extends D
                 //将单号后面的字母转换为数字
                 for (int i = 0 ; i < list.size() ; i++){
 //                    ints.add(Integer.valueOf(list.get(i).getSid().substring(string.length(),list.get(i).getSid().length())));
-                    String temp = (String)MyUtils.getFieldValueByFieldName(val,list.get(i));
+
+                    String temp = (String)MyUtils.getFieldValueByFieldName(MyUtils.lineToHump(val),list.get(i));
                     ints.add(Integer.valueOf(temp.substring(string.length(),temp.length())));
                 }
                 ints = ints.stream().sorted((t1,t2)-> t2 - t1).collect(Collectors.toList());

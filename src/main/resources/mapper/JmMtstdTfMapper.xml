@@ -2,21 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- JmJob表的真身 -->
-<mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
+<mapper namespace="com.BSMES.jd.main.dao.JmMtstdTfDao">
 
-    <update id="updateJobRecB" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
-        UPDATE jm_job_rec_b
+    <update id="UpdateJmMtstdTf" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        UPDATE jm_mtstd_tf
         <trim prefix="set" suffixOverrides=",">
-            <if test="wkNo!=null">wk_no=#{wkNo},</if>
-            <if test="qty!=null">qty=#{qty},</if>
-            <if test="qtyOk!=null">qty_ok=#{qtyOk},</if>
-            <if test="qtyLost!=null">qty_lost=#{qtyLost},</if>
-            <if test="chkRmBn!=null">chk_rm_bn=#{chkRmBn},</if>
-            <if test="chkNo!=null">chk_no=#{chkNo},</if>
-            <if test="process!=null">process=#{process},</if>
-            <if test="spcNo!=null">spc_no=#{spcNo},</if>
+            <if test="mtId!=null">Mt_id=#{mtId},</if>
+            <if test="chkStd!=null">chk_std=#{chkStd},</if>
+            <if test="devps!=null">devps=#{devps},</if>
+            <if test="chkRem!=null">chk_rem=#{chkRem},</if>
+            <if test="chkFile!=null">chk_file=#{chkFile},</if>
+            <if test="rem!=null">rem=#{rem},</if>
         </trim>
-        WHERE opsid=#{opsid} and cid=#{cid}
+        WHERE opsid=#{mtstdNo} and cid=#{cid}
     </update>
 
 </mapper>

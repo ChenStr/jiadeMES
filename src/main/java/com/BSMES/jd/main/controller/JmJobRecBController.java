@@ -52,5 +52,4 @@ public class JmJobRecBController {
         return result;
     }
 
-
 }

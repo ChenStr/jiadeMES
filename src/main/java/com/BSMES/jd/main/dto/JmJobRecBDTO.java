@@ -60,4 +60,9 @@ public class JmJobRecBDTO extends BaseDTO implements Serializable {
      */
     public String process;
 
+    /**
+     * 不合格原因
+     */
+    public String spcNo;
+
 }

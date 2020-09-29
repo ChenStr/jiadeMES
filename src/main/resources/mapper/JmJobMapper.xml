@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- JmMoMf表的真身 -->
+<!-- JmJob表的真身 -->
 <mapper namespace="com.BSMES.jd.main.dao.JmJobDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->

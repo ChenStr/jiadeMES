@@ -2,65 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- JmJob表的真身 -->
-<mapper namespace="com.BSMES.jd.main.dao.JmJobDao">
+<mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
 
-    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <insert id="insertJmJobs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
-        insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, s_dd, e_dd, qty_ship) values
-        <foreach collection="list" item="jmJob" index="index" separator=",">
-            (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
-            #{jmJob.prdNo},#{jmJob.sDd},#{jmJob.eDd},#{jmJob.qtyShip})
-        </foreach>
-    </insert>
-
-    <select id="joinFindJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
-        SELECT job.jb_no as jb_no,job.dep,job.dev_name as dev_name,job.md_name as mould_name,job.prd_name as prd_name,prdtut.umc,momf.qty as qty_ast,job.qty as qty_plan,
-        SUM(jobRec.qty_cur) as qty_already,job.qty_ship as qty_ship,job.beg_dd as beg_dd,job.end_dd as end_dd,prdt1.name as raw_name,prdt1.spc as raw_spc,
-        job.state as state,job.create_date as create_date FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm
-        JOIN jm_mo_mf as momf on job.sid = momf.sid JOIN jm_bom_mf as bomMf on job.prd_no = bomMf.prd_no JOIN jm_bom_tf as bomTf on bomMf.bom_no = bomTf.bom_no
-        JOIN jm_prdt as prdt1 on bomTf.prd_no = prdt1.prd_no JOIN jm_job_rec as jobRec on job.jb_no = jobRec.jb_no
-        <where>
-            <if test="dep != null">
-                and sorg.orgname = #{orgname}
-            </if>
-            <if test="prdName != null">
-                and prdt.name = #{prdtName}
-            </if>
-            <if test="devName != null">
-                and dev.name = #{devName}
-            </if>
-            <if test="mouldName != null">
-                and mould.name = #{mouldName}
-            </if>
-            <if test="begDd != null">
-                and job.beg_dd &gt;= #{begDd}
-            </if>
-            <if test="endDd != null">
-                and job.end_dd &lt;= #{endDd}
-            </if>
-            <if test="state!=null">
-                and job.state = #{state}
-            </if>
-        </where>
-        GROUP BY job.jb_no,job.dep,job.dev_name,job.md_name,job.prd_name,prdtut.umc,momf.qty,job.qty,job.beg_dd,
-        job.end_dd,prdt1.name,prdt1.spc,job.state,job.create_date,job.qty_ship
-	</select>
-
-    <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
-        UPDATE jm_job
+    <update id="updateJobRecB" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        UPDATE jm_job_rec_b
         <trim prefix="set" suffixOverrides=",">
-            <if test="jbNo!=null">jb_no=#{jbNo},</if>
-            <if test="qty!=null">qty=#{qty},</if>
-            <if test="rsNo!=null">rs_no=#{rsNo},</if>
             <if test="wkNo!=null">wk_no=#{wkNo},</if>
-            <if test="mdNo!=null">md_no=#{mdNo},</if>
-            <if test="begDd!=null">beg_dd=#{begDd},</if>
-            <if test="endDd!=null">end_dd=#{endDd},</if>
-            <if test="qtyShip!=null">qty_ship=#{qtyShip},</if>
-            <if test="devName!=null">dev_name=#{devName},</if>
-            <if test="mdName!=null">md_name=#{mdName},</if>
+            <if test="qty!=null">qty=#{qty},</if>
+            <if test="qtyOk!=null">qty_ok=#{qtyOk},</if>
+            <if test="qtyLost!=null">qty_lost=#{qtyLost},</if>
+            <if test="chkRmBn!=null">chk_rm_bn=#{chkRmBn},</if>
+            <if test="chkNo!=null">chk_no=#{chkNo},</if>
+            <if test="process!=null">process=#{process},</if>
+            <if test="spcNo!=null">spc_no=#{spcNo},</if>
         </trim>
-        WHERE sid=#{sid} and cid=#{cid}
+        WHERE opsid=#{opsid} and cid=#{cid}
     </update>
 
 </mapper>
