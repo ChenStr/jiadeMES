@@ -88,8 +88,6 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         CommonReturn result = new CommonReturn();
         //判断长度是否相等
         if (sids!=null && cids!=null && sids.size()!=0 && cids.size()!=0 && sids.size()==cids.size()){
-//        jobQueryWrapper.in("sid",sids);
-//        jobQueryWrapper.and(wrapper -> wrapper.in("cid", cids));
             for (int i = 0 ; i < sids.size() ; i++){
                 QueryWrapper<JmMouldEntity> mouldQueryWrapper = new QueryWrapper<>();
                 mouldQueryWrapper.eq("md_no",sids.get(i));
@@ -106,7 +104,6 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         }else{
             result.setAll(10001,null,"操作失败");
         }
-
         return result;
     }
 

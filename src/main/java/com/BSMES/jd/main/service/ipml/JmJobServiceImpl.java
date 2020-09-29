@@ -3,25 +3,45 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobDao;
-import com.BSMES.jd.main.dto.JmJobDTO;
-import com.BSMES.jd.main.dto.JmMoMfDTO;
-import com.BSMES.jd.main.entity.JmJobEntity;
-import com.BSMES.jd.main.entity.JmMoMfEntity;
-import com.BSMES.jd.main.service.JmJobService;
-import com.BSMES.jd.main.service.JmMoMfService;
+import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.entity.*;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , JmJobDTO> implements JmJobService {
 
     @Autowired
     JmMoMfService jmMoMfService;
+
+    @Autowired
+    JmJobDao jmJobDao;
+
+    @Autowired
+    InssysvarService inssysvarService;
+
+    @Autowired
+    JmDevService jmDevService;
+
+    @Autowired
+    JmMouldService jmMouldService;
+
+    @Autowired
+    InsorgService insorgService;
+
+
 
     @Override
     public void beforeInsert(JmJobDTO dto) {
@@ -43,6 +63,14 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }else{
             result.setAll(20000,jobs,"查找成功");
         }
+        return result;
+    }
+
+    @Override
+    public CommonReturn joinFindJobs(JobJoin jobJoin) {
+        CommonReturn result = new CommonReturn();
+        List<JobJoin> jobJoins = jmJobDao.joinFindJob(jobJoin);
+        result.setAll(20000,jobJoins,"操作成功");
         return result;
     }
 
@@ -76,6 +104,51 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     }
 
     @Override
+    public CommonReturn saveJobs(List<JmJobDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        if (dtos!=null && dtos.size()>0){
+            for (int i=0 ; i < dtos.size() ; i++){
+                //判定调度单号(制令单)是否存在 sid
+                String key = this.getKey("JmJob","jb_no",inssysvarService,dtos.get(i));
+                //首先先找到编码规则
+                QueryWrapper queryWrapper = new QueryWrapper();
+                queryWrapper.eq("sname","JmJob");
+                String code = inssysvarService.selectOne(queryWrapper).getSbds();
+                //获取括号前的数据
+                String after = code.substring(code.indexOf('%')+1,code.length());
+                String before = key.substring(0,key.length() - after.length());
+                String keyafter = key.substring(key.length()-after.length(),key.length());
+                key = before + MyUtils.geFourNumber(Integer.parseInt(keyafter)+i,after.length());
+                dtos.get(i).setJbNo(key);
+                dtos.get(i).setCreateDate(new Date());
+                //查出设备信息
+                QueryWrapper<JmDevEntity> jmDevDTOQueryWrapper = new QueryWrapper<>();
+                jmDevDTOQueryWrapper.eq("dev_no",dtos.get(i).getRsNo());
+                JmDevDTO dev = jmDevService.selectOne(jmDevDTOQueryWrapper);
+                dtos.get(i).setDevName(dev.getName());
+                //查询模具信息
+                QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
+                jmMouldEntityQueryWrapper.eq("md_no",dtos.get(i).getMdNo());
+                JmMouldDTO mould = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
+                dtos.get(i).setMdName(mould.getName());
+                //部门信息
+                QueryWrapper<InsorgEntity> insorgEntityQueryWrapper = new QueryWrapper<>();
+                insorgEntityQueryWrapper.eq("orgcode",dtos.get(i).getSorg());
+                InsorgDTO sorg = insorgService.selectOne(insorgEntityQueryWrapper);
+                dtos.get(i).setDep(sorg.getOrgname());
+            }
+        }
+        try{
+            jmJobDao.insertJmJobs(dtos);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(10001,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn editJob(JmJobDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 wk_no 是否有值
@@ -86,11 +159,14 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             jobQueryWrapper.eq("cid",dto.getCid());
             JmJobDTO job = this.selectOne(jobQueryWrapper);
             //设置用户不能操作的属性
+            dto.setJbNo(job.getJbNo());
             try{
-                this.edit(dto);
+                jmJobDao.updateJob(dto);
+//                this.edit(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
+                e.printStackTrace();
             }
         }else{
             result.setAll(10001,null,"参数错误");
@@ -103,8 +179,6 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         CommonReturn result = new CommonReturn();
         //判断长度是否相等
         if (sids!=null && cids!=null && sids.size()!=0 && cids.size()!=0 && sids.size()==cids.size()){
-//        jobQueryWrapper.in("sid",sids);
-//        jobQueryWrapper.and(wrapper -> wrapper.in("cid", cids));
             for (int i = 0 ; i < sids.size() ; i++){
                 QueryWrapper<JmJobEntity> jobQueryWrapper = new QueryWrapper<>();
                 jobQueryWrapper.eq("sid",sids.get(i));
@@ -136,4 +210,22 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }
         return result;
     }
+
+    @Override
+    public CommonReturn getJobJoinPage(JobJoin jobJoin) {
+        CommonReturn result = new CommonReturn();
+        if (jobJoin.getPage()==null){
+            jobJoin.setPage(1);
+        }
+        if (jobJoin.getPageSize()==null){
+            jobJoin.setPageSize(10);
+        }
+        PageHelper.startPage(jobJoin.getPage(), jobJoin.getPageSize());
+        List<JobJoin> jobJoins = (List<JobJoin>) this.joinFindJobs(jobJoin).getData();
+        PageInfo jobPages = new PageInfo<JobJoin>(jobJoins);
+        result.setAll(20000,jobPages,"操作成功");
+        return result;
+    }
+
+
 }

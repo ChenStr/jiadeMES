@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,217 +24,243 @@ public class JmJobEntity {
      * 生产计划单号(与制令单号一样)
      */
     @TableId
-    private String sid;
+    public String sid;
 
     /**
      * 项次
      */
     @TableId
-    private Integer cid;
+    public Integer cid;
 
     /**
      * 任务单号
      */
-    private String jbNo;
+    public String jbNo;
 
-    private String tzNo;
+    public String tzNo;
 
     /**
      * 成品代号
      */
-    private String prdNo;
+    public String prdNo;
 
     /**
      * 工序代号
      */
-    private String zcNo;
+    public String zcNo;
 
     /**
      * 数量
      */
-    private BigDecimal qty;
+    public BigDecimal qty;
 
     /**
      * 计划开工
      */
-    private Date begDd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date begDd;
 
     /**
      * 计划完工
      */
-    private Date endDd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    public Date endDd;
 
     /**
      * 加工资源
      */
-    private String rsNo;
+    public String rsNo;
 
     /**
      * 作业人员
      */
-    private String wkNo;
+    public String wkNo;
 
     /**
      * 模具
      */
-    private String mdNo;
+    public String mdNo;
 
     /**
      * 状态
      */
-    private String state;
+    public String state;
 
     /**
      * 条码
      */
-    private String barCode;
+    public String barCode;
 
     /**
      * 做法描述
      */
-    private String zcRem;
+    public String zcRem;
 
     /**
      * 已完工量
      */
-    private BigDecimal qtyFin;
+    public BigDecimal qtyFin;
 
     /**
      * 实际开工
      */
-    private Date staDd;
+    public Date staDd;
 
     /**
      * 实际完工
      */
-    private Date finDd;
+    public Date finDd;
 
     /**
-     * 部门代号
+     * 部门名称
      */
-    private String dep;
+    public String dep;
 
     /**
      * 结案标志
      */
-    private String closeId;
+    public String closeId;
 
     /**
      * 订单号码
      */
-    private String soNo;
+    public String soNo;
 
     /**
      * 承上工序
      */
-    private String zcNoUp;
+    public String zcNoUp;
 
     /**
      * 转下工序
      */
-    private String zcNoDn;
+    public String zcNoDn;
 
     /**
      * 加工时间
      */
-    private BigDecimal usedTime;
+    public BigDecimal usedTime;
 
     /**
      * 准备状态
      */
-    private Integer statePre;
+    public Integer statePre;
 
     /**
      * 标准加工时间
      */
-    private BigDecimal capTime;
+    public BigDecimal capTime;
 
     /**
      * 报工否
      */
-    private String finId;
+    public String finId;
 
     /**
      * 检验否
      */
-    private String chkId;
+    public String chkId;
 
     /**
      * 待加工量
      */
-    private BigDecimal qtyPrc;
+    public BigDecimal qtyPrc;
 
     /**
      * 合格量
      */
-    private BigDecimal qtyOk;
+    public BigDecimal qtyOk;
 
     /**
      * 不合格量
      */
-    private BigDecimal qtyLost;
+    public BigDecimal qtyLost;
 
     /**
      * 返工量
      */
-    private BigDecimal qtyRw;
+    public BigDecimal qtyRw;
 
-    private Date sDd;
+    public Date sDd;
 
-    private Date eDd;
+    public Date eDd;
 
-    private Date ssDd;
+    public Date ssDd;
 
-    private Date eeDd;
+    public Date eeDd;
 
     /**
      * 作业说明文件
      */
-    private String zcFile;
+    public String zcFile;
 
     /**
      * 部门
      */
-    private String sorg;
+    public String sorg;
 
-    private String prdMark;
+    public String prdMark;
 
     /**
      * 加工中心
      */
-    private String rsGrp;
+    public String rsGrp;
 
-    private Integer dmdel;
+    public Integer dmdel;
 
     /**
      * 班组
      */
-    private String teamNo;
+    public String teamNo;
 
-    private String isRsv;
+    public String isRsv;
 
-    private Date rsvDd;
+    public Date rsvDd;
 
     /**
      * 需转移
      */
-    private String mvId;
+    public String mvId;
 
     /**
      * 工序完工品
      */
-    private String prdNoZc;
+    public String prdNoZc;
 
     /**
      * 转出数量
      */
-    private BigDecimal qtyMv;
+    public BigDecimal qtyMv;
 
-    private String zopNo;
+    public String zopNo;
 
     /**
      * 发货量
      */
-    private BigDecimal qtyShip;
+    public BigDecimal qtyShip;
 
+    /**
+     * 创建时间
+     */
+    public Date createDate;
+
+    /**
+     * 设备名称
+     */
+    public String devName;
+
+    /**
+     * 模具名称
+     */
+    public String mdName;
+
+    /**
+     * 产品名称
+     */
+    public String prdName;
+
+    /**
+     * 单位代号
+     */
+    public String unit;
 }

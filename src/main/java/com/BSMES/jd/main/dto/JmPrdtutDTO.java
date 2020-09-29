@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 仓库映射表
+ * 单位映射表
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,11 +16,11 @@ public class JmPrdtutDTO extends BaseDTO implements Serializable {
     /**
      * 单位
      */
-    private String ubm;
+    public String ubm;
 
     /**
      * 单位名称
      */
-    private String umc;
+    public String umc;
 
 }

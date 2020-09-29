@@ -7,6 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 调度单(制令单)更多信息映射
@@ -18,227 +19,232 @@ public class JmMoMfMore extends BaseDTO implements Serializable {
     /**
      * 单据代号
      */
-    private String sid;
+    public String sid;
 
     /**
      * 业务类型
      */
-    private String sbuid;
+    public String sbuid;
 
     /**
      * 单据日期
      */
-    private Date hpdate;
+    public Date hpdate;
 
     /**
      * 成品代号
      */
-    private String prdNo;
+    public String prdNo;
 
-    private JmPrdtDTO jmPrdt;
+    public JmPrdtDTO jmPrdt;
 
     /**
      * 数量
      */
-    private BigDecimal qty;
+    public BigDecimal qty;
 
     /**
      * 已缴数量
      */
-    private BigDecimal qtyFin;
+    public BigDecimal qtyFin;
 
     /**
      * 计划开工日期
      */
-    private Date begDd;
+    public Date begDd;
 
     /**
      * 计划完工日期
      */
-    private Date endDd;
+    public Date endDd;
 
     /**
      * 实际开工日期
      */
-    private Date staDd;
+    public Date staDd;
 
     /**
      * 实际完工日期
      */
-    private Date finDd;
+    public Date finDd;
 
     /**
      * 仓库
      */
-    private String wh;
+    public String wh;
 
     /**
      * 部门
      */
-    private String dep;
+    public String dep;
 
     /**
      * 结案标志
      */
-    private String closeId;
+    public String closeId;
 
     /**
      * 订单号码
      */
-    private String soNo;
+    public String soNo;
 
     /**
      * 物料BOM代号
      */
-    private String bomNo;
+    public String bomNo;
 
     /**
      * 工艺代号
      */
-    private String bomNoZc;
+    public String bomNoZc;
 
     /**
      * ERP生产单号
      */
-    private String moNoErp;
+    public String moNoErp;
 
     /**
      * 需求日期
      */
-    private Date estDd;
+    public Date estDd;
 
     /**
      * 制单人
      */
-    private String smake;
+    public String smake;
 
     /**
      * 创建时间
      */
-    private Date moditime;
+    public Date moditime;
 
     /**
      * 审核人
      */
-    private String chkMan;
+    public String chkMan;
 
     /**
      * 状态
      */
-    private Integer state;
+    public Integer state;
 
     /**
      * 引用次数
      */
-    private Integer creftimes;
+    public Integer creftimes;
 
     /**
      * 单位
      */
-    private String unit;
+    public String unit;
 
-    private String unitErp;
+    public String unitErp;
 
     /**
      * 准备状态
      */
-    private Integer statePre;
+    public Integer statePre;
 
-    private String paraname;
+    public String paraname;
 
     /**
      * 备注
      */
-    private String rem;
+    public String rem;
 
     /**
      * 返修单号
      */
-    private String rwId;
+    public String rwId;
 
-    private String control;
+    public String control;
 
     /**
      * 单据类别
      */
-    private String bilType;
+    public String bilType;
 
     /**
      * 需求客户
      */
-    private String cusNo;
+    public String cusNo;
 
     /**
      * 部门
      */
-    private String sorg;
+    public String sorg;
 
     /**
      * 详细部门信息
      */
-    private InsorgDTO insorg;
+    public InsorgDTO insorg;
 
-    private String cusName;
+    public String cusName;
 
     /**
      * 成品名
      */
-    private String prdName;
+    public String prdName;
 
-    private Integer estItm;
+    public Integer estItm;
 
-    private Integer mkItm;
+    public Integer mkItm;
 
-    private Integer bomid;
+    public Integer bomid;
 
-    private Integer routingid;
+    public Integer routingid;
 
-    private Integer modid;
+    public Integer modid;
 
-    private String prdMark;
+    public String prdMark;
 
-    private Integer dmdel;
+    public Integer dmdel;
 
-    private Integer printId;
+    public Integer printId;
 
-    private Date pbDd;
+    public Date pbDd;
 
-    private Integer genkn;
+    public Integer genkn;
 
-    private String batNo;
+    public String batNo;
 
-    private String bilNo;
+    public String bilNo;
 
-    private String rsGrp;
+    public String rsGrp;
 
-    private BigDecimal upJj;
+    public BigDecimal upJj;
 
-    private String moNoAdd;
+    public String moNoAdd;
 
-    private Integer smkz;
+    public Integer smkz;
 
-    private String mdNo;
+    public String mdNo;
 
-    private String sebNo;
+    public String sebNo;
 
     /**
      * 已分配数量
      */
-    private BigDecimal qtyAlled;
+    public BigDecimal qtyAlled;
 
     /**
      * 车间调整数量
      */
-    private BigDecimal qtyAst;
+    public BigDecimal qtyAst;
 
     /**
      * 车间调整日期
      */
-    private Date astDd;
+    public Date astDd;
 
     /**
      * 车间下达(判断是否是MES下达的数据)
      */
-    private Integer astRelease;
+    public Integer astRelease;
+
+    /**
+     * 原料信息
+     */
+    public List<JmPrdtDTO> prdts;
 
 }

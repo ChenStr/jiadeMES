@@ -3,9 +3,11 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.JmJobDTO;
+import com.BSMES.jd.main.dto.JobJoin;
 import com.BSMES.jd.main.service.JmJobService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +19,18 @@ public class JmJobController {
     @Autowired
     JmJobService jmJobService;
 
-    @GetMapping()
+    @GetMapping("/plan")
+    public CommonReturn getJmJoblook(JobJoin dto, Boolean isPage){
+        CommonReturn result = new CommonReturn();
+        if (isPage==null || isPage==false){
+            result = jmJobService.joinFindJobs(dto);
+        }else{
+            result = jmJobService.getJobJoinPage(dto);
+        }
+        return result;
+    }
+
+    @GetMapping("")
     public CommonReturn getJmJob(JmJobDTO dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
@@ -29,26 +42,39 @@ public class JmJobController {
         return result;
     }
 
+
     @PostMapping()
-    public CommonReturn saveJmJob(@RequestBody JmJobDTO dto){
+    public CommonReturn saveJmJobs(@RequestBody List<JmJobDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmJobService.saveJob(dto);
+//        result = jmJobService.saveJob(dto);
+        result = jmJobService.saveJobs(dtos);
         return result;
     }
 
     @PutMapping()
-    public CommonReturn editJmJob(@RequestBody JmJobDTO dto){
+    @Transactional
+    public CommonReturn editJmJob(@RequestBody List<JmJobDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmJobService.editJob(dto);
+        if (dtos!=null && dtos.size()>0){
+            for (JmJobDTO dto : dtos){
+                try{
+                    result = jmJobService.editJob(dto);
+                }catch (Exception e){
+                    result.setAll(10001,null,"编辑失败");
+                    e.printStackTrace();
+                }
+            }
+        }
         return result;
     }
 
+
     @DeleteMapping()
-    public CommonReturn delJmJob(String[] ids, Integer[] cids){
+    public CommonReturn delJmJob(String[] sids, Integer[] cids){
         CommonReturn result = new CommonReturn();
-        List<String> sids = java.util.Arrays.asList(ids);
+        List<String> sids2 = java.util.Arrays.asList(sids);
         List<Integer> cids2 = java.util.Arrays.asList(cids);
-        result = jmJobService.delJob(sids,cids2);
+        result = jmJobService.delJob(sids2,cids2);
         return result;
     }
 

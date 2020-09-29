@@ -12,61 +12,61 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InssysvarDTO extends BaseDTO implements Serializable {
 
-    private Integer cCorp;
+    public Integer cCorp;
 
     /**
      * 变量名
      */
-    private String sname;
+    public String sname;
 
     /**
      * 公式
      */
-    private String sbds;
+    public String sbds;
 
     /**
      * 参照值
      */
-    private String sref;
+    public String sref;
 
     /**
      * 类型
      */
-    private String chkflag;
+    public String chkflag;
 
     /**
      * 说明
      */
-    private String remark;
+    public String remark;
 
-    private String remarkxa;
+    public String remarkxa;
 
-    private String remarkxb;
+    public String remarkxb;
 
     /**
      * 系统号
      */
-    private Integer csysno;
+    public Integer csysno;
 
     /**
      * 操作员
      */
-    private String cuser;
+    public String cuser;
 
     /**
      * 类别
      */
-    private String stype;
+    public String stype;
 
     /**
      * 版本
      */
-    private Integer cUlevel;
+    public Integer cUlevel;
 
-    private Integer ilevl;
+    public Integer ilevl;
 
-    private String blast;
+    public String blast;
 
-    private String bzLocked;
+    public String bzLocked;
 
 }

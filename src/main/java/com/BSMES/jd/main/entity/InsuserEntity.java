@@ -22,118 +22,118 @@ public class InsuserEntity{
     /**
      * 反序列化规则
      */
-//    private static final long serialVersionUID = 1L;
+//    public static final long serialVersionUID = 1L;
 
-    private Integer cCorp;
+    public Integer cCorp;
 
     /**
      * 账户代码
      */
     @TableId
-    private String usrcode;
+    public String usrcode;
 
     /**
      * 账户名称
      */
-    private String usrname;
+    public String usrname;
 
-    private String usrnamexa;
+    public String usrnamexa;
 
-    private String usrnamexb;
+    public String usrnamexb;
 
     /**
      * 简码
      */
-    private String usrshort;
+    public String usrshort;
 
     /**
      * 密码
      */
-    private String password;
+    public String password;
 
     /**
      * 部门
      */
-    private String orgcode;
+    public String orgcode;
 
     /**
      * 附加部门
      */
-    private String orgcodeex;
+    public String orgcodeex;
 
     /**
      * 资料码
      */
-    private String doccode;
+    public String doccode;
 
     /**
      * 岗位
      */
-    private String gwcode;
+    public String gwcode;
 
     /**
      * 性别编号
      */
-    private String sexid;
+    public String sexid;
 
-    private String ident;
+    public String ident;
 
-    private String address;
+    public String address;
 
-    private String codeno;
+    public String codeno;
 
     /**
      * 属性(1:管理员;2:特权用户;3:公司用户;4:部门用户;5:普通用户;6:非操作员;9:做废)
      */
-    private Integer usrattr;
+    public Integer usrattr;
 
     /**
      * 邮箱
      */
-    private String semail;
+    public String semail;
 
     /**
      * 终止日期
      */
-    private Date eymd;
+    public Date eymd;
 
     /**
      * 登录卡号
      */
-    private String sicard;
+    public String sicard;
 
     /**
      * 开始时间
      */
-    private Integer ctfr;
+    public Integer ctfr;
 
     /**
      * 结束时间
      */
-    private Integer ctto;
+    public Integer ctto;
 
-    private String skey;
+    public String skey;
 
     /**
      * 日期限制
      */
-    private Integer dtlmt;
+    public Integer dtlmt;
 
-    private String tel;
+    public String tel;
 
     /**
      * 功能
      */
-    private Integer bim;
+    public Integer bim;
 
     /**
      * 上级主管
      */
-    private String upmang;
+    public String upmang;
 
     /**
      * 自动执行
      */
-    private String autocmd;
+    public String autocmd;
 
 }

@@ -17,86 +17,86 @@ public class JmDevDTO extends BaseDTO implements Serializable {
     /**
      * 设备代号
      */
-    private String devNo;
+    public String devNo;
 
     /**
      * 名称
      */
-    private String name;
+    public String name;
 
     /**
      * 型号
      */
-    private String spc;
+    public String spc;
 
     /**
      * 关联资源
      */
-    private String rsNo;
+    public String rsNo;
 
     /**
      * 供应厂商
      */
-    private String cusname;
+    public String cusname;
 
     /**
      * 维护人员
      */
-    private String mainNo;
+    public String mainNo;
 
     /**
      * 部门
      */
-    private String dep;
+    public String dep;
 
     /**
      * 时间上限
      */
-    private BigDecimal maxtime;
+    public BigDecimal maxtime;
 
     /**
      * 数量上限
      */
-    private BigDecimal maxqty;
+    public BigDecimal maxqty;
 
     /**
      * 累计加工时间
      */
-    private BigDecimal timeMk;
+    public BigDecimal timeMk;
 
     /**
      * 累计加工数量
      */
-    private BigDecimal qtyMk;
+    public BigDecimal qtyMk;
 
     /**
      * 状态
      */
-    private String state;
+    public String state;
 
     /**
      * 设备分类
      */
-    private String devid;
+    public String devid;
 
     /**
      * 部门
      */
-    private String sorg;
+    public String sorg;
 
     /**
      * 图片
      */
-    private String picture;
+    public String picture;
 
     /**
      * 位置
      */
-    private String location;
+    public String location;
 
     /**
      * IP地址
      */
-    private String ip;
+    public String ip;
     
 }

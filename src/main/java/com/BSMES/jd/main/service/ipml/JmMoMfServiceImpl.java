@@ -1,18 +1,14 @@
 package com.BSMES.jd.main.service.ipml;
 
+import com.BSMES.jd.common.dto.BaseDTO;
 import com.BSMES.jd.common.dto.CommonReturn;
+import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMoMfDao;
 import com.BSMES.jd.main.dto.*;
-import com.BSMES.jd.main.entity.InsorgEntity;
-import com.BSMES.jd.main.entity.JmMoMfEntity;
-import com.BSMES.jd.main.entity.JmPrdtEntity;
-import com.BSMES.jd.main.service.InsorgService;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmMoMfService;
-import com.BSMES.jd.main.service.JmPrdtService;
+import com.BSMES.jd.main.entity.*;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
-import com.alibaba.druid.sql.visitor.functions.Char;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,9 +30,19 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Autowired
     InssysvarService inssysvarService;
 
+    @Autowired
+    JmJobService jmJobService;
+
+    @Autowired
+    JmBomMfService jmBomMfService;
+
+    @Autowired
+    JmBomTfService jmBomTfService;
+
     @Override
     public void beforeInsert(JmMoMfDTO dto) {
         dto.setAstRelease(1);
+        dto.setHpdate(new Date());
     }
 
     @Override
@@ -65,6 +71,29 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 JmPrdtDTO prdt = jmPrdtService.selectOne(prdtQueryWrapper);
                 more.setJmPrdt(prdt);
 
+                //查询原料名字
+                QueryWrapper<JmBomMfEntity> jmBomMfQueryWrapper = new QueryWrapper<>();
+                jmBomMfQueryWrapper.eq("prd_no",moMfs.get(i).getPrdNo());
+                JmBomMfDTO jmBomMfDTO = jmBomMfService.selectOne(jmBomMfQueryWrapper);
+
+                List<JmBomTfDTO> jmBomTfDTOS = new ArrayList<>();
+                if (jmBomMfDTO!=null && jmBomMfDTO.getBomNo()!=null){
+                    QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
+                    jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
+                    jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
+                }
+
+                if (jmBomTfDTOS!=null && jmBomTfDTOS.size()>0){
+                    List<String> prdNos = new ArrayList<>();
+                    jmBomTfDTOS.stream().forEach(t->prdNos.add(t.getPrdNo()));
+                    QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
+                    prdtEntityQueryWrapper.in("prd_no",prdNos);
+                    List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(prdtEntityQueryWrapper);
+                    more.setPrdts(prdtDTOS);
+                }
+
+
+
                 mores.add(more);
             }
         }
@@ -79,7 +108,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Override
     public CommonReturn saveMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        dto.setSid(this.getKey("MESB110H"));
+        dto.setSid(this.getKey("JmMoMf","sid",inssysvarService,dto));
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && MyUtils.StringIsNull(dto.getSorg()) && MyUtils.StringIsNull(dto.getPrdNo()) && dto.getQty()!=null && dto.getEndDd()!=null){
             QueryWrapper<JmMoMfEntity> moMfQueryWrapper = new QueryWrapper<>();
@@ -108,13 +137,24 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
             QueryWrapper<JmMoMfEntity> moMfQueryWrapper = new QueryWrapper<>();
             moMfQueryWrapper.eq("sid",dto.getSid());
             JmMoMfDTO moMf = this.selectOne(moMfQueryWrapper);
-            //设置用户不能操作的属性
-            try{
-                this.edit(dto);
-                result.setAll(20000,null,"操作成功");
-            }catch (Exception e){
-                result.setAll(10001,null,"操作失败");
+            //查看该调度单下是否有计划分派
+            QueryWrapper jobQueryWrapper = new QueryWrapper();
+            jobQueryWrapper.eq("sid",dto.getSid());
+            List<JmJobDTO> jmJobs = jmJobService.select(jobQueryWrapper);
+            if (jmJobs==null || jmJobs.size()==0){
+                //设置用户不能操作的属性
+                try{
+                    this.edit(dto);
+                    result.setAll(20000,null,"操作成功");
+                }catch (Exception e){
+                    result.setAll(10001,null,"操作失败");
+                }
+            }else{
+                //强制终止调度单
+                moMf.setState(12);
+                this.edit(moMf);
             }
+
         }else{
             result.setAll(10001,null,"参数错误");
         }
@@ -126,12 +166,21 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMoMfEntity> moMfQueryWrapper = new QueryWrapper<>();
         moMfQueryWrapper.in("sid",sids);
-        try{
-            this.remove(moMfQueryWrapper);
-            result.setAll(20000,null,"操作成功");
-        }catch (Exception e) {
-            result.setAll(20000, null, "操作失败");
+        //查看该调度单下面是否有作业计划单
+        QueryWrapper jobQueryWrapper = new QueryWrapper();
+        jobQueryWrapper.in("sid",sids);
+        List<JmJobDTO> jmJobs = jmJobService.select(jobQueryWrapper);
+        if (jmJobs==null || jmJobs.size()==0){
+            try{
+                this.remove(moMfQueryWrapper);
+                result.setAll(20000,null,"操作成功");
+            }catch (Exception e) {
+                result.setAll(20000, null, "操作失败");
+            }
+        }else{
+            result.setAll(40000,null,"该调度单下已经有计划分派了，不能删除");
         }
+
         return result;
     }
 
@@ -159,9 +208,30 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 JmPrdtDTO prdt = jmPrdtService.selectOne(prdtQueryWrapper);
                 more.setJmPrdt(prdt);
                 //加入总页数
-                more.setTotal(jmMoMfDTOS.size());
+                more.setTotal(this.list().size());
                 more.setPage(dto.getPage());
                 more.setPageSize(dto.getPageSize());
+
+                //加入原料信息
+                QueryWrapper<JmBomMfEntity> jmBomMfQueryWrapper = new QueryWrapper<>();
+                jmBomMfQueryWrapper.eq("prd_no",jmMoMfDTOS.get(i).getPrdNo());
+                JmBomMfDTO jmBomMfDTO = jmBomMfService.selectOne(jmBomMfQueryWrapper);
+
+                List<JmBomTfDTO> jmBomTfDTOS = new ArrayList<>();
+                if (jmBomMfDTO!=null && jmBomMfDTO.getBomNo()!=null){
+                    QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
+                    jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
+                    jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
+                }
+
+                if (jmBomTfDTOS!=null && jmBomTfDTOS.size()>0){
+                    List<String> prdNos = new ArrayList<>();
+                    jmBomTfDTOS.stream().forEach(t->prdNos.add(t.getPrdNo()));
+                    QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
+                    prdtEntityQueryWrapper.in("prd_no",prdNos);
+                    List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(prdtEntityQueryWrapper);
+                    more.setPrdts(prdtDTOS);
+                }
 
                 mores.add(more);
             }
@@ -179,7 +249,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     private QueryWrapper getQueryWrapper(JmMoMfDTO dto){
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.eq("sid",dto.getSid());
+            queryWrapper.like("sid",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("sorg",dto.getSorg());
@@ -187,53 +257,26 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         if (MyUtils.StringIsNull(dto.getPrdNo())){
             queryWrapper.eq("prd_no",dto.getPrdNo());
         }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
         if (MyUtils.StringIsNull(dto.getPrdName())){
             queryWrapper.like("prd_name",dto.getPrdName());
         }
-        if (dto.getBegDd()!=null && dto.getEndDd()!=null){
-            queryWrapper.between("hpdate",dto.getBegDd(),dto.getEndDd());
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
         return queryWrapper;
     }
 
-    public synchronized String getKey(String val){
-        //首先先找到编码规则
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("sname",val);
-        String code = inssysvarService.selectOne(queryWrapper).getSbds();
-        String string = "";
-        //获取括号前的数据{
-        Integer place1 = code.indexOf('%');
-        if (place1>=0 ){
-            String befor = code.substring(0,place1);
-            String after = code.substring(place1+1,code.length());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String dateNowStr = sdf.format(new Date());
-            //将年月日分开
-            String str[] = dateNowStr.split("-");
-            string = string+befor+str[0]+str[1]+str[2];
-            //查询数据库里的全部值
-            QueryWrapper queryWrapper1 = new QueryWrapper();
-            queryWrapper1.likeRight("sid",string);
-            queryWrapper1.select("sid");
-            List<JmMoMfDTO> list = select(queryWrapper1);
-            if (list!=null && list.size()!=0){
-                List<Integer> ints = new ArrayList<>();
-                //将单号后面的字母转换为数字
-                for (int i = 0 ; i < list.size() ; i++){
-                    ints.add(Integer.valueOf(list.get(i).getSid().substring(string.length(),list.get(i).getSid().length())));
-                }
-                ints = ints.stream().sorted((t1,t2)-> t2 - t1).collect(Collectors.toList());
-                //返回单号
-                string = string + MyUtils.geFourNumber(ints.get(0)+1,after.length());
-            }else{
-                //返回单号
-                string = string + MyUtils.geFourNumber(1,after.length());
-            }
 
-            return string;
-        }else{
-            return code;
-        }
-    }
 }

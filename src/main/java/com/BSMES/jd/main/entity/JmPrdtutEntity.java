@@ -15,11 +15,11 @@ public class JmPrdtutEntity {
     /**
      * 单位
      */
-    private String ubm;
+    public String ubm;
 
     /**
      * 单位名称
      */
-    private String umc;
+    public String umc;
 
 }

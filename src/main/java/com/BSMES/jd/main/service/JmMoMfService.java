@@ -1,5 +1,6 @@
 package com.BSMES.jd.main.service;
 
+import com.BSMES.jd.common.dto.BaseDTO;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmMoMfDTO;
@@ -25,6 +26,12 @@ public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
      */
     public CommonReturn getMoMfPage(JmMoMfDTO dto);
 
-    public String getKey(String val);
+    /**
+     * 公共编码规则
+     * @param codeval
+     * @param val
+     * @return
+     */
+    public String getKey(String codeval,String val ,BaseService baseService, BaseDTO baseDTO);
 
 }

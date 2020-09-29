@@ -17,87 +17,87 @@ public class JmPrdtDTO extends BaseDTO implements Serializable {
     /**
      * 货品代号
      */
-    private String prdNo;
+    public String prdNo;
 
     /**
      * 货品名称
      */
-    private String name;
+    public String name;
 
     /**
      * 简称
      */
-    private String snm;
+    public String snm;
 
     /**
      * 货品大类
      */
-    private String knd;
+    public String knd;
 
     /**
      * 中类
      */
-    private String idx1;
+    public String idx1;
 
     /**
      * 主单位
      */
-    private String unit;
+    public String unit;
 
     /**
      * 规格
      */
-    private String spc;
+    public String spc;
 
     /**
      * 安全存量
      */
-    private BigDecimal qtyMin;
+    public BigDecimal qtyMin;
 
     /**
      * 缺省仓库
      */
-    private String wh;
+    public String wh;
 
     /**
      * 标准成本
      */
-    private BigDecimal cstStd;
+    public BigDecimal cstStd;
 
     /**
      * ERP单位名称
      */
-    private String ut;
+    public String ut;
 
-    private Integer partid;
+    public Integer partid;
 
     /**
      * 参数列名
      */
-    private String paraname;
+    public String paraname;
 
-    private String pk2Ut;
+    public String pk2Ut;
 
-    private BigDecimal pk2Qty;
+    public BigDecimal pk2Qty;
 
-    private String pk3_ut;
+    public String pk3_ut;
 
-    private String pk3_qty;
+    public String pk3_qty;
 
-    private Integer rank;
+    public Integer rank;
 
-    private Integer havesn;
+    public Integer havesn;
 
-    private Integer smcsHzzh;
+    public Integer smcsHzzh;
 
-    private String sbm;
+    public String sbm;
 
-    private BigDecimal upJj;
+    public BigDecimal upJj;
 
-    private BigDecimal zxQty;
+    public BigDecimal zxQty;
 
-    private BigDecimal minWg;
+    public BigDecimal minWg;
 
-    private BigDecimal maxWg;
+    public BigDecimal maxWg;
 
 }

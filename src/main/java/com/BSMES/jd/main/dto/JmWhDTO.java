@@ -18,26 +18,26 @@ public class JmWhDTO extends BaseDTO implements Serializable {
      * 仓库代号
      */
     @TableId
-    private String wh;
+    public String wh;
 
     /**
      * 名称
      */
-    private String name;
+    public String name;
 
     /**
      * 属性
      */
-    private String attrib;
+    public String attrib;
 
     /**
      * 保管员
      */
-    private String wkNo;
+    public String wkNo;
 
     /**
      * ERP仓库代号
      */
-    private Integer whid;
+    public Integer whid;
 
 }

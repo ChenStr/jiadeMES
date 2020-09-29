@@ -27,12 +27,12 @@ public class BaseDTO implements Serializable {
     /**
      * 排序字段
      */
-    private Object Ascorder;
+    private Object ascOrder;
 
     /**
      * 排序字段
      */
-    private Object Descorder;
+    private Object descOrder;
 
     /**
      * 总共几页

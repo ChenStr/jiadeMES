@@ -4,3 +4,7 @@ spring:
     url: jdbc:sqlserver://localhost:1433;DatabaseName=Y8_MES15
     username: sa
     password: root
+
+
+mybatis-plus:
+  mapper-locations: mapper/*Mapper.xml

@@ -19,67 +19,67 @@ public class JmMouldDTO extends BaseDTO implements Serializable {
      * 模具代号
      */
     @TableId
-    private String mdNo;
+    public String mdNo;
 
     /**
      * 工装类型
      */
     @TableId
-    private Integer typeid;
+    public Integer typeid;
 
     /**
      * 名称
      */
-    private String name;
+    public String name;
 
     /**
      * 数量
      */
-    private BigDecimal mdQty;
+    public BigDecimal mdQty;
 
     /**
      * 模具分类
      */
-    private String mdGrp;
+    public String mdGrp;
 
     /**
      * 状态
      */
-    private String state;
+    public String state;
 
     /**
      * 仓库
      */
-    private String wh;
+    public String wh;
 
     /**
      * 储位
      */
-    private String whLoc;
+    public String whLoc;
 
     /**
      * 寿命次数
      */
-    private BigDecimal qtyMax;
+    public BigDecimal qtyMax;
 
     /**
      * 累计使用次数
      */
-    private BigDecimal qtyMk;
+    public BigDecimal qtyMk;
 
     /**
      * 寿命时间
      */
-    private BigDecimal timeMax;
+    public BigDecimal timeMax;
 
     /**
      * 累计加工时间
      */
-    private BigDecimal timeMk;
+    public BigDecimal timeMk;
 
     /**
      * 领用部门
      */
-    private String dep;
+    public String dep;
 
 }

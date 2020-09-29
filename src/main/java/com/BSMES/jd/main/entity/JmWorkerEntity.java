@@ -18,88 +18,88 @@ public class JmWorkerEntity {
     /**
      * 反序列化规则
      */
-//    private static final long serialVersionUID = 1L;
+//    public static final long serialVersionUID = 1L;
 
     /**
      * 人员代号
      */
     @TableId
-    private String wkNo;
+    public String wkNo;
 
     /**
      * 名称
      */
-    private String name;
+    public String name;
 
     /**
      * 数量
      */
-    private BigDecimal wkQty;
+    public BigDecimal wkQty;
 
     /**
      * 技能等级
      */
-    private String wkGrp;
+    public String wkGrp;
 
     /**
      * 状态
      */
-    private String state;
+    public String state;
 
     /**
      * 部门
      */
-    private String dep;
+    public String dep;
 
     /**
      * 操作员(与Insuser相关联，多个的话使用 ; 分开)
      */
-    private String usrRs;
+    public String usrRs;
 
     /**
      * 部门
      */
-    private String sorg;
+    public String sorg;
 
-    private String wsNo;
+    public String wsNo;
 
     /**
      * Linker用户号
      */
-    private String lnkusr;
+    public String lnkusr;
 
     /**
      * Linker用户名
      */
-    private String lnkname;
+    public String lnkname;
 
     /**
      * Linker公司号
      */
-    private String lnkcompid;
+    public String lnkcompid;
 
     /**
      * Linker公司电话
      */
-    private String lnktel;
+    public String lnktel;
 
     /**
      * Linker令牌
      */
-    private String lnktoken;
+    public String lnktoken;
 
     /**
      * 图片
      */
-    private String picture;
+    public String picture;
 
     /**
      * 加工中心
      */
-    private String rsGrp;
+    public String rsGrp;
 
     /**
      * 加工资源
      */
-    private String rsNo;
+    public String rsNo;
 }

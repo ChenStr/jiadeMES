@@ -14,50 +14,50 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InsorgDTO extends BaseDTO implements Serializable {
 
-    private Integer cCorp;
+    public Integer cCorp;
 
     /**
      * 编码
      */
-    private String orgcode;
+    public String orgcode;
 
     /**
      * 名称
      */
-    private String orgname;
+    public String orgname;
 
-    private String orgnamexa;
+    public String orgnamexa;
 
-    private String orgnamexb;
+    public String orgnamexb;
 
     /**
      * 级次
      */
-    private Integer ilevl;
+    public Integer ilevl;
 
     /**
      * 末级
      */
-    private String blast;
+    public String blast;
 
     /**
      * 公司
      */
-    private String corg;
+    public String corg;
 
     /**
      * 终止日期
      */
-    private Date eymd;
+    public Date eymd;
 
     /**
      * 属性
      */
-    private Integer cattr;
+    public Integer cattr;
 
     /**
      * 本位币
      */
-    private String rmb;
+    public String rmb;
 
 }
