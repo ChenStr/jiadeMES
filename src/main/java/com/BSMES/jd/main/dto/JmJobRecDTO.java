@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public String opsid;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date opDd;
 
     public String usr;
@@ -40,6 +42,7 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyCur;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date opTime;
 
     public String rsNo;

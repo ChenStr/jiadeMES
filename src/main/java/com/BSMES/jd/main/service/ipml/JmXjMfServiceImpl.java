@@ -5,6 +5,8 @@ import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmXjMfDao;
 import com.BSMES.jd.main.dto.JmWorkerDTO;
 import com.BSMES.jd.main.dto.JmXjMfDTO;
+import com.BSMES.jd.main.dto.JmXjTfDTO;
+import com.BSMES.jd.main.dto.XjMtf;
 import com.BSMES.jd.main.entity.JmWorkerEntity;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
@@ -13,6 +15,7 @@ import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -66,6 +69,14 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             result.setAll(10001,null,"参数错误");
         }
         return result;
+    }
+
+    @Transactional
+    @Override
+    public CommonReturn saveXjMtf(XjMtf dto) {
+        JmXjMfDTO xjMf = dto.getXjMf();
+        List<JmXjTfDTO> xjtf = dto.getXjTf();
+        return null;
     }
 
     @Override

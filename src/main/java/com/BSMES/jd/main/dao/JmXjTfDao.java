@@ -12,4 +12,6 @@ public interface JmXjTfDao extends BaseDao<JmXjTfEntity> {
 
     void insertJmXjTf(List<JmXjTfDTO> jmXjTfs);
 
+    void updateJmXjTf(JmXjTfDTO jmXjTf);
+
 }

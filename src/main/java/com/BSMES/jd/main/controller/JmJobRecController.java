@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.JmJobDTO;
 import com.BSMES.jd.main.dto.JmJobRecDTO;
+import com.BSMES.jd.main.dto.JobRec;
 import com.BSMES.jd.main.service.JmJobRecService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,22 @@ public class JmJobRecController {
         return result;
     }
 
+    @GetMapping("/plus")
+    public CommonReturn getRecs(JobRec dto, Boolean isPage){
+        CommonReturn result = new CommonReturn();
+        if (isPage==null || isPage==false){
+            result = jmJobRecService.getJobRecs(dto);
+        }
+        else{
+            result = jmJobRecService.getJobRecsPage(dto);
+        }
+        return result;
+    }
+
     @PostMapping()
     public CommonReturn saveJobRec(@RequestBody JmJobRecDTO dto){
         CommonReturn result = new CommonReturn();
-        result = jmJobRecService.saveJobRec(dto);
+//        result = jmJobRecService.saveJobRec(dto);
         return result;
     }
 

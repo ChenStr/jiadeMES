@@ -5,14 +5,33 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmXjTfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <insert id="insertJmXjTf" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
-        insert into jm_xj_tf (sid, cid, chk_no,chk_para , dervi_id , chk_id, derviation, chk_rem, cur_para1, cur_para2, cur_para3,
-        cur_para4 , cur_para5 , cur_para6 , rt_xj , para_min , para_max , rem) values
-        <foreach collection="list" item="dto" index="index" separator=",">
-            (#{dto.sid}, #{dto.cid}, #{dto.chkNo}, #{dto.chkPara},#{dto.derviId},#{dto.chkId},#{dto.derviation},#{dto.chkRem},
-            #{dto.curPara1},#{dto.curPara2},#{dto.curPara3},#{dto.curPara4},#{dto.curPara5},#{dto.curPara6},#{dto.rtXj},
-            #{dto.paraMin},#{dto.paraMax},#{dto.rem})
+    <insert id="insertJmJobs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
+        insert into jm_xj_tf (sid, cid, chk_no,chk_para, chk_rem , rt_xj, rem, chk_id, cur_para1, cur_para2, cur_para3 , cur_para4 , cur_para5,
+        cur_para6,dervi_id) values
+        <foreach collection="list" item="jmJob" index="index" separator=",">
+            (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
+            #{jmJob.prdNo},#{jmJob.sDd},#{jmJob.eDd},#{jmJob.qtyShip})
         </foreach>
     </insert>
+
+    <update id="updateJmXjTf" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
+        UPDATE jm_xj_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="chkNo!=null">chk_no=#{chkNo},</if>
+            <if test="chkPara!=null">chk_para=#{chkPara},</if>
+            <if test="chkRem!=null">chk_rem=#{chkRem},</if>
+            <if test="rtXj!=null">rt_xj=#{rtXj},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="chkId!=null">chk_id=#{chkId},</if>
+            <if test="curPara1!=null">cur_para1=#{curPara1},</if>
+            <if test="curPara2!=null">cur_para2=#{curPara2},</if>
+            <if test="curPara3!=null">cur_para3=#{curPara3},</if>
+            <if test="curPara4!=null">cur_para4=#{curPara4},</if>
+            <if test="curPara5!=null">cur_para5=#{curPara5},</if>
+            <if test="curPara6!=null">cur_para6=#{curPara6},</if>
+            <if test="derviId!=null">dervi_id=#{derviId},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
 
 </mapper>

@@ -3,6 +3,8 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmJobRecDTO;
+import com.BSMES.jd.main.dto.JobRec;
+import com.BSMES.jd.main.dto.JobRecSave;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -12,7 +14,11 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
 
     public CommonReturn getJobRec(JmJobRecDTO dto);
 
-    public CommonReturn saveJobRec(JmJobRecDTO dto);
+    public CommonReturn getJobRecs(JobRec jobRec);
+
+//    public CommonReturn saveJobRec(JmJobRecDTO dto);
+
+    public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave);
 
     public CommonReturn editJobRec(JmJobRecDTO dto);
 
@@ -25,4 +31,6 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
      */
     public CommonReturn getJobRecPage(JmJobRecDTO dto, QueryWrapper queryWrapper);
 
+
+    public CommonReturn getJobRecsPage(JobRec jobRec);
 }

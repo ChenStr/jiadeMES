@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class JmJobRecEntity {
     @TableId
     public String opsid;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date opDd;
 
     public String usr;
@@ -40,6 +42,7 @@ public class JmJobRecEntity {
      */
     public BigDecimal qtyCur;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date opTime;
 
     public String rsNo;

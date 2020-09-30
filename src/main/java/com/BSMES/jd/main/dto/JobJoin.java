@@ -95,4 +95,20 @@ public class JobJoin extends BaseDTO implements Serializable {
      */
     public Date createDate;
 
+    /**
+     * 模具编号
+     */
+    public String mdNo;
+
+    /**
+     * 产品规格
+     */
+    public String spc;
+
+    /**
+     * 产品代号
+     */
+    public String prdNo;
+
+
 }

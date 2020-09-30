@@ -17,13 +17,11 @@ public class JmXjTfDTO extends BaseDTO implements Serializable {
     /**
      * 单据代号
      */
-    @TableId
     public String sid;
 
     /**
      * 项次
      */
-    @TableId
     public Integer cid;
 
     /**

@@ -16,7 +16,7 @@
     <select id="joinFindJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
         SELECT job.jb_no as jb_no,job.dep,job.dev_name as dev_name,job.md_name as mould_name,job.prd_name as prd_name,prdtut.umc,momf.qty as qty_ast,job.qty as qty_plan,
         SUM(jobRec.qty_cur) as qty_already,job.qty_ship as qty_ship,job.beg_dd as beg_dd,job.end_dd as end_dd,prdt1.name as raw_name,prdt1.spc as raw_spc,
-        job.state as state,job.create_date as create_date FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm
+        job.state as state,job.create_date as create_date,job.md_no,job.prd_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm
         JOIN jm_mo_mf as momf on job.sid = momf.sid JOIN jm_bom_mf as bomMf on job.prd_no = bomMf.prd_no JOIN jm_bom_tf as bomTf on bomMf.bom_no = bomTf.bom_no
         JOIN jm_prdt as prdt1 on bomTf.prd_no = prdt1.prd_no JOIN jm_job_rec as jobRec on job.jb_no = jobRec.jb_no
         <where>
@@ -43,7 +43,7 @@
             </if>
         </where>
         GROUP BY job.jb_no,job.dep,job.dev_name,job.md_name,job.prd_name,prdtut.umc,momf.qty,job.qty,job.beg_dd,
-        job.end_dd,prdt1.name,prdt1.spc,job.state,job.create_date,job.qty_ship
+        job.end_dd,prdt1.name,prdt1.spc,job.state,job.create_date,job.qty_ship,job.md_no,job.prd_no
 	</select>
 
     <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmJobDTO">

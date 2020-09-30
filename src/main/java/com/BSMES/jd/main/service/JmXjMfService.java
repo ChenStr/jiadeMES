@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmWorkerDTO;
 import com.BSMES.jd.main.dto.JmXjMfDTO;
+import com.BSMES.jd.main.dto.XjMtf;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -14,6 +15,8 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
     public CommonReturn getXjMf(JmXjMfDTO dto);
 
     public CommonReturn saveXjMf(JmXjMfDTO dto);
+
+    public CommonReturn saveXjMtf(XjMtf dto);
 
     public CommonReturn editXjMf(JmXjMfDTO dto);
 

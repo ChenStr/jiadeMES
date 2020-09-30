@@ -44,6 +44,9 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Autowired
     JmJobRecService jmJobRecService;
 
+    @Autowired
+    JmPrdtService jmPrdtService;
+
     @Override
     public void beforeInsert(JmJobDTO dto) {
 
@@ -71,6 +74,15 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     public CommonReturn joinFindJobs(JobJoin jobJoin) {
         CommonReturn result = new CommonReturn();
         List<JobJoin> jobJoins = jmJobDao.joinFindJob(jobJoin);
+        for (JobJoin jobJoin1 : jobJoins){
+            //查询产品规格
+            QueryWrapper<JmPrdtEntity> jmPrdtQueryWrapper = new QueryWrapper<>();
+            jmPrdtQueryWrapper.eq("prd_no",jobJoin1.getPrdNo());
+            JmPrdtDTO prdtDTO = jmPrdtService.selectOne(jmPrdtQueryWrapper);
+            if (prdtDTO!=null && prdtDTO.getPrdNo()!=null){
+                jobJoin1.setSpc(prdtDTO.getSpc());
+            }
+        }
         result.setAll(20000,jobJoins,"操作成功");
         return result;
     }
@@ -233,6 +245,15 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }
         PageHelper.startPage(jobJoin.getPage(), jobJoin.getPageSize());
         List<JobJoin> jobJoins = (List<JobJoin>) this.joinFindJobs(jobJoin).getData();
+        for (JobJoin jobJoin1 : jobJoins){
+            //查询产品规格
+            QueryWrapper<JmPrdtEntity> jmPrdtQueryWrapper = new QueryWrapper<>();
+            jmPrdtQueryWrapper.eq("prd_no",jobJoin1.getPrdNo());
+            JmPrdtDTO prdtDTO = jmPrdtService.selectOne(jmPrdtQueryWrapper);
+            if (prdtDTO!=null && prdtDTO.getPrdNo()!=null){
+                jobJoin1.setSpc(prdtDTO.getSpc());
+            }
+        }
         PageInfo jobPages = new PageInfo<JobJoin>(jobJoins);
         result.setAll(20000,jobPages,"操作成功");
         return result;
