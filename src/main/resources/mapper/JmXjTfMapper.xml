@@ -5,12 +5,13 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmXjTfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <insert id="insertJmJobs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
+    <insert id="insertJmXjTf" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXjTfDTO">
         insert into jm_xj_tf (sid, cid, chk_no,chk_para, chk_rem , rt_xj, rem, chk_id, cur_para1, cur_para2, cur_para3 , cur_para4 , cur_para5,
         cur_para6,dervi_id) values
-        <foreach collection="list" item="jmJob" index="index" separator=",">
-            (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
-            #{jmJob.prdNo},#{jmJob.sDd},#{jmJob.eDd},#{jmJob.qtyShip})
+        <foreach collection="list" item="jmXjTf" index="index" separator=",">
+            (#{jmXjTf.sid}, #{jmXjTf.cid}, #{jmXjTf.chkNo}, #{jmXjTf.chkPara},#{jmXjTf.chkRem},#{jmXjTf.rtXj},#{jmXjTf.rem},
+            #{jmXjTf.chkId},#{jmXjTf.curPara1},#{jmXjTf.curPara2},#{jmXjTf.curPara3},#{jmXjTf.curPara4},#{jmXjTf.curPara5},
+            #{jmXjTf.curPara6},#{jmXjTf.derviId})
         </foreach>
     </insert>
 

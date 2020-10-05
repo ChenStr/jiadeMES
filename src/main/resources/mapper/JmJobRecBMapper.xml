@@ -4,6 +4,16 @@
 <!-- JmJob表的真身 -->
 <mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
 
+    <insert id="insertJobRecBs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        insert into jm_xj_tf (opsid, cid, op_dd,sn, dmdel , wk_no, qty, qty_ok, qty_lost, chk_rm_bn, chk_no , process , spc_no
+        ) values
+        <foreach collection="list" item="jmJobRecB" index="index" separator=",">
+            (#{jmJobRecB.opsid}, #{jmJobRecB.cid}, #{jmJobRecB.opDd}, #{jmJobRecB.sn},#{jmJobRecB.dmdel},#{jmJobRecB.wkNo},#{jmJobRecB.qty},
+            #{jmJobRecB.qtyOk}, #{jmJobRecB.qtyLost},#{jmJobRecB.chkRmBn},#{jmJobRecB.chkNo},#{jmJobRecB.process},#{jmJobRecB.spcNo})
+        </foreach>
+    </insert>
+
+
     <update id="updateJobRecB" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
         UPDATE jm_job_rec_b
         <trim prefix="set" suffixOverrides=",">
