@@ -11,7 +11,6 @@ import java.io.Serializable;
  * 仓库表映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmWhDTO extends BaseDTO implements Serializable {
 
     /**

@@ -102,4 +102,9 @@ public class JmPrdtEntity {
     public BigDecimal minWg;
 
     public BigDecimal maxWg;
+
+    /**
+     * 部门车间
+     */
+    public String sorg;
 }

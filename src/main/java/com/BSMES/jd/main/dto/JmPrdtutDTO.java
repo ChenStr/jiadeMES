@@ -10,7 +10,6 @@ import java.io.Serializable;
  * 单位映射表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmPrdtutDTO extends BaseDTO implements Serializable {
 
     /**

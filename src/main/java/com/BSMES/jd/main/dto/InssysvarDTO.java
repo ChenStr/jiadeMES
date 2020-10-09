@@ -9,7 +9,6 @@ import java.io.Serializable;
  * 编码表映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InssysvarDTO extends BaseDTO implements Serializable {
 
     public Integer cCorp;

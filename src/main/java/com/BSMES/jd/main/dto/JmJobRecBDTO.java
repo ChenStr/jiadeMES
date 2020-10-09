@@ -12,7 +12,6 @@ import java.util.Date;
  * 随工单明细
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmJobRecBDTO extends BaseDTO implements Serializable {
 
     public String opsid;

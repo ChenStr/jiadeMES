@@ -16,7 +16,7 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
 
     public CommonReturn getJobRecs(JobRec jobRec);
 
-//    public CommonReturn saveJobRec(JmJobRecDTO dto);
+    public CommonReturn saveJobRec(JmJobRecDTO dto);
 
     public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave);
 

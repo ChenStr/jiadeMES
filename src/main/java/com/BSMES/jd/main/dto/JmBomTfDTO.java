@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * bom表表身映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmBomTfDTO extends BaseDTO implements Serializable {
 
     /**

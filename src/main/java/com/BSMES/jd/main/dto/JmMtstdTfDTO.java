@@ -14,7 +14,6 @@ import java.util.Date;
  * 设备保养检点表身(维修保养项目)
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMtstdTfDTO extends BaseDTO implements Serializable {
 
     /**

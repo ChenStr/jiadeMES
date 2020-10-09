@@ -37,9 +37,10 @@ public class JmJobRecBController {
     }
 
     @PutMapping()
-    public CommonReturn editJobRecB(@RequestBody JmJobRecBDTO dto){
+    public CommonReturn editJobRecB(@RequestBody List<JmJobRecBDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmJobRecBService.editJobRecB(dto);
+//        result = jmJobRecBService.editJobRecB(dto);
+        result = jmJobRecBService.editJobRecBs(dtos);
         return result;
     }
 

@@ -152,7 +152,16 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
             }else{
                 //强制终止调度单
                 moMf.setState(12);
+                //将其生产计划单的状态也改为12
+                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+                jmJobEntityQueryWrapper.eq("sid",dto.getSid());
+                List<JmJobDTO> jmJobDTOS = jmJobService.select(jmJobEntityQueryWrapper);
+                for (JmJobDTO jmJobDTO : jmJobDTOS){
+                    jmJobDTO.setState("12");
+                    jmJobService.editJob(jmJobDTO);
+                }
                 this.edit(moMf);
+                result.setAll(20000,null,"终止生产成功");
             }
 
         }else{
@@ -187,6 +196,10 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Override
     public CommonReturn getMoMfPage(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
+        //添加默认排序
+        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
+            dto.setDescOrder("hpdate");
+        }
         QueryWrapper queryWrapper = getQueryWrapper(dto);
         List<JmMoMfDTO> jmMoMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         List<JmMoMfMore> mores = new ArrayList<>();

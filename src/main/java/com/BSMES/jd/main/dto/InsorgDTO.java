@@ -11,7 +11,6 @@ import java.util.Date;
  * 部门映射表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InsorgDTO extends BaseDTO implements Serializable {
 
     public Integer cCorp;

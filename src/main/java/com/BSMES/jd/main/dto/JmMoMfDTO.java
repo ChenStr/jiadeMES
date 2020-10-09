@@ -15,7 +15,6 @@ import java.util.Date;
  * 调度单(制令单)映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMoMfDTO extends BaseDTO implements Serializable {
 
     /**

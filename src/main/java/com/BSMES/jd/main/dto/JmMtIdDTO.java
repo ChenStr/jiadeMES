@@ -9,7 +9,6 @@ import java.io.Serializable;
  * 检点项目(维修保养项目)
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMtIdDTO extends BaseDTO implements Serializable {
 
     /**

@@ -13,6 +13,6 @@ import java.util.List;
 @Mapper
 public interface JmMoMfDao extends BaseDao<JmMoMfEntity> {
 
-    List<JmMoMfMore> joinTest(JmMoMfMore jmMoMfMore);
+//    List<JmMoMfMore> joinTest(JmMoMfMore jmMoMfMore);
 
 }

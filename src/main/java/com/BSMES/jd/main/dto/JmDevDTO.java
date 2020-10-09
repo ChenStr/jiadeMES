@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * 设备(加工资源)
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmDevDTO extends BaseDTO implements Serializable {
 
     /**

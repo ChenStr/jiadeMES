@@ -6,44 +6,60 @@
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <insert id="insertJmJobs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
-        insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, s_dd, e_dd, qty_ship) values
+        insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, beg_dd, end_dd, qty_ship,unit,dev_name,md_name,prd_name,dep,create_date) values
         <foreach collection="list" item="jmJob" index="index" separator=",">
             (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
-            #{jmJob.prdNo},#{jmJob.sDd},#{jmJob.eDd},#{jmJob.qtyShip})
+            #{jmJob.prdNo},#{jmJob.begDd},#{jmJob.endDd},#{jmJob.qtyShip},#{jmJob.unit},#{jmJob.devName},#{jmJob.mdName},#{jmJob.prdName},
+            #{jmJob.dep},#{jmJob.createDate})
         </foreach>
     </insert>
 
     <select id="joinFindJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
-        SELECT job.jb_no as jb_no,job.dep,job.dev_name as dev_name,job.md_name as mould_name,job.prd_name as prd_name,prdtut.umc,momf.qty as qty_ast,job.qty as qty_plan,
-        SUM(jobRec.qty_cur) as qty_already,job.qty_ship as qty_ship,job.beg_dd as beg_dd,job.end_dd as end_dd,prdt1.name as raw_name,prdt1.spc as raw_spc,
-        job.state as state,job.create_date as create_date,job.md_no,job.prd_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm
-        JOIN jm_mo_mf as momf on job.sid = momf.sid JOIN jm_bom_mf as bomMf on job.prd_no = bomMf.prd_no JOIN jm_bom_tf as bomTf on bomMf.bom_no = bomTf.bom_no
-        JOIN jm_prdt as prdt1 on bomTf.prd_no = prdt1.prd_no JOIN jm_job_rec as jobRec on job.jb_no = jobRec.jb_no
+        SELECT job.sid as sid,job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
+        job.prd_name as prd_name,prdtut.umc as umc,momf.qty_ast as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
+        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,
+        job.rs_no as rs_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm JOIN jm_mo_mf as momf on momf.sid = job.sid
         <where>
-            <if test="dep != null">
-                and sorg.orgname = #{orgname}
+            <if test="prdNo != null and prdNo.length()>0">
+                and job.prd_no like #{prdNo}
             </if>
-            <if test="prdName != null">
-                and prdt.name = #{prdtName}
+            <if test="sid != null and sid.length()>0">
+                and job.sid like #{sid}
             </if>
-            <if test="devName != null">
-                and dev.name = #{devName}
+            <if test="createDate != null and createDate.toString().length()>0">
+                and job.create_date between #{createDate} and #{createDate}+1
             </if>
-            <if test="mouldName != null">
-                and mould.name = #{mouldName}
+            <if test="dep != null and dep.length()>0">
+                and job.dep = #{dep}
             </if>
-            <if test="begDd != null">
+            <if test="prdName != null and prdName.length()>0">
+                and job.prd_name like #{prdName}
+            </if>
+            <if test="devName != null and devName.length()>0" >
+                and job.dev_name like #{devName}
+            </if>
+            <if test="mouldName != null and mouldName.length()>0" >
+                and job.md_name like #{mouldName}
+            </if>
+            <if test="begDd != null and begDd.length()>0" >
                 and job.beg_dd &gt;= #{begDd}
             </if>
-            <if test="endDd != null">
+            <if test="endDd != null and endDd.length()>0" >
                 and job.end_dd &lt;= #{endDd}
             </if>
-            <if test="state!=null">
+            <if test="state!=null and state.length()>0" >
                 and job.state = #{state}
             </if>
+            <if test="rsNo!=null and rsNo.length()>0" >
+                and job.rs_no = #{rsNo}
+            </if>
         </where>
-        GROUP BY job.jb_no,job.dep,job.dev_name,job.md_name,job.prd_name,prdtut.umc,momf.qty,job.qty,job.beg_dd,
-        job.end_dd,prdt1.name,prdt1.spc,job.state,job.create_date,job.qty_ship,job.md_no,job.prd_no
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
 	</select>
 
     <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
@@ -59,6 +75,8 @@
             <if test="qtyShip!=null">qty_ship=#{qtyShip},</if>
             <if test="devName!=null">dev_name=#{devName},</if>
             <if test="mdName!=null">md_name=#{mdName},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="qtyOk!=null">qty_ok=#{qtyOk},</if>
         </trim>
         WHERE sid=#{sid} and cid=#{cid}
     </update>

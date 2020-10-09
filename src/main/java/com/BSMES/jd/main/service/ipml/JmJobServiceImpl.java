@@ -12,7 +12,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +49,13 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Autowired
     JmPrdtService jmPrdtService;
 
+    @Autowired
+    JmBomMfService jmBomMfService;
+
+    @Autowired
+    JmBomTfService jmBomTfService;
+
+
     @Override
     public void beforeInsert(JmJobDTO dto) {
 
@@ -73,6 +82,12 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Override
     public CommonReturn joinFindJobs(JobJoin jobJoin) {
         CommonReturn result = new CommonReturn();
+        //驼峰转换
+        if (jobJoin.getAscOrder()!=null){
+            jobJoin.setAscOrder(MyUtils.humpToLine((String) jobJoin.getAscOrder()));
+        }else if(jobJoin.getDescOrder()!=null){
+            jobJoin.setDescOrder(MyUtils.humpToLine((String) jobJoin.getDescOrder()));
+        }
         List<JobJoin> jobJoins = jmJobDao.joinFindJob(jobJoin);
         for (JobJoin jobJoin1 : jobJoins){
             //查询产品规格
@@ -82,6 +97,30 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             if (prdtDTO!=null && prdtDTO.getPrdNo()!=null){
                 jobJoin1.setSpc(prdtDTO.getSpc());
             }
+            //原料信息
+            QueryWrapper<JmBomMfEntity> jmBomMfEntityQueryWrapper = new QueryWrapper<>();
+            jmBomMfEntityQueryWrapper.eq("prd_no",jobJoin1.getPrdNo());
+            JmBomMfDTO jmBomMfDTO = jmBomMfService.selectOne(jmBomMfEntityQueryWrapper);
+            QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
+            jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
+            List<JmBomTfDTO> jmBomTfDTO = jmBomTfService.select(jmBomTfEntityQueryWrapper);
+            List<String> prdNos = new ArrayList<>();
+            jmBomTfDTO.stream().forEach(T->prdNos.add(T.getPrdNo()));
+            QueryWrapper<JmPrdtEntity> jmPrdtEntityQueryWrapper = new QueryWrapper<>();
+            jmPrdtEntityQueryWrapper.in("prd_no",prdNos);
+            List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(jmPrdtEntityQueryWrapper);
+            jobJoin1.setPrdts(prdtDTOS);
+            //已生产数量给算出来
+            BigDecimal sum = new BigDecimal("0");
+            QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
+            jmJobRecEntityQueryWrapper.eq("jb_no",jobJoin1.getJbNo());
+            List<JmJobRecDTO> jmJobRecDTOS = jmJobRecService.select(jmJobRecEntityQueryWrapper);
+            if (jmJobRecDTOS!=null && jmJobRecDTOS.size()>0){
+                for (JmJobRecDTO jmJobRecDTO : jmJobRecDTOS){
+                    sum = sum.add(jmJobRecDTO.getQtyCur());
+                }
+            }
+            jobJoin1.setQtyAlready(sum);
         }
         result.setAll(20000,jobJoins,"操作成功");
         return result;
@@ -116,9 +155,14 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @Transactional
     @Override
-    public CommonReturn saveJobs(List<JmJobDTO> dtos) {
+    public CommonReturn saveJobs(JobSave jobSave) {
         CommonReturn result = new CommonReturn();
+
+        List<JmJobDTO> dtos = jobSave.getJmJobDTOS();
+        BigDecimal sum = new BigDecimal("0");
+        //将数据格式补充完毕
         if (dtos!=null && dtos.size()>0){
             for (int i=0 ; i < dtos.size() ; i++){
                 //判定调度单号(制令单)是否存在 sid
@@ -149,9 +193,29 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                 insorgEntityQueryWrapper.eq("orgcode",dtos.get(i).getSorg());
                 InsorgDTO sorg = insorgService.selectOne(insorgEntityQueryWrapper);
                 dtos.get(i).setDep(sorg.getOrgname());
+                //查出产品信息
+                QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
+                prdtEntityQueryWrapper.eq("prd_no",dtos.get(i).getPrdNo());
+                JmPrdtDTO jmPrdtDTO = jmPrdtService.selectOne(prdtEntityQueryWrapper);
+                dtos.get(i).setPrdName(jmPrdtDTO.getName());
+                sum = sum.add(dtos.get(i).getQty());
+                //将时间放入
+                dtos.get(i).setCreateDate(new Date());
             }
         }
         try{
+            //先进行删除后进行添加
+            QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+            jmJobEntityQueryWrapper.eq("sid",jobSave.getJmMoMfDTO().getSid());
+            this.remove(jmJobEntityQueryWrapper);
+            //相加
+            QueryWrapper<JmMoMfEntity> jmMoMfEntityQueryWrapper = new QueryWrapper<>();
+            jmMoMfEntityQueryWrapper.eq("sid",jobSave.getJmMoMfDTO().getSid());
+            JmMoMfDTO jmMoMfDTO = jmMoMfService.selectOne(jmMoMfEntityQueryWrapper);
+            if (jmMoMfDTO!=null && jmMoMfDTO.getSid()!=null){
+                jmMoMfDTO.setQtyAlled(sum);
+                jmMoMfService.editMoMf(jmMoMfDTO);
+            }
             jmJobDao.insertJmJobs(dtos);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
@@ -172,10 +236,8 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             jobQueryWrapper.eq("cid",dto.getCid());
             JmJobDTO job = this.selectOne(jobQueryWrapper);
             //设置用户不能操作的属性
-            dto.setJbNo(job.getJbNo());
             try{
                 jmJobDao.updateJob(dto);
-//                this.edit(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
@@ -237,6 +299,9 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Override
     public CommonReturn getJobJoinPage(JobJoin jobJoin) {
         CommonReturn result = new CommonReturn();
+        if (jobJoin.getDescOrder()==null && jobJoin.getAscOrder()==null){
+            jobJoin.setDescOrder("create_date");
+        }
         if (jobJoin.getPage()==null){
             jobJoin.setPage(1);
         }

@@ -17,6 +17,18 @@ public class JmXjMfController {
     @Autowired
     JmXjMfService jmXjMfService;
 
+    @GetMapping("/plus")
+    public CommonReturn getJmXjMfPlus(JmXjMfDTO dto, Boolean isPage){
+        CommonReturn result = new CommonReturn();
+//        if (isPage==null || isPage==false){
+//            result = jmXjMfService.getXjMf(dto);
+//        }else{
+//            QueryWrapper queryWrapper = new QueryWrapper();
+//            result = jmXjMfService.getXjMfPage(dto,queryWrapper);
+//        }
+        return result;
+    }
+
     @GetMapping()
     public CommonReturn getJmXjMf(JmXjMfDTO dto, Boolean isPage){
         CommonReturn result = new CommonReturn();

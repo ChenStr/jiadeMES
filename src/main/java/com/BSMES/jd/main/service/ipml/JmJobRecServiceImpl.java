@@ -66,18 +66,29 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Override
     public CommonReturn getJobRecs(JobRec jobRec) {
         CommonReturn result = new CommonReturn();
+        if (jobRec.getDescOrder()==null && jobRec.getAscOrder()==null){
+            jobRec.setDescOrder("op_dd");
+        }
+        //驼峰转换
+        if (jobRec.getAscOrder()!=null){
+            jobRec.setAscOrder(MyUtils.humpToLine((String) jobRec.getAscOrder()));
+        }else if(jobRec.getDescOrder()!=null){
+            jobRec.setDescOrder(MyUtils.humpToLine((String) jobRec.getDescOrder()));
+        }
         List<JobRec> jobRecs = jmJobRecDao.getJobRec(jobRec);
         for (JobRec job : jobRecs){
             QueryWrapper<JmJobRecBEntity> jmRecBQueryWrapper = new QueryWrapper<>();
-            jmRecBQueryWrapper.eq("opsid",jobRec.getOpsid());
+            jmRecBQueryWrapper.eq("opsid",job.getOpsid());
             List<JmJobRecBDTO> jmJobRecB = jmJobRecBService.select(jmRecBQueryWrapper);
-            BigDecimal sum = new BigDecimal("0");;
+            BigDecimal sum = new BigDecimal("0");
             if (jmJobRecB!=null && jmJobRecB.size()>0){
                 for (JmJobRecBDTO temp : jmJobRecB){
-                    sum.add(temp.getQtyOk());
+                    sum = sum.add(temp.getQtyOk());
+                    BigDecimal i = temp.getQtyOk();
                     //获取检验批号
                     job.setChkRmBn(temp.getChkRmBn());
                 }
+                job.setQtyOk(sum);
             }
             //设置首尾模
             if (job.getStatePre().equals("1")){
@@ -107,14 +118,35 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Transactional
     @Override
     public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave) {
+        CommonReturn result = new CommonReturn();
+        Boolean flag = false;
         JmJobRecDTO jmJobRecDTO = jobRecSave.getJmJobRecDTO();
-        List<JmJobRecBDTO> jmJobRecBDTOS = jobRecSave.getJmJobRecBDTOS();
-        if (jmJobRecDTO.getOpsid()!=null){
-            this.saveJobRec(jmJobRecDTO);
+        if (jobRecSave.getJmJobRecDTO()==null || jobRecSave.getJmJobRecDTO().getOpsid()==null || jobRecSave.getJmJobRecDTO().getOpsid().length()==0){
+            jobRecSave.getJmJobRecDTO().setOpsid(this.getKey("JmJobRec","opsid",inssysvarService,jobRecSave.getJmJobRecDTO()));
+            flag = true;
         }
-
-//        jmJobRecBService.saveJobRecBs()
-        return null;
+        try{
+            //保存随工单主表信息
+            if (flag){
+                this.insert(jobRecSave.getJmJobRecDTO());
+            }else{
+                this.edit(jobRecSave.getJmJobRecDTO());
+            }
+            //删除所有这张随工单的所有随工单明细表
+            QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
+            jmJobRecBEntityQueryWrapper.eq("opsid",jobRecSave.getJmJobRecDTO().getOpsid());
+            jmJobRecBService.remove(jmJobRecBEntityQueryWrapper);
+            //新增数据
+            if (jobRecSave.getJmJobRecBDTOS()!=null && jobRecSave.getJmJobRecBDTOS().size()>0){
+                jobRecSave.getJmJobRecBDTOS().stream().forEach(T->T.setOpsid(jobRecSave.getJmJobRecDTO().getOpsid()));
+                jmJobRecBService.saveJobRecBs(jobRecSave.getJmJobRecBDTOS());
+                result.setAll(20000,null,"操作成功");
+            }
+        }catch (Exception e){
+            result.setAll(10001,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * 产品表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmPrdtDTO extends BaseDTO implements Serializable {
 
     /**
@@ -80,9 +79,9 @@ public class JmPrdtDTO extends BaseDTO implements Serializable {
 
     public BigDecimal pk2Qty;
 
-    public String pk3_ut;
+    public String pk3Ut;
 
-    public String pk3_qty;
+    public String pk3Qty;
 
     public Integer rank;
 
@@ -99,5 +98,10 @@ public class JmPrdtDTO extends BaseDTO implements Serializable {
     public BigDecimal minWg;
 
     public BigDecimal maxWg;
+
+    /**
+     * 部门车间
+     */
+    public String sorg;
 
 }

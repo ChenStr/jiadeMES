@@ -2,6 +2,7 @@ package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +16,6 @@ import java.util.Date;
  * 随工单
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmJobRecDTO extends BaseDTO implements Serializable {
 
     /**
@@ -64,8 +64,10 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyLost;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date endDd;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date staDd;
 
     public String wkNo;

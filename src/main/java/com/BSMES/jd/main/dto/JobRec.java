@@ -9,8 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class JobRec extends BaseDTO {
+
+    public String sid;
+
+    public String cid;
 
     /**
      * 随工单编号
@@ -28,9 +31,19 @@ public class JobRec extends BaseDTO {
     public String devName;
 
     /**
+     * 模具代号
+     */
+    public String mdNo;
+
+    /**
      * 模具名称
      */
     public String mdName;
+
+    /**
+     * 产品代号
+     */
+    public String prdNo;
 
     /**
      * 产品名称
@@ -70,9 +83,59 @@ public class JobRec extends BaseDTO {
     public String rmName1;
 
     /**
+     * 原料名称
+     */
+    public String rmName2;
+
+    /**
+     * 原料名称
+     */
+    public String rmName3;
+
+    /**
+     * 原料名称
+     */
+    public String rmName4;
+
+    /**
      * 投料数
      */
     public BigDecimal qtyRm1;
+
+    /**
+     * 投料数
+     */
+    public BigDecimal qtyRm2;
+
+    /**
+     * 投料数
+     */
+    public BigDecimal qtyRm3;
+
+    /**
+     * 投料数
+     */
+    public BigDecimal qtyRm4;
+
+    /**
+     * 原料批号
+     */
+    public String rmBn1;
+
+    /**
+     * 原料批号
+     */
+    public String rmBn2;
+
+    /**
+     * 原料批号
+     */
+    public String rmBn3;
+
+    /**
+     * 原料批号
+     */
+    public String rmBn4;
 
     /**
      * 生产状态
@@ -128,5 +191,10 @@ public class JobRec extends BaseDTO {
      * 随工单明细表
      */
     public List<JmJobRecBDTO> jobRecB;
+
+    /**
+     * 设备号
+     */
+    public String rsNo;
 
 }

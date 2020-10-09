@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.JmJobDTO;
 import com.BSMES.jd.main.dto.JobJoin;
+import com.BSMES.jd.main.dto.JobSave;
 import com.BSMES.jd.main.service.JmJobService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,10 @@ public class JmJobController {
 
 
     @PostMapping()
-    public CommonReturn saveJmJobs(@RequestBody List<JmJobDTO> dtos){
+    public CommonReturn saveJmJobs(@RequestBody JobSave jobSave){
         CommonReturn result = new CommonReturn();
 //        result = jmJobService.saveJob(dto);
-        result = jmJobService.saveJobs(dtos);
+        result = jmJobService.saveJobs(jobSave);
         return result;
     }
 

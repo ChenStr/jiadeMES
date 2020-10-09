@@ -3,13 +3,13 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmXjMfDao;
-import com.BSMES.jd.main.dto.JmWorkerDTO;
-import com.BSMES.jd.main.dto.JmXjMfDTO;
-import com.BSMES.jd.main.dto.JmXjTfDTO;
-import com.BSMES.jd.main.dto.XjMtf;
-import com.BSMES.jd.main.entity.JmWorkerEntity;
+import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.entity.JmXj2TfEntity;
+import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
+import com.BSMES.jd.main.service.JmXj2TfService;
+import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.main.service.JmXjMfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,15 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     @Autowired
     InssysvarService inssysvarService;
+
+    @Autowired
+    JmXj2TfService jmXj2TfService;
+
+    @Autowired
+    JmXj3TfService jmXj3TfService;
+
+    @Autowired
+    JmXjMfDao jmXjMfDao;
 
     @Override
     public void beforeInsert(JmXjMfDTO dto) {
@@ -46,6 +56,33 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         }else{
             result.setAll(20000,xjMfs,"查找成功");
         }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getXjMfPlus(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);
+        //查询子表与其他信息
+        for (JmXjMf2 jmXjMf2 : jmXjMfDTOS){
+            List<JmXjMf> jmXjMfs = new ArrayList<>();
+            JmXjMf jmXjMf = new JmXjMf();
+            List<JmXj2TfDTO> jmXj2TfDTOs = new ArrayList<>();
+            QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
+            jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
+            jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
+            for (JmXj2TfDTO jmXj2TfDTO : jmXj2TfDTOs){
+                List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
+                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
+                jmXj3TfEntityQueryWrapper.eq("sid",jmXj2TfDTO.getSid()).eq("cid",jmXj2TfDTO.getCid());
+                jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
+                jmXjMf.setJmXj2TfDTO(jmXj2TfDTO);
+                jmXjMf.setJmXj3TfDTOS(jmXj3TfDTOS);
+                jmXjMfs.add(jmXjMf);
+            }
+            jmXjMf2.setJmXjMfs(jmXjMfs);
+        }
+        result.setAll(20000,jmXjMfDTOS,"操作成功");
         return result;
     }
 
@@ -75,7 +112,6 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn saveXjMtf(XjMtf dto) {
         JmXjMfDTO xjMf = dto.getXjMf();
-        List<JmXjTfDTO> xjtf = dto.getXjTf();
         return null;
     }
 

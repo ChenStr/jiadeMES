@@ -12,7 +12,6 @@ import java.math.BigDecimal;
  * 模具表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMouldDTO extends BaseDTO implements Serializable {
 
     /**

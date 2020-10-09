@@ -4,6 +4,8 @@ import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,7 +14,6 @@ import java.util.Date;
  * 巡检单主表映射表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmXjMfDTO extends BaseDTO implements Serializable {
 
     /**
@@ -23,6 +24,7 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
     /**
      * 单据日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**

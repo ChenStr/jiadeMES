@@ -8,10 +8,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JobJoin extends BaseDTO implements Serializable {
+
+    /**
+     * 调度单号
+     */
+    public String sid;
+
+    /**
+     * 项次
+     */
+    public Integer cid;
 
     /**
      * 计划单号
@@ -54,7 +64,7 @@ public class JobJoin extends BaseDTO implements Serializable {
     public BigDecimal qtyPlan;
 
     /**
-     * 已生产数量
+     * 已生产数量(要去jobrec.qty_cur求和求出来)
      */
     public BigDecimal qtyAlready;
 
@@ -78,12 +88,9 @@ public class JobJoin extends BaseDTO implements Serializable {
     /**
      * 原料
      */
-    public String rawName;
+    public List<JmPrdtDTO> prdts;
 
-    /**
-     * 原料规格
-     */
-    public String rawSpc;
+
 
     /**
      * 状态
@@ -93,6 +100,7 @@ public class JobJoin extends BaseDTO implements Serializable {
     /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date createDate;
 
     /**
@@ -109,6 +117,11 @@ public class JobJoin extends BaseDTO implements Serializable {
      * 产品代号
      */
     public String prdNo;
+
+    /**
+     * 设备代号
+     */
+    public String rsNo;
 
 
 }

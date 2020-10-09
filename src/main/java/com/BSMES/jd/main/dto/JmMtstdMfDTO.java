@@ -10,7 +10,6 @@ import java.io.Serializable;
  * 设备保养检点表头(维修保养项目)
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMtstdMfDTO extends BaseDTO implements Serializable {
 
     /**

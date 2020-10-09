@@ -17,7 +17,9 @@ import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -104,6 +106,34 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @Transactional
+    @Override
+    public CommonReturn editJobRecBs(List<JmJobRecBDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        for (JmJobRecBDTO dto : dtos){
+            if (dto!=null && MyUtils.StringIsNull(dto.getOpsid()) && dto.getCid()!=null ){
+                //获取原先的人员属性值
+                QueryWrapper<JmJobRecBEntity> jobRecBQueryWrapper = new QueryWrapper<>();
+                jobRecBQueryWrapper.eq("opsid",dto.getOpsid());
+                jobRecBQueryWrapper.eq("cid",dto.getCid());
+                JmJobRecBDTO jobRecB = this.selectOne(jobRecBQueryWrapper);
+                //设置用户不能操作的属性
+                try{
+//                this.edit(dto);
+                    jmJobRecBDao.updateJobRecB(dto);
+                    result.setAll(20000,null,"操作成功");
+                }catch (Exception e){
+                    result.setAll(10001,null,"操作失败");
+                    e.printStackTrace();
+                    return result;
+                }
+            }else{
+                result.setAll(10001,null,"参数错误");
+            }
+        }
+        return result;
+    }
+
     @Override
     public CommonReturn delJobRecB(List<String> opsids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -125,6 +155,23 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         }else{
             result.setAll(10001,null,"操作失败");
         }
+        return result;
+    }
+
+    @Override
+    public CommonReturn saveJobRecBs(List<JmJobRecBDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        for (JmJobRecBDTO dto : dtos){
+            if (dto!=null && MyUtils.StringIsNull(dto.getOpsid()) && dto.getCid()!=null ) {
+                QueryWrapper<JmJobRecBEntity> jobRecBQueryWrapper = new QueryWrapper<>();
+                jobRecBQueryWrapper.eq("opsid", dto.getOpsid());
+                jobRecBQueryWrapper.eq("cid", dto.getCid());
+                JmJobRecBDTO jobRecB = this.selectOne(jobRecBQueryWrapper);
+                dto.setOpDd(new Date());
+            }
+        }
+        jmJobRecBDao.insertJobRecBs(dtos);
+        result.setAll(20000,null,"操作成功");
         return result;
     }
 

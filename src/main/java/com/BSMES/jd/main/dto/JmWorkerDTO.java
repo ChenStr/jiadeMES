@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * 人员映射表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmWorkerDTO extends BaseDTO implements Serializable {
 
     /**

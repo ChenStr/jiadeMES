@@ -17,7 +17,14 @@ public interface JmJobRecBService extends BaseService<JmJobRecBEntity , JmJobRec
 
     public CommonReturn editJobRecB(JmJobRecBDTO dto);
 
+    public CommonReturn editJobRecBs(List<JmJobRecBDTO> dtos);
+
     public CommonReturn delJobRecB(List<String> opsids,List<Integer> cids);
+
+    /**
+     * 批量插入多条
+     */
+    public CommonReturn saveJobRecBs(List<JmJobRecBDTO> dtos);
 
     /**
      * 获取全部的部门 分页

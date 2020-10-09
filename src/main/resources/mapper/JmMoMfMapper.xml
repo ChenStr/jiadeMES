@@ -5,13 +5,13 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmMoMfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <select id="joinTest" resultType="com.BSMES.jd.main.dao.JmMoMfDao">
-        select * from jm_mo_mf as a join jm_prdt as b on a.prd_no = b.prd_no join insorg as c on a.sorg = c.orgcode
-        <where>
-            <if test="">
+<!--    <select id="joinTest" resultType="com.BSMES.jd.main.dao.JmMoMfDao">-->
+<!--        select * from jm_mo_mf as a join jm_prdt as b on a.prd_no = b.prd_no join insorg as c on a.sorg = c.orgcode-->
+<!--        <where>-->
+<!--            <if test="">-->
 
-            </if>
-        </where>
-    </select>
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
 </mapper>

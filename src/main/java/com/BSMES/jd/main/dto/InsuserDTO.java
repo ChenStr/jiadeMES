@@ -16,7 +16,6 @@ import java.util.Date;
  * 用户映射表
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InsuserDTO extends BaseDTO implements Serializable {
 
     public Integer cCorp;

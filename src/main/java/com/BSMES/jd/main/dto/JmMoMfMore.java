@@ -13,7 +13,6 @@ import java.util.List;
  * 调度单(制令单)更多信息映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmMoMfMore extends BaseDTO implements Serializable {
 
     /**

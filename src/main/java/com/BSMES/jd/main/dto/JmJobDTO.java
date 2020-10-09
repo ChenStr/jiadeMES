@@ -17,7 +17,6 @@ import java.util.Date;
  * 开始结束时间、计划开工完工
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmJobDTO extends BaseDTO implements Serializable {
 
     /**

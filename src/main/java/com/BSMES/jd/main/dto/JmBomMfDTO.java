@@ -13,7 +13,6 @@ import java.util.Date;
  * bom表表头映射
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JmBomMfDTO extends BaseDTO implements Serializable {
 
     /**
