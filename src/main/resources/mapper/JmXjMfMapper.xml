@@ -19,6 +19,9 @@
         JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
 
         <where>
+            <if test="devName!=null and devName.length()>0" >
+                and jm_xj_mf.sid like #{sid}
+            </if>
             <if test="dep != null and dep.length()>0">
                 and sorg.orgname like #{dep}
             </if>

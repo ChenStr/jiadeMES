@@ -59,7 +59,7 @@ public class JmMtstdTfDTO extends BaseDTO implements Serializable {
     /**
      * 检点日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createDate;
 
     /**

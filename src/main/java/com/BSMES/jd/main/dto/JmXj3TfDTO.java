@@ -68,7 +68,7 @@ public class JmXj3TfDTO extends BaseDTO implements Serializable {
     /**
      * 记录日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     /**

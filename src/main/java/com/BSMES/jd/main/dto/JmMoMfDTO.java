@@ -30,6 +30,7 @@ public class JmMoMfDTO extends BaseDTO implements Serializable {
     /**
      * 单据日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
@@ -117,6 +118,7 @@ public class JmMoMfDTO extends BaseDTO implements Serializable {
     /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date moditime;
 
     /**

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmXj3TfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveJmXj3Tfs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXj3TfDTO">
+        insert into jm_xj3_tf (sid, cid, chk_no, para_max, para_min, rlt, spc_type, spc_chk, op_rem, op_dd, dmdel) values
+        <foreach collection="list" item="jmXj3Tf" index="index" separator=",">
+            (#{jmXj3Tf.sid}, #{jmXj3Tf.cid}, #{jmXj3Tf.chkNo}, #{jmXj3Tf.paraMax},#{jmXj3Tf.paraMin},#{jmXj3Tf.rlt},#{jmXj3Tf.spcType},
+            #{jmXj3Tf.spcChk},#{jmXj3Tf.opRem},#{jmXj3Tf.opDd},#{jmXj3Tf.dmdel})
+        </foreach>
+    </insert>
+
+    <update id="editJmXj3Tf" parameterType="com.BSMES.jd.main.dto.JmXj3TfDTO">
+        UPDATE jm_xj3_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="paraMax!=null">para_max=#{paraMax},</if>
+            <if test="paraMin!=null">para_min=#{paraMin},</if>
+            <if test="curPara!=null">cur_para=#{curPara},</if>
+            <if test="rlt!=null">rlt=#{rlt},</if>
+            <if test="spcType!=null">spc_type=#{spcType},</if>
+            <if test="spcChk!=null">spc_chk=#{spcChk},</if>
+            <if test="opRem!=null">op_rem=#{opRem},</if>
+            <if test="opDd!=null">op_dd=#{opDd},</if>
+            <if test="dmdel!=null">dmdel=#{dmdel},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid} and chk_no=#{chkNo}
+    </update>
+
+</mapper>

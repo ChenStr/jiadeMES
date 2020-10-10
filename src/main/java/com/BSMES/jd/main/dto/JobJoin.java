@@ -64,7 +64,7 @@ public class JobJoin extends BaseDTO implements Serializable {
     public BigDecimal qtyPlan;
 
     /**
-     * 已生产数量(要去jobrec.qty_cur求和求出来)
+     * 已生产数量(要去jobrec_b.qty_ok求和求出来)
      */
     public BigDecimal qtyAlready;
 
@@ -76,13 +76,13 @@ public class JobJoin extends BaseDTO implements Serializable {
     /**
      * 开始时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date begDd;
 
     /**
      * 结束时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
     /**
@@ -100,7 +100,7 @@ public class JobJoin extends BaseDTO implements Serializable {
     /**
      * 创建时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createDate;
 
     /**

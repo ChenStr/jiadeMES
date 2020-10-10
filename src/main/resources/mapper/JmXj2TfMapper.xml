@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmXj2TfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveJmXj2Tfs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXj2TfDTO">
+        insert into jm_xj2_tf (sid, cid, jb_no, rlt, spc_type, spc_chk, op_rem, sal_no, op_dd, prd_sn, dmdel, delay_b, over_e) values
+        <foreach collection="list" item="jmXj2Tf" index="index" separator=",">
+            (#{jmXj2Tf.sid}, #{jmXj2Tf.cid}, #{jmXj2Tf.jbNo}, #{jmXj2Tf.rlt},#{jmXj2Tf.spcType},#{jmXj2Tf.spcChk},#{jmXj2Tf.opRem},
+            #{jmXj2Tf.salNo},#{jmXj2Tf.opDd},#{jmXj2Tf.prdSn},#{jmXj2Tf.dmdel},#{jmXj2Tf.delayB},#{jmXj2Tf.overE})
+        </foreach>
+    </insert>
+
+    <update id="editJmXj2Tf" parameterType="com.BSMES.jd.main.dto.JmXj2TfDTO">
+        UPDATE jm_xj2_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="jbNo!=null">jb_no=#{jbNo},</if>
+            <if test="rlt!=null">rlt=#{rlt},</if>
+            <if test="spcType!=null">spc_type=#{spcType},</if>
+            <if test="spcChk!=null">spc_chk=#{spcChk},</if>
+            <if test="opRem!=null">op_rem=#{opRem},</if>
+            <if test="salNo!=null">sal_no=#{salNo},</if>
+            <if test="opDd!=null">op_dd=#{opDd},</if>
+            <if test="prdSn!=null">prd_sn=#{prdSn},</if>
+            <if test="dmdel!=null">dmdel=#{dmdel},</if>
+            <if test="delayB!=null">delay_b=#{delayB},</if>
+            <if test="overE!=null">over_e=#{overE},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
+
+</mapper>

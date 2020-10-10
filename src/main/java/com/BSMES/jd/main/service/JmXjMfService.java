@@ -3,9 +3,9 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmWorkerDTO;
+import com.BSMES.jd.main.dto.JmXjMf2;
 import com.BSMES.jd.main.dto.JmXjMfDTO;
 import com.BSMES.jd.main.dto.ResultType;
-import com.BSMES.jd.main.dto.XjMtf;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -17,9 +17,7 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
     public CommonReturn getXjMfPlus(ResultType dto);
 
-    public CommonReturn saveXjMf(JmXjMfDTO dto);
-
-    public CommonReturn saveXjMtf(XjMtf dto);
+    public CommonReturn saveXjMf(JmXjMf2 dto);
 
     public CommonReturn editXjMf(JmXjMfDTO dto);
 
@@ -31,5 +29,7 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
      * @return
      */
     public CommonReturn getXjMfPage(JmXjMfDTO dto, QueryWrapper queryWrapper);
+
+    public CommonReturn getXjMfPlusPage(ResultType dto);
 
 }

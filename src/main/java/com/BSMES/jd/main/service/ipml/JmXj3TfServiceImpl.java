@@ -2,6 +2,7 @@ package com.BSMES.jd.main.service.ipml;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
+import com.BSMES.jd.main.dao.JmXj2TfDao;
 import com.BSMES.jd.main.dao.JmXj3TfDao;
 import com.BSMES.jd.main.dto.JmXj2TfDTO;
 import com.BSMES.jd.main.dto.JmXj3TfDTO;
@@ -10,6 +11,7 @@ import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,10 @@ import java.util.Map;
 
 @Service
 public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEntity , JmXj3TfDTO> implements JmXj3TfService {
+
+    @Autowired
+    JmXj3TfDao jmXj3TfDao;
+
     @Override
     public void beforeInsert(JmXj3TfDTO dto) {
 
@@ -64,10 +70,23 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
     }
 
     @Override
+    public CommonReturn saveXj3Tfs(List<JmXj3TfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmXj3TfDao.saveJmXj3Tfs(dtos);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(10001, null, "操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn editXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 md_no 是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && dto.getCid()!=null ){
+        if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && dto.getCid()!=null){
             //获取原先的人员属性值
             QueryWrapper<JmXj3TfEntity> jmXj3TfQueryWrapper = new QueryWrapper<>();
             jmXj3TfQueryWrapper.eq("sid",dto.getSid());
@@ -76,7 +95,8 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
             JmXj3TfDTO jmXj3TfDTO = this.selectOne(jmXj3TfQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmXj3TfDao.editJmXj3Tfs(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

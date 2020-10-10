@@ -53,6 +53,11 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     }
 
     @Override
+    public CommonReturn getMtstdMfPlus(JmMtstdMfDTO dto) {
+        return null;
+    }
+
+    @Override
     public CommonReturn saveMtstdMf(JmMtstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
         dto.setMtstdNo(this.getKey("JmMtstdMf" , "mtstd_no" , inssysvarService , dto));

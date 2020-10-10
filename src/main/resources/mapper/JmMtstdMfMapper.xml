@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMtstdMfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <select id="getJmMtstd" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.JmMtstd">
+        SELECT job.sid as sid,job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
+        job.prd_name as prd_name,prdtut.umc as umc,momf.qty as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
+        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,
+        job.rs_no as rs_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm JOIN jm_mo_mf as momf on momf.sid = job.sid
+        <where>
+            <if test="prdNo != null and prdNo.length()>0">
+                and job.prd_no like #{prdNo}
+            </if>
+        </where>
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+	</select>
+
+</mapper>

@@ -2,7 +2,9 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmWorkerDTO;
+import com.BSMES.jd.main.dto.JmXjMf2;
 import com.BSMES.jd.main.dto.JmXjMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmXjMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,14 @@ public class JmXjMfController {
     JmXjMfService jmXjMfService;
 
     @GetMapping("/plus")
-    public CommonReturn getJmXjMfPlus(JmXjMfDTO dto, Boolean isPage){
+    public CommonReturn getJmXjMfPlus(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
-//        if (isPage==null || isPage==false){
-//            result = jmXjMfService.getXjMf(dto);
-//        }else{
-//            QueryWrapper queryWrapper = new QueryWrapper();
-//            result = jmXjMfService.getXjMfPage(dto,queryWrapper);
-//        }
+        if (isPage==null || isPage==false){
+            result = jmXjMfService.getXjMfPlus(dto);
+        }else{
+            QueryWrapper queryWrapper = new QueryWrapper();
+            result = jmXjMfService.getXjMfPlusPage(dto);
+        }
         return result;
     }
 
@@ -42,7 +44,7 @@ public class JmXjMfController {
     }
 
     @PostMapping()
-    public CommonReturn saveJmXjMf(@RequestBody JmXjMfDTO dto){
+    public CommonReturn saveJmXjMf(@RequestBody JmXjMf2 dto){
         CommonReturn result = new CommonReturn();
         result = jmXjMfService.saveXjMf(dto);
         return result;

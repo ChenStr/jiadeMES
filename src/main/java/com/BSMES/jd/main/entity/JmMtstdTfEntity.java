@@ -62,7 +62,7 @@ public class JmMtstdTfEntity {
     /**
      * 检点日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createDate;
 
     /**

@@ -30,9 +30,9 @@ public class JmXj3TfController {
     }
 
     @PostMapping()
-    public CommonReturn saveMould(@RequestBody JmXj3TfDTO dto){
+    public CommonReturn saveMould(@RequestBody List<JmXj3TfDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmXj3TfService.saveXj3Tf(dto);
+        result = jmXj3TfService.saveXj3Tfs(dtos);
         return result;
     }
 

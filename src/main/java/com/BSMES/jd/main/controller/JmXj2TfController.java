@@ -28,9 +28,9 @@ public class JmXj2TfController {
     }
 
     @PostMapping()
-    public CommonReturn saveXj2Tf(@RequestBody JmXj2TfDTO dto){
+    public CommonReturn saveXj2Tf(@RequestBody List<JmXj2TfDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmXj2TfService.saveXj2Tf(dto);
+        result = jmXj2TfService.saveXj2Tfs(dtos);
         return result;
     }
 

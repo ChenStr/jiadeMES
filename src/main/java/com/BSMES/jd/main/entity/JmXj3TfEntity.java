@@ -74,7 +74,7 @@ public class JmXj3TfEntity {
     /**
      * 记录日期
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     /**

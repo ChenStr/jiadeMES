@@ -55,6 +55,9 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Autowired
     JmBomTfService jmBomTfService;
 
+    @Autowired
+    JmJobRecBService jmJobRecBService;
+
 
     @Override
     public void beforeInsert(JmJobDTO dto) {
@@ -115,9 +118,18 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
             jmJobRecEntityQueryWrapper.eq("jb_no",jobJoin1.getJbNo());
             List<JmJobRecDTO> jmJobRecDTOS = jmJobRecService.select(jmJobRecEntityQueryWrapper);
+
             if (jmJobRecDTOS!=null && jmJobRecDTOS.size()>0){
                 for (JmJobRecDTO jmJobRecDTO : jmJobRecDTOS){
-                    sum = sum.add(jmJobRecDTO.getQtyCur());
+//                    sum = sum.add(jmJobRecDTO.getQtyCur());
+                    QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
+                    jmJobRecBEntityQueryWrapper.eq("opsid",jmJobRecDTO.getOpsid());
+                    List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
+                    if (jmJobRecBDTOS!=null && jmJobRecBDTOS.size()>0){
+                        for (JmJobRecBDTO jmJobRecBDTO : jmJobRecBDTOS){
+                            sum = sum.add(jmJobRecBDTO.getQtyOk());
+                        }
+                    }
                 }
             }
             jobJoin1.setQtyAlready(sum);

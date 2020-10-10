@@ -43,6 +43,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public void beforeInsert(JmMoMfDTO dto) {
         dto.setAstRelease(1);
         dto.setHpdate(new Date());
+        dto.setModitime(new Date());
     }
 
     @Override
@@ -109,6 +110,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public CommonReturn saveMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
         dto.setSid(this.getKey("JmMoMf","sid",inssysvarService,dto));
+        dto.setState(6);
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && MyUtils.StringIsNull(dto.getSorg()) && MyUtils.StringIsNull(dto.getPrdNo()) && dto.getQty()!=null && dto.getEndDd()!=null){
             QueryWrapper<JmMoMfEntity> moMfQueryWrapper = new QueryWrapper<>();

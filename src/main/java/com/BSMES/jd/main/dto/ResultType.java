@@ -12,7 +12,10 @@ import java.util.Date;
 @Data
 public class ResultType extends BaseDTO {
 
-
+    /**
+     * 单号
+     */
+    private String sid;
 
 
     /**
@@ -38,7 +41,7 @@ public class ResultType extends BaseDTO {
     /**
      * 状态
      */
-    public String state;
+    public Integer state;
 
     /**
      * 开始时间

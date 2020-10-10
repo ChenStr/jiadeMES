@@ -23,7 +23,7 @@ public class JmJobRecEntity {
     @TableId
     public String opsid;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     public String usr;
@@ -42,7 +42,7 @@ public class JmJobRecEntity {
      */
     public BigDecimal qtyCur;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opTime;
 
     public String rsNo;

@@ -23,7 +23,7 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public String opsid;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     public String usr;
@@ -42,7 +42,7 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyCur;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opTime;
 
     public String rsNo;
@@ -64,10 +64,10 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyLost;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date staDd;
 
     public String wkNo;
