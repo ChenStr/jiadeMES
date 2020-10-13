@@ -1,1 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://192.168.1.105:1433;DatabaseName=Y8_MES15
+    username: sa
+    password: root
+  jackson:
+    time-zone: GMT+8
 
+server:
+  port: 9528
+  servlet:
+    context-path: /FAFapi/
+
+
+mybatis-plus:
+  mapper-locations: mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true

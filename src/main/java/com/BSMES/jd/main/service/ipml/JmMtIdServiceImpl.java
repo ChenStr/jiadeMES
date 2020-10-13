@@ -30,7 +30,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
     @Override
     public CommonReturn getMtId(JmMtIdDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMtIdDTO> mts = this.select(data);
         if(mts.isEmpty()){
             result.setAll(20000,mts,"没有查找结果，建议仔细核对查找条件");

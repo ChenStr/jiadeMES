@@ -28,7 +28,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
     @Override
     public CommonReturn getMould(JmMouldDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMouldDTO> moulds = this.select(data);
         if(moulds.isEmpty()){
             result.setAll(20000,moulds,"没有查找结果，建议仔细核对查找条件");

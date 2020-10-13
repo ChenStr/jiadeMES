@@ -6,10 +6,11 @@
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <insert id="saveJmXj2Tfs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmXj2TfDTO">
-        insert into jm_xj2_tf (sid, cid, jb_no, rlt, spc_type, spc_chk, op_rem, sal_no, op_dd, prd_sn, dmdel, delay_b, over_e) values
+        insert into jm_xj2_tf (sid, cid, jb_no, op_rem, sal_no, op_dd, prd_sn, dmdel, delay_b, over_e, para_max, para_min, chk_para, chk_name,chk_value) values
         <foreach collection="list" item="jmXj2Tf" index="index" separator=",">
-            (#{jmXj2Tf.sid}, #{jmXj2Tf.cid}, #{jmXj2Tf.jbNo}, #{jmXj2Tf.rlt},#{jmXj2Tf.spcType},#{jmXj2Tf.spcChk},#{jmXj2Tf.opRem},
-            #{jmXj2Tf.salNo},#{jmXj2Tf.opDd},#{jmXj2Tf.prdSn},#{jmXj2Tf.dmdel},#{jmXj2Tf.delayB},#{jmXj2Tf.overE})
+            (#{jmXj2Tf.sid}, #{jmXj2Tf.cid}, #{jmXj2Tf.jbNo}, #{jmXj2Tf.opRem},#{jmXj2Tf.salNo},#{jmXj2Tf.opDd},#{jmXj2Tf.prdSn},
+            #{jmXj2Tf.dmdel},#{jmXj2Tf.delayB},#{jmXj2Tf.overE},#{jmXj2Tf.paraMax},#{jmXj2Tf.paraMin},#{jmXj2Tf.chkPara},#{jmXj2Tf.chkName},
+            #{jmXj2Tf.chkValue})
         </foreach>
     </insert>
 
@@ -17,9 +18,6 @@
         UPDATE jm_xj2_tf
         <trim prefix="set" suffixOverrides=",">
             <if test="jbNo!=null">jb_no=#{jbNo},</if>
-            <if test="rlt!=null">rlt=#{rlt},</if>
-            <if test="spcType!=null">spc_type=#{spcType},</if>
-            <if test="spcChk!=null">spc_chk=#{spcChk},</if>
             <if test="opRem!=null">op_rem=#{opRem},</if>
             <if test="salNo!=null">sal_no=#{salNo},</if>
             <if test="opDd!=null">op_dd=#{opDd},</if>
@@ -27,6 +25,11 @@
             <if test="dmdel!=null">dmdel=#{dmdel},</if>
             <if test="delayB!=null">delay_b=#{delayB},</if>
             <if test="overE!=null">over_e=#{overE},</if>
+            <if test="paraMax!=null">para_max=#{paraMax},</if>
+            <if test="paraMin!=null">para_min=#{paraMin},</if>
+            <if test="chkPara!=null">chk_para=#{chkPara},</if>
+            <if test="chkName!=null">chk_name=#{chkName},</if>
+            <if test="chkValue!=null">chk_value=#{chkValue},</if>
         </trim>
         WHERE sid=#{sid} and cid=#{cid}
     </update>

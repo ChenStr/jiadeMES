@@ -28,7 +28,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
     @Override
     public CommonReturn getPrdt(JmPrdtDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmPrdtDTO> prdts = this.select(data);
         if(prdts.isEmpty()){
             result.setAll(20000,prdts,"没有查找结果，建议仔细核对查找条件");

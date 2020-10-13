@@ -3,19 +3,23 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMtstdMfDao;
-import com.BSMES.jd.main.dto.JmDevDTO;
-import com.BSMES.jd.main.dto.JmMtIdDTO;
-import com.BSMES.jd.main.dto.JmMtstdMfDTO;
+import com.BSMES.jd.main.dao.JmMtstdTfDao;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmDevEntity;
 import com.BSMES.jd.main.entity.JmMtIdEntity;
 import com.BSMES.jd.main.entity.JmMtstdMfEntity;
+import com.BSMES.jd.main.entity.JmMtstdTfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevService;
 import com.BSMES.jd.main.service.JmMtstdMfService;
+import com.BSMES.jd.main.service.JmMtstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +31,16 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     InssysvarService inssysvarService;
 
     @Autowired
+    JmMtstdMfDao jmMtstdMfDao;
+
+    @Autowired
+    JmMtstdTfDao jmMtstdTfDao;
+
+    @Autowired
     JmDevService jmDevService;
+
+    @Autowired
+    JmMtstdTfService jmMtstdTfService;
 
     @Override
     public void beforeInsert(JmMtstdMfDTO dto) {
@@ -42,7 +55,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     @Override
     public CommonReturn getMtstdMf(JmMtstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMtstdMfDTO> mtstdMf = this.select(data);
         if(mtstdMf.isEmpty()){
             result.setAll(20000,mtstdMf,"没有查找结果，建议仔细核对查找条件");
@@ -53,7 +66,43 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     }
 
     @Override
-    public CommonReturn getMtstdMfPlus(JmMtstdMfDTO dto) {
+    public CommonReturn getMtstdMfPlus(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<JmMtstd> jmMtstds = jmMtstdMfDao.getJmMtstd(dto);
+            result.setAll(20000,jmMtstds,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public CommonReturn saveMtstdMfPlus(JmMtstd dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            //新增表头或者编辑表头
+            QueryWrapper<JmMtstdMfEntity> jmMtstdMfEntityQueryWrapper = new QueryWrapper<>();
+            jmMtstdMfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
+            JmMtstdMfDTO jmMtstdMfDTO = this.selectOne(jmMtstdMfEntityQueryWrapper);
+            if (jmMtstdMfDTO!=null && jmMtstdMfDTO.getMtstdNo()!=null){
+                this.editMtstdMf(dto.getJmMtstdMfDTO());
+            }else{
+                this.saveMtstdMf(dto.getJmMtstdMfDTO());
+            }
+            //删除表身所有数据
+            QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
+            jmMtstdTfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
+            jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
+            //新增表身数据
+            jmMtstdTfDao.SaveJmMtstdTfs(dto.getJmMtstdTfs());
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+        }
         return null;
     }
 
@@ -110,9 +159,18 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMtstdMfEntity> mtstdMfQueryWrapper = new QueryWrapper<>();
         mtstdMfQueryWrapper.in("mtstd_no",mtstdNos);
+        List<JmMtstdMfDTO> jmMtstdMfDTOS = this.select(mtstdMfQueryWrapper);
         try{
-            this.remove(mtstdMfQueryWrapper);
-            result.setAll(20000,null,"操作成功");
+            if (jmMtstdMfDTOS!=null && jmMtstdMfDTOS.size()>0){
+                //查找是否有子数据
+                for (JmMtstdMfDTO jmMtstdMfDTO : jmMtstdMfDTOS){
+                    QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
+                    jmMtstdTfEntityQueryWrapper.eq("mtstd_no",jmMtstdMfDTO.getMtstdNo());
+                    jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
+                }
+                this.remove(mtstdMfQueryWrapper);
+                result.setAll(20000,null,"操作成功");
+            }
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
         }
@@ -128,6 +186,28 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         }else{
             result.setAll(20000,jmMtstdMfDTOS,"查找成功");
         }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getMtstdMfPlusPage(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
+            dto.setDescOrder("create_date");
+        }
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<JmMtstd> data = (List<JmMtstd>) this.getMtstdMfPlus(dto).getData();
+        PageInfo Pagedata = new PageInfo<JmMtstd>(data);
+        //总页数有问题需要手动设置一下
+        List<JmMtstdMfEntity> jmMtstdMfDTOS = this.list();
+        Pagedata.setTotal(jmMtstdMfDTOS.size());
+        result.setAll(20000,Pagedata,"操作成功");
         return result;
     }
 }

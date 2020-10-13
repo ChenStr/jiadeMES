@@ -28,7 +28,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
     @Override
     public CommonReturn getWh(JmWhDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmWhDTO> whs = this.select(data);
         if(whs.isEmpty()){
             result.setAll(20000,whs,"没有查找结果，建议仔细核对查找条件");

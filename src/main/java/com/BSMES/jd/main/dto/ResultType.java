@@ -17,6 +17,16 @@ public class ResultType extends BaseDTO {
      */
     private String sid;
 
+    /**
+     * 副单号
+     */
+    private Integer cid;
+
+    /**
+     * 其他单号
+     */
+    private String otherId;
+
 
     /**
      * 车间名称
@@ -34,6 +44,11 @@ public class ResultType extends BaseDTO {
     public String mouldName;
 
     /**
+     * 产品代号
+     */
+    public String prdNo;
+
+    /**
      * 产品名称
      */
     public String prdName;
@@ -42,6 +57,11 @@ public class ResultType extends BaseDTO {
      * 状态
      */
     public Integer state;
+
+    /**
+     * 类型
+     */
+    public String type;
 
     /**
      * 开始时间

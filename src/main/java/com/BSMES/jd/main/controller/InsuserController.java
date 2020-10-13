@@ -2,6 +2,7 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.InsuserDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.InsuserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ public class InsuserController {
             QueryWrapper queryWrapper = new QueryWrapper();
             result = insuserService.getUserPage(dto,queryWrapper);
         }
+        return result;
+    }
+
+    @GetMapping("/plus")
+    public CommonReturn getInsuserPlus(ResultType dto){
+        CommonReturn result = new CommonReturn();
+
         return result;
     }
 

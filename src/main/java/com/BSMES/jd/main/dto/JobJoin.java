@@ -123,5 +123,10 @@ public class JobJoin extends BaseDTO implements Serializable {
      */
     public String rsNo;
 
+    /**
+     * 部门代号
+     */
+    public String sorg;
+
 
 }

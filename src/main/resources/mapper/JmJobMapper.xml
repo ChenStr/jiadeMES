@@ -5,19 +5,19 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmJobDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <insert id="insertJmJobs" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
-        insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, beg_dd, end_dd, qty_ship,unit,dev_name,md_name,prd_name,dep,create_date) values
+    <insert id="insertJmJobs" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
+        insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, beg_dd, end_dd, qty_ship,unit,dev_name,md_name,prd_name,dep,create_date,state,sorg ) values
         <foreach collection="list" item="jmJob" index="index" separator=",">
             (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
             #{jmJob.prdNo},#{jmJob.begDd},#{jmJob.endDd},#{jmJob.qtyShip},#{jmJob.unit},#{jmJob.devName},#{jmJob.mdName},#{jmJob.prdName},
-            #{jmJob.dep},#{jmJob.createDate})
+            #{jmJob.dep},#{jmJob.createDate},#{jmJob.state},#{jmJob.sorg})
         </foreach>
     </insert>
 
     <select id="joinFindJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
         SELECT job.sid as sid,job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
         job.prd_name as prd_name,prdtut.umc as umc,momf.qty as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
-        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,
+        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,job.sorg as sorg,
         job.rs_no as rs_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm JOIN jm_mo_mf as momf on momf.sid = job.sid
         <where>
             <if test="prdNo != null and prdNo.length()>0">
@@ -30,7 +30,7 @@
                 and job.create_date between #{createDate} and #{createDate}+1
             </if>
             <if test="dep != null and dep.length()>0">
-                and job.dep = #{dep}
+                and job.dep like #{dep}
             </if>
             <if test="prdName != null and prdName.length()>0">
                 and job.prd_name like #{prdName}
@@ -51,7 +51,10 @@
                 and job.state = #{state}
             </if>
             <if test="rsNo!=null and rsNo.length()>0" >
-                and job.rs_no = #{rsNo}
+                and job.rs_no like #{rsNo}
+            </if>
+            <if test="jbNo!=null and jbNo.length()>0" >
+                and job.jb_no like #{jbNo}
             </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">

@@ -7,6 +7,9 @@ spring:
   jackson:
     time-zone: GMT+8
 
+server:
+  port: 8080
+
 
 mybatis-plus:
   mapper-locations: mapper/*Mapper.xml

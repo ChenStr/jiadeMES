@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmMtIdDTO;
 import com.BSMES.jd.main.dto.JmMtstdMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmMtstdMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,17 @@ public class JmMtstdMfController {
         }else{
             QueryWrapper queryWrapper = new QueryWrapper();
             result = jmMtstdMfService.getMtstdMfPage(dto,queryWrapper);
+        }
+        return result;
+    }
+
+    @GetMapping("/plus")
+    public CommonReturn getMtIdPlus(ResultType dto, Boolean isPage){
+        CommonReturn result = new CommonReturn();
+        if (isPage==null || isPage==false){
+            result = jmMtstdMfService.getMtstdMfPlus(dto);
+        }else{
+            result = jmMtstdMfService.getMtstdMfPlusPage(dto);
         }
         return result;
     }

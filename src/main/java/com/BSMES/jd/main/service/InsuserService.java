@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.InsuserDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.InsuserEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public interface InsuserService extends BaseService<InsuserEntity, InsuserDTO> {
 
     public CommonReturn getUser(InsuserDTO dto);
+
+    public CommonReturn getUserPlus(ResultType dto);
 
     public CommonReturn saveUser(InsuserDTO dto);
 

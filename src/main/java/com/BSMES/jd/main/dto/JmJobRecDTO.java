@@ -42,7 +42,7 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyCur;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     public Date opTime;
 
     public String rsNo;

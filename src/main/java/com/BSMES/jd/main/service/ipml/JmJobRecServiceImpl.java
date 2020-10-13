@@ -53,7 +53,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Override
     public CommonReturn getJobRec(JmJobRecDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmJobRecDTO> jobRec = this.select(data);
         if(jobRec.isEmpty()){
             result.setAll(20000,jobRec,"没有查找结果，建议仔细核对查找条件");

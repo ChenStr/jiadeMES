@@ -29,7 +29,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     @Override
     public CommonReturn getDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmDevDTO> devs = this.select(data);
         if(devs.isEmpty()){
             result.setAll(20000,devs,"没有查找结果，建议仔细核对查找条件");

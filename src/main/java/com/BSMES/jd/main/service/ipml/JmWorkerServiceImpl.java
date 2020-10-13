@@ -28,7 +28,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
     @Override
     public CommonReturn getWorker(JmWorkerDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmWorkerDTO> workers = this.select(data);
         if(workers.isEmpty()){
             result.setAll(20000,workers,"没有查找结果，建议仔细核对查找条件");

@@ -92,16 +92,23 @@ public class MyUtils {
     /**
      * 将Object转化为Map
      * @param obj
+     * @param isline 是否要将驼峰转换为蛇形
      * @return
      * @throws IllegalAccessException
      */
-    public static Map<String, Object> objectToMap(Object obj){
+    public static Map<String, Object> objectToMap(Object obj,Boolean isline){
         Map<String, Object> map = new HashMap<>();
         Class<?> clazz = obj.getClass();
 //        System.out.println(clazz);
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
-            String fieldName = field.getName();
+            String fieldName;
+            if (isline){
+                fieldName = MyUtils.humpToLine(field.getName());
+            }else{
+                fieldName = field.getName();
+            }
+
             Object value = null;
             try {
                 value = field.get(obj);

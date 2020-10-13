@@ -36,7 +36,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
     @Override
     public CommonReturn getXj2Tf(JmXj2TfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmXj2TfDTO> xj2Tfs = this.select(data);
         if(xj2Tfs.isEmpty()){
             result.setAll(20000,xj2Tfs,"没有查找结果，建议仔细核对查找条件");

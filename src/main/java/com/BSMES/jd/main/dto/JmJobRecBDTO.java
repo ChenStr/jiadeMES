@@ -1,8 +1,10 @@
 package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +20,7 @@ public class JmJobRecBDTO extends BaseDTO implements Serializable {
 
     public Integer cid;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     public Date opDd;
 
     public String sn;

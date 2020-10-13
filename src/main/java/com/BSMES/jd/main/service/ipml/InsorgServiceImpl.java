@@ -29,7 +29,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
     @Override
     public CommonReturn getSorg(InsorgDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<InsorgDTO> sorgs = this.select(data);
         if(sorgs.isEmpty()){
             result.setAll(20000,sorgs,"没有查找结果，建议仔细核对查找条件");

@@ -36,7 +36,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
     @Override
     public CommonReturn getXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmXj3TfDTO> xj3Tfs = this.select(data);
         if(xj3Tfs.isEmpty()){
             result.setAll(20000,xj3Tfs,"没有查找结果，建议仔细核对查找条件");
@@ -85,7 +85,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
     @Override
     public CommonReturn editXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
-        //判断dto是否为空 判断dto的 md_no 是否有值
+        //判断 dto 是否为空 判断 dto 的 md_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && dto.getCid()!=null){
             //获取原先的人员属性值
             QueryWrapper<JmXj3TfEntity> jmXj3TfQueryWrapper = new QueryWrapper<>();

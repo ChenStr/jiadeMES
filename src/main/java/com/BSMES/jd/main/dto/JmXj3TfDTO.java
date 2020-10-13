@@ -31,16 +31,6 @@ public class JmXj3TfDTO extends BaseDTO implements Serializable {
     public String chkNo;
 
     /**
-     * 上限
-     */
-    public BigDecimal paraMax;
-
-    /**
-     * 下限
-     */
-    public BigDecimal paraMin;
-
-    /**
      * 检验结果
      */
     public String curPara;
@@ -76,4 +66,18 @@ public class JmXj3TfDTO extends BaseDTO implements Serializable {
      */
     public Integer dmdel;
 
+    /**
+     * 偏差类型
+     */
+    public String derviId;
+
+    /**
+     * 偏差值
+     */
+    public BigDecimal derviation;
+
+    /**
+     * 检验值
+     */
+    public BigDecimal chkviation;
 }

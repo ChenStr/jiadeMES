@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.InsuserDao;
 import com.BSMES.jd.main.dto.InsuserDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.InsuserEntity;
 import com.BSMES.jd.main.service.InsuserService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -30,7 +31,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
     @Override
     public CommonReturn getUser(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<InsuserDTO> users = this.select(data);
         if(users.isEmpty()){
             result.setAll(20000,users,"没有查找结果，建议仔细核对查找条件");
@@ -38,6 +39,11 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
             result.setAll(20000,users,"查找成功");
         }
         return result;
+    }
+
+    @Override
+    public CommonReturn getUserPlus(ResultType dto) {
+        return null;
     }
 
     @Override

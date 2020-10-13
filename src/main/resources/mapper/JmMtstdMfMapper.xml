@@ -5,11 +5,15 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmMtstdMfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <select id="getJmMtstd" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.JmMtstd">
-        SELECT job.sid as sid,job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
-        job.prd_name as prd_name,prdtut.umc as umc,momf.qty as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
-        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,
-        job.rs_no as rs_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm JOIN jm_mo_mf as momf on momf.sid = job.sid
+    <select id="getJmMtstd" resultMap="PlusMap" parameterType="com.BSMES.jd.main.dto.ResultType">
+        SELECT mtstd.mtstd_no as mtstd_mtstd_no,mtstd.name as mtstd_name,mtstd.mt_class as mtstd_mt_class,mtstd.dev_no as mtstd_dev_no,mtstd.devid as mtstd_devid,mtstd.rem as mtstd_rem,mtstd.sbuid as mtstd_sbuid,mtstd.state as mtstd_state,
+        dev.dev_no as dev_dev_no,dev.name as dev_name,dev.spc as dev_spc,dev.rs_no as dev_rs_no,dev.cusname as dev_cusname,dev.main_no as dev_main_no,dev.dep as dev_dep,dev.maxtime as dev_maxtime,dev.maxqty as dev_maxqty,dev.time_mk as dev_time_mk,dev.qty_mk as dev_qty_mk,dev.state as dev_state,dev.devid as dev_devid,dev.sorg as dev_sorg,dev.picture as dev_picture,dev.location as dev_location,dev.ip as dev_ip,
+        mtstdtf.mtstd_no as mtstdtf_mtstd_no,mtstdtf.cid as mtstdtf_cid,mtstdtf.mt_id as mtstdtf_mt_id,mtstdtf.chk_std as mtstdtf_chk_std,mtstdtf.devps as mtstdtf_devps,mtstdtf.chk_rem as mtstdtf_chk_rem,mtstdtf.chk_file as mtstdtf_chk_file,mtstdtf.rem as mtstdtf_rem,mtstdtf.create_date as mtstdtf_create_data,mtstdtf.creator as mtstdtf_creator,
+        mt.mt_id as mt_mt_id,mt.name as mt_name
+        from jm_mtstd_mf as mtstd
+        JOIN jm_dev as dev on mtstd.dev_no = dev.dev_no
+        JOIN jm_mtstd_tf as mtstdtf on mtstd.mtstd_no = mtstdtf.mtstd_no
+        JOIN jm_mt_id as mt on mtstdtf.mt_id = mt.mt_id
         <where>
             <if test="prdNo != null and prdNo.length()>0">
                 and job.prd_no like #{prdNo}
@@ -22,5 +26,53 @@
             ORDER BY ${ascOrder} ASC
         </if>
 	</select>
+
+    <resultMap id="PlusMap" type="com.BSMES.jd.main.dto.JmMtstd">
+        <id column="mtstd_mtstd_no" property="jmMtstdMfDTO.mtstdNo"/>
+        <result column="mtstd_name" property="jmMtstdMfDTO.name"/>
+        <result column="mtstd_mt_class" property="jmMtstdMfDTO.mtClass"/>
+        <result column="mtstd_dev_no" property="jmMtstdMfDTO.devNo"/>
+        <result column="mtstd_devid" property="jmMtstdMfDTO.devid"/>
+        <result column="mtstd_rem" property="jmMtstdMfDTO.rem"/>
+        <result column="mtstd_sbuid" property="jmMtstdMfDTO.sbuid"/>
+        <result column="mtstd_state" property="jmMtstdMfDTO.state"/>
+        <association property="jmDevDTO" javaType="com.BSMES.jd.main.dto.JmDevDTO" column="dev_no">
+            <id column="dev_dev_no" property="devNo"/>
+            <result column="dev_name" property="name"/>
+            <result column="dev_spc" property="spc"/>
+            <result column="dev_rs_no" property="rsNo"/>
+            <result column="dev_cusname" property="cusname"/>
+            <result column="dev_main_no" property="mainNo"/>
+            <result column="dev_dep" property="dep"/>
+            <result column="dev_maxtime" property="maxtime"/>
+            <result column="dev_maxqty" property="maxqty"/>
+            <result column="dev_time_mk" property="timeMk"/>
+            <result column="dev_state" property="state"/>
+            <result column="dev_devid" property="devid"/>
+            <result column="dev_sorg" property="sorg"/>
+            <result column="dev_picture" property="picture"/>
+            <result column="dev_location" property="location"/>
+            <result column="dev_ip" property="ip"/>
+        </association>
+        <collection property="jmMtstdTfs" ofType="com.BSMES.jd.main.dto.JmMtstdTf" column="mtstd_no">
+            <association property="jmMtstdTf" javaType="com.BSMES.jd.main.dto.JmMtstdTfDTO">
+                <id column="mtstdtf_mtstd_no" property="mtstdNo"/>
+                <result column="mtstdtf_cid" property="cid"/>
+                <result column="mtstdtf_mt_id" property="mtId"/>
+                <result column="mtstdtf_chk_std" property="chkStd"/>
+                <result column="mtstdtf_devps" property="devps"/>
+                <result column="mtstdtf_chk_rem" property="chkRem"/>
+                <result column="mtstdtf_chk_file" property="chkFile"/>
+                <result column="mtstdtf_rem" property="rem"/>
+                <result column="mtstdtf_create_date" property="createDate"/>
+                <result column="mtstdtf_creator" property="creator"/>
+            </association>
+            <association property="jmMtIdDTO" javaType="com.BSMES.jd.main.dto.JmMtIdDTO">
+                <id column="mt_mt_id" property="mtId"/>
+                <result column="mt_name" property="name"/>
+            </association>
+        </collection>
+
+    </resultMap>
 
 </mapper>

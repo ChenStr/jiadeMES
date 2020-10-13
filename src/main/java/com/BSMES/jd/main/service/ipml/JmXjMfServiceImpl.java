@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmXjMfDao;
 import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.entity.JmXj2TfEntity;
 import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.entity.JmXjMfEntity;
@@ -51,7 +52,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn getXjMf(JmXjMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmXjMfDTO> xjMfs = this.select(data);
         if(xjMfs.isEmpty()){
             result.setAll(20000,xjMfs,"没有查找结果，建议仔细核对查找条件");
@@ -64,17 +65,23 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn getXjMfPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);
+        List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);;
+        if (jmXjMfDTOS==null && jmXjMfDTOS.size()==0){
+            jmXjMfDTOS = new ArrayList<>();
+            result.setAll(20000,jmXjMfDTOS,"未查到数据");
+            return result;
+        }
         //查询子表与其他信息
         for (JmXjMf2 jmXjMf2 : jmXjMfDTOS){
             List<JmXjMf> jmXjMfs = new ArrayList<>();
-            JmXjMf jmXjMf = new JmXjMf();
             List<JmXj2TfDTO> jmXj2TfDTOs = new ArrayList<>();
             QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
             jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
             jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
+            //查询子表的子表信息
             for (JmXj2TfDTO jmXj2TfDTO : jmXj2TfDTOs){
                 List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
+                JmXjMf jmXjMf = new JmXjMf();
                 QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
                 jmXj3TfEntityQueryWrapper.eq("sid",jmXj2TfDTO.getSid()).eq("cid",jmXj2TfDTO.getCid());
                 jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
@@ -87,43 +94,53 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         result.setAll(20000,jmXjMfDTOS,"操作成功");
         return result;
     }
-
     @Transactional
     @Override
     public CommonReturn saveXjMf(JmXjMf2 dto) {
         CommonReturn result = new CommonReturn();
         Boolean flag = true;
+        String sid = null;
+
         //首先判断是添加还是修改
-        QueryWrapper<JmXjMfEntity> jmXjMfEntityQueryWrapper = new QueryWrapper<>();
-        jmXjMfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-        //检查单是否存在
-        JmXjMfDTO jmXjMfDTO = this.selectOne(jmXjMfEntityQueryWrapper);
-        if (jmXjMfDTO!=null && jmXjMfDTO.getSid()!=null){
+//        QueryWrapper<JmXjMfEntity> jmXjMfEntityQueryWrapper = new QueryWrapper<>();
+//        jmXjMfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
+//        //检查单是否存在
+//        JmXjMfDTO jmXjMfDTO = this.selectOne(jmXjMfEntityQueryWrapper);
+        if (dto.getJmXjMfDTO()!=null && dto.getJmXjMfDTO().getSid()!=null){
             flag=false;
         }else{
+            sid = this.getKey("JmXjMf","sid",inssysvarService,dto.getJmXjMfDTO());
+            dto.getJmXjMfDTO().setSid(sid);
             this.insert(dto.getJmXjMfDTO());
         }
-        //如果是编辑的话
-        if (flag==false){
-            //删除所有原始数据
-            QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
-            jmXj2TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-            QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-            jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-            jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
-            jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
-        }
-        //将新的数据添加进去
-        for (JmXjMf jmXjMf : dto.getJmXjMfs()){
-            if (jmXjMf.getJmXj2TfDTO()!=null && jmXjMf.getJmXj2TfDTO().getSid()!=null){
-                jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
-                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-                jmXj3TfEntityQueryWrapper.eq("sid",jmXjMf.getJmXj2TfDTO().getSid());
-                List<JmXj3TfDTO> jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
-                jmXj3TfService.saveXj3Tfs(jmXj3TfDTOS);
-            }
-        }
 
+        try{
+            //如果是编辑的话
+            if (flag==false){
+                //删除所有原始数据
+                QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
+                jmXj2TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
+                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
+                jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
+                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
+                jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+            }
+            //将新的数据添加进去
+            for (JmXjMf jmXjMf : dto.getJmXjMfs()){
+                if (jmXjMf.getJmXj2TfDTO()!=null && jmXjMf.getJmXj2TfDTO().getSid()!=null){
+                    jmXjMf.getJmXj2TfDTO().setSid(sid);
+                    jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
+                }
+                if (jmXjMf.getJmXj3TfDTOS()!=null && jmXjMf.getJmXj3TfDTOS().size()>0){
+                    String sid1 = sid;
+                    jmXjMf.getJmXj3TfDTOS().stream().forEach(t->t.setSid(sid1));
+                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
+                }
+            }
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+        }
         return result;
     }
 
@@ -200,12 +217,10 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         if (dto.getPageSize()==null){
             dto.setPageSize(10);
         }
-
         PageHelper.startPage(dto.getPage(), dto.getPageSize());
-        List<JmXjMf2> jmXjMf2s = (List<JmXjMf2>) this.getXjMfPlus(dto).getData();
-
-        PageInfo jobPages = new PageInfo<JmXjMf2>(jmXjMf2s);
-        result.setAll(20000,jobPages,"操作成功");
+        List<JmXjMf2> data = (List<JmXjMf2>) this.getXjMfPlus(dto).getData();
+        PageInfo dataPages = new PageInfo<JmXjMf2>(data);
+        result.setAll(20000,dataPages,"操作成功");
         return result;
     }
 }

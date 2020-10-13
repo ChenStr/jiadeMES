@@ -10,6 +10,8 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +46,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         dto.setAstRelease(1);
         dto.setHpdate(new Date());
         dto.setModitime(new Date());
+        dto.setState(6);
     }
 
     @Override
@@ -54,12 +57,13 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Override
     public CommonReturn getMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMoMfDTO> moMfs = this.select(data);
         List<JmMoMfMore> mores = new ArrayList<>();
         if (moMfs!=null){
             for (int i = 0 ; i < moMfs.size() ; i++){
                 JmMoMfMore more = new JmMoMfMore();
+
                 BeanUtils.copyProperties(moMfs.get(i), more);
                 //查询部门信息
                 QueryWrapper<InsorgEntity> insorgQueryWrapper = new QueryWrapper<>();
@@ -110,7 +114,6 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public CommonReturn saveMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
         dto.setSid(this.getKey("JmMoMf","sid",inssysvarService,dto));
-        dto.setState(6);
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && MyUtils.StringIsNull(dto.getSorg()) && MyUtils.StringIsNull(dto.getPrdNo()) && dto.getQty()!=null && dto.getEndDd()!=null){
             QueryWrapper<JmMoMfEntity> moMfQueryWrapper = new QueryWrapper<>();
@@ -199,9 +202,19 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public CommonReturn getMoMfPage(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
         //添加默认排序
-        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
-            dto.setDescOrder("hpdate");
-        }
+//        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
+//            dto.setDescOrder("hpdate");
+//        }
+//        if (dto.getPage()==null){
+//            dto.setPage(1);
+//        }
+//        if (dto.getPageSize()==null){
+//            dto.setPageSize(10);
+//        }
+//        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+//        List<JmMoMfMore> data = (List<JmMoMfMore>) this.getMoMf(dto).getData();
+//        PageInfo dataPages = new PageInfo<JmMoMfMore>(data);
+//        result.setAll(20000,dataPages,"操作成功");
         QueryWrapper queryWrapper = getQueryWrapper(dto);
         List<JmMoMfDTO> jmMoMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         List<JmMoMfMore> mores = new ArrayList<>();

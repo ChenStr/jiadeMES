@@ -30,7 +30,7 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
     @Override
     public CommonReturn getBomMf(JmBomMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmBomMfDTO> bomMf = this.select(data);
         if(bomMf.isEmpty()){
             result.setAll(20000,bomMf,"没有查找结果，建议仔细核对查找条件");

@@ -19,13 +19,13 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    JmXjMfService jmXjMfService;
+    JmMtstdMfService service;
 
 
     @GetMapping()
     public CommonReturn test(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        result = jmXjMfService.getXjMfPlus(dto);
+        result = service.getMtstdMfPlus(dto);
         return result;
     }
 

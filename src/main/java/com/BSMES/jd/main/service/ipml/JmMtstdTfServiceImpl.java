@@ -5,6 +5,7 @@ import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMtstdTfDao;
 import com.BSMES.jd.main.dto.JmMtIdDTO;
 import com.BSMES.jd.main.dto.JmMtstdMfDTO;
+import com.BSMES.jd.main.dto.JmMtstdTf;
 import com.BSMES.jd.main.dto.JmMtstdTfDTO;
 import com.BSMES.jd.main.entity.JmMtIdEntity;
 import com.BSMES.jd.main.entity.JmMtstdMfEntity;
@@ -46,7 +47,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
     @Override
     public CommonReturn getMtstdTf(JmMtstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMtstdTfDTO> mtstdTf = this.select(data);
         if(mtstdTf.isEmpty()){
             result.setAll(20000,mtstdTf,"没有查找结果，建议仔细核对查找条件");
@@ -84,6 +85,18 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
             result.setAll(10001,null,"参数错误");
         }
         return result;
+    }
+
+    @Override
+    public CommonReturn saveMtstdTfs(List<JmMtstdTf> dtos) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmMtstdTfDao.SaveJmMtstdTfs(dtos);
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

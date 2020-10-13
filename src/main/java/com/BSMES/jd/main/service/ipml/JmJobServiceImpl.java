@@ -72,7 +72,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Override
     public CommonReturn getJob(JmJobDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto);
+        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmJobDTO> jobs = this.select(data);
         if(jobs.isEmpty()){
             result.setAll(20000,jobs,"没有查找结果，建议仔细核对查找条件");
@@ -213,6 +213,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                 sum = sum.add(dtos.get(i).getQty());
                 //将时间放入
                 dtos.get(i).setCreateDate(new Date());
+                dtos.get(i).setState("546");
             }
         }
         try{

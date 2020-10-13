@@ -2,6 +2,7 @@ package com.BSMES.jd.main.service;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
+import com.BSMES.jd.main.dto.JmMtstdTf;
 import com.BSMES.jd.main.dto.JmMtstdTfDTO;
 import com.BSMES.jd.main.entity.JmMtstdTfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,6 +17,12 @@ public interface JmMtstdTfService extends BaseService<JmMtstdTfEntity , JmMtstdT
     public CommonReturn getMtstdTf(JmMtstdTfDTO dto);
 
     public CommonReturn saveMtstdTf(JmMtstdTfDTO dto);
+
+    /**
+     * 批量添加
+     * @return 
+     */
+    public CommonReturn saveMtstdTfs(List<JmMtstdTf> dtos);
 
     public CommonReturn editMtstdTf(JmMtstdTfDTO dto);
 

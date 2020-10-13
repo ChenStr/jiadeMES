@@ -157,4 +157,34 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
      */
     public String testBo;
 
+    /**
+     * 模具代号
+     */
+    public String mdNo;
+
+    /**
+     * 首件确认
+     */
+    public String firstChk;
+
+    /**
+     * 外观
+     */
+    public String aspectChk;
+
+    /**
+     * 互换性
+     */
+    public String interChk;
+
+    /**
+     * 可焊性
+     */
+    public String welcChk;
+
+    /**
+     * 计划单号
+     */
+    public String jbNo;
+
 }

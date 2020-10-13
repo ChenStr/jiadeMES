@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -27,21 +28,6 @@ public class JmXj2TfDTO extends BaseDTO implements Serializable {
      * 任务单号
      */
     public String jbNo;
-
-    /**
-     * 判定结果
-     */
-    public Integer rlt;
-
-    /**
-     * 不合格分类
-     */
-    public String spcType;
-
-    /**
-     * 不合格原因
-     */
-    public String spcChk;
 
     /**
      * 检验描述
@@ -77,5 +63,30 @@ public class JmXj2TfDTO extends BaseDTO implements Serializable {
      * 采集结束比较时间
      */
     public Integer overE;
+
+    /**
+     * 上限
+     */
+    public BigDecimal paraMax;
+
+    /**
+     * 下限
+     */
+    public BigDecimal paraMin;
+
+    /**
+     * 检验标准
+     */
+    public String chkPara;
+
+    /**
+     * 检验名称
+     */
+    public String chkName;
+
+    /**
+     * 标准值
+     */
+    public BigDecimal chkValue;
 
 }

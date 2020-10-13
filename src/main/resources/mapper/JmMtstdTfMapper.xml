@@ -7,14 +7,22 @@
     <update id="UpdateJmMtstdTf" parameterType="com.BSMES.jd.main.dto.JmMtstdTfDTO">
         UPDATE jm_mtstd_tf
         <trim prefix="set" suffixOverrides=",">
-            <if test="mtId!=null">mt_id=#{mtId},</if>
             <if test="chkStd!=null">chk_std=#{chkStd},</if>
             <if test="devps!=null">devps=#{devps},</if>
             <if test="chkRem!=null">chk_rem=#{chkRem},</if>
             <if test="chkFile!=null">chk_file=#{chkFile},</if>
             <if test="rem!=null">rem=#{rem},</if>
+            <if test="creator!=null">creator=#{creator},</if>
         </trim>
-        WHERE mtstd_no=#{mtstdNo} and cid=#{cid}
+        WHERE mtstd_no=#{mtstdNo} and cid=#{cid} and mt_id=#{mtId}
     </update>
+
+    <insert id="SaveJmMtstdTfs" parameterType="com.BSMES.jd.main.dto.JmMtstdTf">
+        insert into jm_mtstd_tf (mtstd_no, cid, mt_id,chk_std , devps , chk_rem, chk_file, rem, create_date, creator) values
+        <foreach collection="list" item="date" index="index" separator=",">
+            (#{date.jmMtstdTf.mtstdNo}, #{date.jmMtstdTf.cid}, #{date.jmMtstdTf.mtId}, #{date.jmMtstdTf.chkStd},#{date.jmMtstdTf.devps},
+            #{date.jmMtstdTf.chkRem},#{date.jmMtstdTf.chkFile},#{date.jmMtstdTf.rem},#{date.jmMtstdTf.createDate},#{date.jmMtstdTf.creator})
+        </foreach>
+    </insert>
 
 </mapper>
