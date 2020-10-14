@@ -5,10 +5,7 @@ import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMtstdMfDao;
 import com.BSMES.jd.main.dao.JmMtstdTfDao;
 import com.BSMES.jd.main.dto.*;
-import com.BSMES.jd.main.entity.JmDevEntity;
-import com.BSMES.jd.main.entity.JmMtIdEntity;
-import com.BSMES.jd.main.entity.JmMtstdMfEntity;
-import com.BSMES.jd.main.entity.JmMtstdTfEntity;
+import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevService;
 import com.BSMES.jd.main.service.JmMtstdMfService;
@@ -21,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,28 +80,61 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     @Transactional
     @Override
     public CommonReturn saveMtstdMfPlus(JmMtstd dto) {
+//        CommonReturn result = new CommonReturn();
+//        try{
+//            //新增表头或者编辑表头
+//            QueryWrapper<JmMtstdMfEntity> jmMtstdMfEntityQueryWrapper = new QueryWrapper<>();
+//            jmMtstdMfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
+//            JmMtstdMfDTO jmMtstdMfDTO = this.selectOne(jmMtstdMfEntityQueryWrapper);
+//            if (jmMtstdMfDTO!=null && jmMtstdMfDTO.getMtstdNo()!=null){
+//                this.editMtstdMf(dto.getJmMtstdMfDTO());
+//            }else{
+//                this.saveMtstdMf(dto.getJmMtstdMfDTO());
+//            }
+//            //删除表身所有数据
+//            QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
+//            jmMtstdTfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
+//            jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
+//            //新增表身数据
+//            jmMtstdTfDao.SaveJmMtstdTfs(dto.getJmMtstdTfs());
+//            result.setAll(20000,null,"操作成功");
+//        }catch (Exception e){
+//            result.setAll(40000,null,"操作失败");
+//        }
+//        return result;
+
         CommonReturn result = new CommonReturn();
+        Boolean flag = true;
+        String sid = null;
+
+        if (dto.getJmMtstdMfDTO()!=null && dto.getJmMtstdMfDTO().getMtstdNo()!=null){
+            flag = false;
+            sid = dto.getJmMtstdMfDTO().getMtstdNo();
+            this.editMtstdMf(dto.getJmMtstdMfDTO());
+        }else{
+            sid = this.getKey("JmMtstdMf","mtstd_no",inssysvarService,dto.getJmMtstdMfDTO());
+            dto.getJmMtstdMfDTO().setMtstdNo(sid);
+            this.insert(dto.getJmMtstdMfDTO());
+        }
+
         try{
-            //新增表头或者编辑表头
-            QueryWrapper<JmMtstdMfEntity> jmMtstdMfEntityQueryWrapper = new QueryWrapper<>();
-            jmMtstdMfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
-            JmMtstdMfDTO jmMtstdMfDTO = this.selectOne(jmMtstdMfEntityQueryWrapper);
-            if (jmMtstdMfDTO!=null && jmMtstdMfDTO.getMtstdNo()!=null){
-                this.editMtstdMf(dto.getJmMtstdMfDTO());
-            }else{
-                this.saveMtstdMf(dto.getJmMtstdMfDTO());
+            //如果是编辑那么要删除原始的数据
+            if (flag==false){
+                QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmMtstdTfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
+                jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
             }
-            //删除表身所有数据
-            QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
-            jmMtstdTfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
-            jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
-            //新增表身数据
+            //新增表身数据 并给予主键
+            for (JmMtstdTf jmMtstdTf : dto.getJmMtstdTfs()){
+                jmMtstdTf.getJmMtstdTf().setMtstdNo(sid);
+            }
             jmMtstdTfDao.SaveJmMtstdTfs(dto.getJmMtstdTfs());
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
         }
-        return null;
+
+        return result;
     }
 
     @Override

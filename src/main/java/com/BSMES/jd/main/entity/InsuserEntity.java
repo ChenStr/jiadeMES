@@ -136,4 +136,9 @@ public class InsuserEntity{
      */
     public String autocmd;
 
+    /**
+     * BS端密码
+     */
+    public String pswd;
+
 }

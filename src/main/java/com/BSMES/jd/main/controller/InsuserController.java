@@ -27,15 +27,21 @@ public class InsuserController {
             result = insuserService.getUser(dto);
         }else{
             QueryWrapper queryWrapper = new QueryWrapper();
-            result = insuserService.getUserPage(dto,queryWrapper);
+            result = insuserService.getUserPage(dto);
         }
         return result;
     }
 
-    @GetMapping("/plus")
-    public CommonReturn getInsuserPlus(ResultType dto){
-        CommonReturn result = new CommonReturn();
+//    @GetMapping("/plus")
+//    public CommonReturn getInsuserPlus(ResultType dto){
+//        CommonReturn result = new CommonReturn();
+//        return result;
+//    }
 
+    @PostMapping("/login")
+    public CommonReturn login(@RequestBody InsuserDTO dto){
+        CommonReturn result = new CommonReturn();
+        result = insuserService.login(dto);
         return result;
     }
 

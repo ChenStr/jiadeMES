@@ -9,8 +9,9 @@
         insert into jm_xj2_tf (sid, cid, jb_no, op_rem, sal_no, op_dd, prd_sn, dmdel, delay_b, over_e, para_max, para_min, chk_para, chk_name,chk_value) values
         <foreach collection="list" item="jmXj2Tf" index="index" separator=",">
             (#{jmXj2Tf.sid}, #{jmXj2Tf.cid}, #{jmXj2Tf.jbNo}, #{jmXj2Tf.opRem},#{jmXj2Tf.salNo},#{jmXj2Tf.opDd},#{jmXj2Tf.prdSn},
-            #{jmXj2Tf.dmdel},#{jmXj2Tf.delayB},#{jmXj2Tf.overE},#{jmXj2Tf.paraMax},#{jmXj2Tf.paraMin},#{jmXj2Tf.chkPara},#{jmXj2Tf.chkName},
-            #{jmXj2Tf.chkValue})
+            #{jmXj2Tf.dmdel},#{jmXj2Tf.delayB},#{jmXj2Tf.overE},cast(#{jmXj2Tf.paraMax,jdbcType=DECIMAL} as decimal(22,8)),cast(#{jmXj2Tf.paraMin,jdbcType=DECIMAL} as decimal(22,8)),
+            #{jmXj2Tf.chkPara},#{jmXj2Tf.chkName},
+            cast(#{jmXj2Tf.chkValue,jdbcType=DECIMAL} as decimal(22,8)))
         </foreach>
     </insert>
 

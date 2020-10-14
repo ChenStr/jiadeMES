@@ -8,16 +8,16 @@
     <insert id="insertJmJobs" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
         insert into jm_job (sid, cid, jb_no,rs_no , md_no , wk_no, qty, prd_no, beg_dd, end_dd, qty_ship,unit,dev_name,md_name,prd_name,dep,create_date,state,sorg ) values
         <foreach collection="list" item="jmJob" index="index" separator=",">
-            (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},#{jmJob.qty},
-            #{jmJob.prdNo},#{jmJob.begDd},#{jmJob.endDd},#{jmJob.qtyShip},#{jmJob.unit},#{jmJob.devName},#{jmJob.mdName},#{jmJob.prdName},
-            #{jmJob.dep},#{jmJob.createDate},#{jmJob.state},#{jmJob.sorg})
+            (#{jmJob.sid}, #{jmJob.cid}, #{jmJob.jbNo}, #{jmJob.rsNo},#{jmJob.mdNo},#{jmJob.wkNo},cast(#{jmJob.qty,jdbcType=DECIMAL} as decimal(22,8)),
+            #{jmJob.prdNo},#{jmJob.begDd},#{jmJob.endDd},cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8)),#{jmJob.unit},#{jmJob.devName},
+            #{jmJob.mdName},#{jmJob.prdName},#{jmJob.dep},#{jmJob.createDate},#{jmJob.state},#{jmJob.sorg})
         </foreach>
     </insert>
 
     <select id="joinFindJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
         SELECT job.sid as sid,job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
         job.prd_name as prd_name,prdtut.umc as umc,momf.qty as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
-        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,job.sorg as sorg,
+        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,job.sorg as sorg,job.wk_no as wk_no,
         job.rs_no as rs_no FROM jm_job as job JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm JOIN jm_mo_mf as momf on momf.sid = job.sid
         <where>
             <if test="prdNo != null and prdNo.length()>0">
@@ -41,10 +41,10 @@
             <if test="mouldName != null and mouldName.length()>0" >
                 and job.md_name like #{mouldName}
             </if>
-            <if test="begDd != null and begDd.length()>0" >
+            <if test="begDd != null and begDd.toString().length()>0" >
                 and job.beg_dd &gt;= #{begDd}
             </if>
-            <if test="endDd != null and endDd.length()>0" >
+            <if test="endDd != null and endDd.toString().length()>0" >
                 and job.end_dd &lt;= #{endDd}
             </if>
             <if test="state!=null and state.length()>0" >

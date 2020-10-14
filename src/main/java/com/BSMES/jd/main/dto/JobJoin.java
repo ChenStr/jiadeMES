@@ -90,8 +90,6 @@ public class JobJoin extends BaseDTO implements Serializable {
      */
     public List<JmPrdtDTO> prdts;
 
-
-
     /**
      * 状态
      */
@@ -117,6 +115,11 @@ public class JobJoin extends BaseDTO implements Serializable {
      * 产品代号
      */
     public String prdNo;
+
+    /**
+     * 作业人员
+     */
+    public String wkNo;
 
     /**
      * 设备代号

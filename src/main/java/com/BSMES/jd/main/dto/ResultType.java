@@ -75,4 +75,9 @@ public class ResultType extends BaseDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
+    /**
+     * 布尔值
+     */
+    public Boolean flag;
+
 }

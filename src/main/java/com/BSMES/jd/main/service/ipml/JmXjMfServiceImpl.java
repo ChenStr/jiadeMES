@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     @Override
     public void beforeInsert(JmXjMfDTO dto) {
-
+        dto.setHpdate(new Date());
     }
 
     @Override
@@ -108,6 +109,8 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 //        JmXjMfDTO jmXjMfDTO = this.selectOne(jmXjMfEntityQueryWrapper);
         if (dto.getJmXjMfDTO()!=null && dto.getJmXjMfDTO().getSid()!=null){
             flag=false;
+            sid = dto.getJmXjMfDTO().getSid();
+            this.editXjMf(dto.getJmXjMfDTO());
         }else{
             sid = this.getKey("JmXjMf","sid",inssysvarService,dto.getJmXjMfDTO());
             dto.getJmXjMfDTO().setSid(sid);
@@ -127,8 +130,8 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             }
             //将新的数据添加进去
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
+                jmXjMf.getJmXj2TfDTO().setSid(sid);
                 if (jmXjMf.getJmXj2TfDTO()!=null && jmXjMf.getJmXj2TfDTO().getSid()!=null){
-                    jmXjMf.getJmXj2TfDTO().setSid(sid);
                     jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
                 }
                 if (jmXjMf.getJmXj3TfDTOS()!=null && jmXjMf.getJmXj3TfDTOS().size()>0){

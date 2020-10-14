@@ -129,4 +129,9 @@ public class InsuserDTO extends BaseDTO implements Serializable {
      */
     public String autocmd;
 
+    /**
+     * BS端密码
+     */
+    public String pswd;
+
 }

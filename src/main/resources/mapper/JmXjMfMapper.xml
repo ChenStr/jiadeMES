@@ -31,10 +31,10 @@
             <if test="mouldName != null and mouldName.length()>0" >
                 and mould.name like #{mouldName}
             </if>
-            <if test="begDd != null and begDd.length()>0" >
+            <if test="begDd != null and begDd.toString().length()>0" >
                 and hpdate &gt;= #{begDd}
             </if>
-            <if test="endDd != null and endDd.length()>0" >
+            <if test="endDd != null and endDd.toString().length()>0" >
                 and hpdate &lt;= #{endDd}
             </if>
             <if test="state!=null and state.length()>0" >

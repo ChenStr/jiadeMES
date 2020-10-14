@@ -8,8 +8,9 @@
         insert into jm_job_rec_b (opsid, cid, op_dd,sn, dmdel , wk_no, qty, qty_ok, qty_lost, chk_rm_bn, chk_no , process , spc_no
         ) values
         <foreach collection="list" item="jmJobRecB" index="index" separator=",">
-            (#{jmJobRecB.opsid}, #{jmJobRecB.cid}, #{jmJobRecB.opDd}, #{jmJobRecB.sn},#{jmJobRecB.dmdel},#{jmJobRecB.wkNo},#{jmJobRecB.qty},
-            #{jmJobRecB.qtyOk}, #{jmJobRecB.qtyLost},#{jmJobRecB.chkRmBn},#{jmJobRecB.chkNo},#{jmJobRecB.process},#{jmJobRecB.spcNo})
+            (#{jmJobRecB.opsid}, #{jmJobRecB.cid}, #{jmJobRecB.opDd}, #{jmJobRecB.sn},#{jmJobRecB.dmdel},#{jmJobRecB.wkNo},cast (#{jmJobRecB.qty,jdbcType=DECIMAL} as decimal(22,8)),
+            cast (#{jmJobRecB.qtyOk,jdbcType=DECIMAL} as decimal(22,8)), cast (#{jmJobRecB.qtyLost,jdbcType=DECIMAL} as decimal(22,8)),#{jmJobRecB.chkRmBn},
+            #{jmJobRecB.chkNo},#{jmJobRecB.process},#{jmJobRecB.spcNo})
         </foreach>
     </insert>
 
