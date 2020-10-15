@@ -43,6 +43,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public void beforeInsert(JmXjMfDTO dto) {
         dto.setHpdate(new Date());
+        dto.setSbuid("XJ");
     }
 
     @Override

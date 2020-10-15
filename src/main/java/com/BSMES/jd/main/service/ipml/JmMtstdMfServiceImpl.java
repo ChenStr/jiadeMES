@@ -6,10 +6,7 @@ import com.BSMES.jd.main.dao.JmMtstdMfDao;
 import com.BSMES.jd.main.dao.JmMtstdTfDao;
 import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmDevService;
-import com.BSMES.jd.main.service.JmMtstdMfService;
-import com.BSMES.jd.main.service.JmMtstdTfService;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -40,6 +37,9 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     @Autowired
     JmMtstdTfService jmMtstdTfService;
 
+    @Autowired
+    JmDevMtidService jmDevMtidService;
+
     @Override
     public void beforeInsert(JmMtstdMfDTO dto) {
 
@@ -68,6 +68,16 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         CommonReturn result = new CommonReturn();
         try{
             List<JmMtstd> jmMtstds = jmMtstdMfDao.getJmMtstd(dto);
+            //将对应的设备分类的设备维修项目放入
+            for (JmMtstd jmMtstd : jmMtstds){
+                QueryWrapper<JmDevMtidEntity> jmDevMtidEntityQueryWrapper = new QueryWrapper<>();
+                jmDevMtidEntityQueryWrapper.eq("devid",jmMtstd.getJmDevDTO().getDevid());
+                List<JmDevMtidDTO> jmDevMtidDTOS = jmDevMtidService.select(jmDevMtidEntityQueryWrapper);
+                if (jmDevMtidDTOS!=null && jmDevMtidDTOS.size()>0){
+                    jmMtstd.setJmDevMtidDTOS(jmDevMtidDTOS);
+                }
+            }
+
             result.setAll(20000,jmMtstds,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
@@ -234,6 +244,14 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         }
         PageHelper.startPage(dto.getPage(), dto.getPageSize());
         List<JmMtstd> data = (List<JmMtstd>) this.getMtstdMfPlus(dto).getData();
+        for (JmMtstd jmMtstd : data){
+            QueryWrapper<JmDevMtidEntity> jmDevMtidEntityQueryWrapper = new QueryWrapper<>();
+            jmDevMtidEntityQueryWrapper.eq("devid",jmMtstd.getJmDevDTO().getDevid());
+            List<JmDevMtidDTO> jmDevMtidDTOS = jmDevMtidService.select(jmDevMtidEntityQueryWrapper);
+            if (jmDevMtidDTOS!=null && jmDevMtidDTOS.size()>0){
+                jmMtstd.setJmDevMtidDTOS(jmDevMtidDTOS);
+            }
+        }
         PageInfo Pagedata = new PageInfo<JmMtstd>(data);
         //总页数有问题需要手动设置一下
         List<JmMtstdMfEntity> jmMtstdMfDTOS = this.list();

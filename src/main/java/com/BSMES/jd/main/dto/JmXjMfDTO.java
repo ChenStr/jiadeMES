@@ -45,7 +45,7 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
     /**
      * 审核人
      */
-    public String chk_man;
+    public String chkMan;
 
     /**
      * 状态
@@ -186,5 +186,41 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
      * 计划单号
      */
     public String jbNo;
+
+    /**
+     * 锡青铜带
+     */
+    public String qcopper;
+
+    /**
+     * 黄铜带
+     */
+    public String hcopper;
+
+    /**
+     * 塑料粒子
+     */
+    public String plastic;
+
+    /**
+     * 黄铜针
+     */
+    public String zcopper;
+
+    /**
+     * ROHS
+     */
+    public String rohs;
+
+    /**
+     * 工艺确认
+     */
+    public String techno;
+
+    /**
+     * 检验项目描述
+     */
+    public String chkRem;
+
 
 }

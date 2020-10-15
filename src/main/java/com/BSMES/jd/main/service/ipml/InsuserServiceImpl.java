@@ -94,7 +94,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
             if (insuserDTO!=null && insuserDTO.getUsrcode()!=null){
                 userAndWorker.setInsuserDTO(insuserDTO);
             }else{
-                result.setAll(20000,null,"卡号不存在");
+                result.setAll(40000,null,"卡号不存在");
                 return result;
             }
 
@@ -122,7 +122,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
                 result.setAll(10001,null,"账号不存在或密码不正确");
             }
         }else{
-            result.setAll(20000,null,"登录失败");
+            result.setAll(40000,null,"登录失败");
         }
         return result;
     }

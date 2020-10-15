@@ -15,8 +15,8 @@
         JOIN jm_mtstd_tf as mtstdtf on mtstd.mtstd_no = mtstdtf.mtstd_no
         JOIN jm_mt_id as mt on mtstdtf.mt_id = mt.mt_id
         <where>
-            <if test="prdNo != null and prdNo.length()>0">
-                and job.prd_no like #{prdNo}
+            <if test="devNo != null and devNo.length()>0">
+                and mtstd.dev_no = #{devNo}
             </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">

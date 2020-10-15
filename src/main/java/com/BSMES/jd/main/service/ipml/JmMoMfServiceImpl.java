@@ -47,6 +47,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         dto.setHpdate(new Date());
         dto.setModitime(new Date());
         dto.setState(6);
+        dto.setSbuid("MO");
     }
 
     @Override

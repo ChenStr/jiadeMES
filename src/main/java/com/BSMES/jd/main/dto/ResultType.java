@@ -34,6 +34,11 @@ public class ResultType extends BaseDTO {
     public String dep;
 
     /**
+     * 设备代号
+     */
+    public String devNo;
+
+    /**
      * 设备名称
      */
     public String devName;
