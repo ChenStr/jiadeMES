@@ -222,5 +222,14 @@ public class JmXjMfDTO extends BaseDTO implements Serializable {
      */
     public String chkRem;
 
+    /**
+     * 原料名称
+     */
+    public String rmName;
+
+    /**
+     * 操作员名称
+     */
+    public String wkName;
 
 }

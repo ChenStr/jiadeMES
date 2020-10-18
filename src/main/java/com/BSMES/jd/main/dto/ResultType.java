@@ -34,6 +34,11 @@ public class ResultType extends BaseDTO {
     public String dep;
 
     /**
+     * 车间代号
+     */
+    public String sorg;
+
+    /**
      * 设备代号
      */
     public String devNo;
@@ -69,6 +74,11 @@ public class ResultType extends BaseDTO {
     public String type;
 
     /**
+     * 其他类型
+     */
+    public String otherType;
+
+    /**
      * 开始时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -81,8 +91,13 @@ public class ResultType extends BaseDTO {
     public Date endDd;
 
     /**
-     * 布尔值
+     * 不等于类型
      */
-    public Boolean flag;
+    public String notType;
+
+    /**
+     * 不等于部门
+     */
+    public String notSorg;
 
 }

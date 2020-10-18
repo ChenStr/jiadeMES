@@ -50,6 +50,13 @@ public class JmXjMfController {
         return result;
     }
 
+    @PostMapping("/bad")
+    public CommonReturn badJmXjMf(@RequestBody List<JmXjMfDTO> dtos){
+        CommonReturn result = new CommonReturn();
+        result = jmXjMfService.saveXjMfs(dtos);
+        return result;
+    }
+
     @PutMapping()
     public CommonReturn editJmXjMf(@RequestBody JmXjMfDTO dto){
         CommonReturn result = new CommonReturn();

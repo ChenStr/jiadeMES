@@ -91,4 +91,11 @@ public class JmXj2TfDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal chkValue;
 
+    public String qtyMd;
+
+    /**
+     * 状态
+     */
+    public String state;
+
 }

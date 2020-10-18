@@ -95,4 +95,11 @@ public class JmXj2TfEntity {
      */
     public BigDecimal chkValue;
 
+    public String qtyMd;
+
+    /**
+     * 状态
+     */
+    public String state;
+
 }

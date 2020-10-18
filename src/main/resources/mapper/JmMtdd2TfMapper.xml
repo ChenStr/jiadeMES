@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMtdd2TfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveJmMtdd2TfS" parameterType="com.BSMES.jd.main.dto.JmMtdd2TfDTO">
+        insert into jm_mtdd2_tf (sid,cid,devps,mt_rem,wk_no,rem,mt_id,chk_std,mt_name,hpdate,wk_name) values
+        <foreach collection="list" item="jmMtdd2Tf" index="index" separator=",">
+            (#{jmMtdd2Tf.sid}, #{jmMtdd2Tf.cid}, #{jmMtdd2Tf.devps}, #{jmMtdd2Tf.mtRem},#{jmMtdd2Tf.wkNo},
+            #{jmMtdd2Tf.rem},#{jmMtdd2Tf.mtId},#{jmMtdd2Tf.chkStd},#{jmMtdd2Tf.mtName},#{jmMtdd2Tf.hpdate},#{jmMtdd2Tf.wkName})
+        </foreach>
+    </insert>
+
+    <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmMtdd2TfDTO">
+        UPDATE jm_mtdd2_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="devps!=null">devps=#{devps},</if>
+            <if test="mtRem!=null">mt_rem=#{mtRem},</if>
+            <if test="wkNo!=null">wk_no=#{wkNo},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="mtId!=null">mt_id=#{mtId},</if>
+            <if test="chkStd!=null">chk_std=#{chkStd},</if>
+            <if test="mtName!=null">mt_name=#{mtName},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+            <if test="wkName!=null">wk_name=#{wkName},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
+
+</mapper>

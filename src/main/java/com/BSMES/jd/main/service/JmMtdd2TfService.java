@@ -14,9 +14,11 @@ public interface JmMtdd2TfService extends BaseService<JmMtdd2TfEntity, JmMtdd2Tf
 
     public CommonReturn saveMtdd2(JmMtdd2TfDTO dto);
 
+    public CommonReturn saveMtdd2s(List<JmMtdd2TfDTO> dtos);
+
     public CommonReturn editMtdd2(JmMtdd2TfDTO dto);
 
-    public CommonReturn delMtdd2(List<String> mtstdNos,List<Integer> cids);
+    public CommonReturn delMtdd2(List<String> sids,List<Integer> cids);
 
     /**
      * 获取全部的物料主表 分页

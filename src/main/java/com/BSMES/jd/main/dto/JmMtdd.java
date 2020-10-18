@@ -20,7 +20,7 @@ public class JmMtdd {
     /**
      * 用户预设的检点项目
      */
-    public List<JmDevMtidDTO> jmDevMtidDTO;
+//    public List<JmDevMtidDTO> jmDevMtidDTO;
 
     
 

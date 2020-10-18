@@ -23,6 +23,8 @@ public class JmXjMf2 extends BaseDTO implements Serializable {
     //设备
     JmDevDTO jmDevDTO;
 
+    //计划单号
+    JmJobDTO jmJobDTO;
 
     List<JmXjMf> jmXjMfs;
 

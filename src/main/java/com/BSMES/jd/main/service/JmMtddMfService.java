@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmBomMfDTO;
+import com.BSMES.jd.main.dto.JmMtdd;
 import com.BSMES.jd.main.dto.JmMtddMfDTO;
 import com.BSMES.jd.main.entity.JmMtddMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -17,7 +18,7 @@ public interface JmMtddMfService extends BaseService<JmMtddMfEntity, JmMtddMfDTO
 
     public CommonReturn getMtddReport(JmMtddMfDTO dto);
 
-    public CommonReturn saveMtdd(JmMtddMfDTO dto);
+    public CommonReturn saveMtdd(JmMtdd dto);
 
     public CommonReturn editMtdd(JmMtddMfDTO dto);
 

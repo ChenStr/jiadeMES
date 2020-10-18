@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.JmMtdd2TfEntity;
 import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.Map;
 
 @Service
 public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2TfEntity, JmMtdd2TfDTO> implements JmMtdd2TfService {
+
+    @Autowired
+    JmMtdd2TfDao jmMtdd2TfDao;
 
     @Override
     public void beforeInsert(JmMtdd2TfDTO dto) {
@@ -62,6 +66,19 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
     }
 
     @Override
+    public CommonReturn saveMtdd2s(List<JmMtdd2TfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmMtdd2TfDao.saveJmMtdd2TfS(dtos);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn editMtdd2(JmMtdd2TfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 wk_no 是否有值
@@ -72,7 +89,8 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
             JmMtdd2TfDTO jmMtstd2TfDTO = this.selectOne(jmMtstd2TfEntityQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmMtdd2TfDao.updateJmMtdd2Tf(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

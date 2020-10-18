@@ -131,5 +131,7 @@ public class JobJoin extends BaseDTO implements Serializable {
      */
     public String sorg;
 
+    public String devid;
+
 
 }

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,13 +16,11 @@ public class JmMtdd2TfDTO extends BaseDTO {
     /**
      * 检测标准编码
      */
-    @TableId
     public String sid;
 
     /**
      * 项次
      */
-    @TableId
     public Integer cid;
 
     /**
@@ -62,6 +61,12 @@ public class JmMtdd2TfDTO extends BaseDTO {
     /**
      * 点检日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
+
+    /**
+     * 操作员名称
+     */
+    public String wkName;
 
 }

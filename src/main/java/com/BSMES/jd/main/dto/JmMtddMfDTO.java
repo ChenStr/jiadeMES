@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+/**
+ * 设备点检(主表)
+ */
 @Data
 public class JmMtddMfDTO extends BaseDTO {
 
@@ -82,13 +85,30 @@ public class JmMtddMfDTO extends BaseDTO {
     public String jbNo;
 
     /**
+     * 设备规格
+     */
+    public String spc;
+
+    /**
+     * 设备状态
+     */
+    public String devState;
+
+    /**
+     * 设备名称
+     */
+    public String devName;
+
+    /**
      * 开始时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date begDd;
 
     /**
      * 结束时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
 }

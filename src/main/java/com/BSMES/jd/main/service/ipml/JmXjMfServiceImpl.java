@@ -4,14 +4,8 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmXjMfDao;
 import com.BSMES.jd.main.dto.*;
-import com.BSMES.jd.main.entity.JmPrdtEntity;
-import com.BSMES.jd.main.entity.JmXj2TfEntity;
-import com.BSMES.jd.main.entity.JmXj3TfEntity;
-import com.BSMES.jd.main.entity.JmXjMfEntity;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmXj2TfService;
-import com.BSMES.jd.main.service.JmXj3TfService;
-import com.BSMES.jd.main.service.JmXjMfService;
+import com.BSMES.jd.main.entity.*;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -36,6 +30,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     @Autowired
     JmXj3TfService jmXj3TfService;
+
+    @Autowired
+    JmJobService jmJobService;
 
     @Autowired
     JmXjMfDao jmXjMfDao;
@@ -91,12 +88,19 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXjMf.setJmXj3TfDTOS(jmXj3TfDTOS);
                 jmXjMfs.add(jmXjMf);
             }
+            //查询Job表的数据
+            QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+            jmJobEntityQueryWrapper.eq("jb_no",jmXjMf2.getJmXjMfDTO().getJbNo()).select("sid","jb_no","state","create_date");
+            JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
+            jmXjMf2.setJmJobDTO(jmJobDTO);
             jmXjMf2.setJmXjMfs(jmXjMfs);
+
+
         }
         result.setAll(20000,jmXjMfDTOS,"操作成功");
         return result;
     }
-    @Transactional
+
     @Override
     public CommonReturn saveXjMf(JmXjMf2 dto) {
         CommonReturn result = new CommonReturn();
@@ -104,10 +108,6 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         String sid = null;
 
         //首先判断是添加还是修改
-//        QueryWrapper<JmXjMfEntity> jmXjMfEntityQueryWrapper = new QueryWrapper<>();
-//        jmXjMfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-//        //检查单是否存在
-//        JmXjMfDTO jmXjMfDTO = this.selectOne(jmXjMfEntityQueryWrapper);
         if (dto.getJmXjMfDTO()!=null && dto.getJmXjMfDTO().getSid()!=null){
             flag=false;
             sid = dto.getJmXjMfDTO().getSid();
@@ -136,6 +136,12 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                     jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
                 }
                 if (jmXjMf.getJmXj3TfDTOS()!=null && jmXjMf.getJmXj3TfDTOS().size()>0){
+                    //将数值为空的进行筛选
+                    for (JmXj3TfDTO jmXj3TfDTO : jmXjMf.getJmXj3TfDTOS()){
+                        if (jmXj3TfDTO.getChkviation()==null){
+                            jmXjMf.getJmXj3TfDTOS().remove(jmXj3TfDTO);
+                        }
+                    }
                     String sid1 = sid;
                     jmXjMf.getJmXj3TfDTOS().stream().forEach(t->t.setSid(sid1));
                     jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
@@ -144,6 +150,39 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn saveXjMfs(List<JmXjMfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        //将sid插入
+        for(int i = 0 ; i < dtos.size() ; i++){
+            //判定调度单号(制令单)是否存在 sid
+            String key = this.getKey("JmXjMf","sid",inssysvarService,dtos.get(i));
+            //首先先找到编码规则
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.eq("sname","JmXjMf");
+            String code = inssysvarService.selectOne(queryWrapper).getSbds();
+            //获取括号前的数据
+            String after = code.substring(code.indexOf('%')+1,code.length());
+            String before = key.substring(0,key.length() - after.length());
+            String keyafter = key.substring(key.length()-after.length(),key.length());
+            key = before + MyUtils.geFourNumber(Integer.parseInt(keyafter)+i,after.length());
+            dtos.get(i).setSid(key);
+            //删除所有的 jb_no 的数据
+            QueryWrapper<JmXjMfEntity> jmXjMfEntityQueryWrapper = new QueryWrapper<>();
+            jmXjMfEntityQueryWrapper.eq("jb_no",dtos.get(i).getJbNo());
+            this.remove(jmXjMfEntityQueryWrapper);
+        }
+        try{
+            jmXjMfDao.saveJmXjMfs(dtos);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
         }
         return result;
     }

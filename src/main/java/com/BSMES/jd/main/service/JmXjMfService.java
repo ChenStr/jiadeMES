@@ -19,6 +19,8 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
     public CommonReturn saveXjMf(JmXjMf2 dto);
 
+    public CommonReturn saveXjMfs(List<JmXjMfDTO> dtos);
+
     public CommonReturn editXjMf(JmXjMfDTO dto);
 
     public CommonReturn delXjMf(List<String> sids);

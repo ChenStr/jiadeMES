@@ -203,19 +203,6 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public CommonReturn getMoMfPage(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
         //添加默认排序
-//        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
-//            dto.setDescOrder("hpdate");
-//        }
-//        if (dto.getPage()==null){
-//            dto.setPage(1);
-//        }
-//        if (dto.getPageSize()==null){
-//            dto.setPageSize(10);
-//        }
-//        PageHelper.startPage(dto.getPage(), dto.getPageSize());
-//        List<JmMoMfMore> data = (List<JmMoMfMore>) this.getMoMf(dto).getData();
-//        PageInfo dataPages = new PageInfo<JmMoMfMore>(data);
-//        result.setAll(20000,dataPages,"操作成功");
         QueryWrapper queryWrapper = getQueryWrapper(dto);
         List<JmMoMfDTO> jmMoMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         List<JmMoMfMore> mores = new ArrayList<>();

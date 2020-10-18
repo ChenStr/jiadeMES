@@ -83,4 +83,19 @@ public class JmMtddMfEntity {
      */
     public String jbNo;
 
+    /**
+     * 设备规格
+     */
+    public String spc;
+
+    /**
+     * 设备状态
+     */
+    public String devState;
+
+    /**
+     * 设备名称
+     */
+    public String devName;
+
 }

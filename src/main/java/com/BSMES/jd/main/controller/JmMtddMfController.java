@@ -1,6 +1,7 @@
 package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
+import com.BSMES.jd.main.dto.JmMtdd;
 import com.BSMES.jd.main.dto.JmMtddMfDTO;
 import com.BSMES.jd.main.service.JmMtddMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -43,7 +44,7 @@ public class JmMtddMfController {
     }
 
     @PostMapping()
-    public CommonReturn saveMtId(@RequestBody JmMtddMfDTO dto){
+    public CommonReturn saveMtId(@RequestBody JmMtdd dto){
         CommonReturn result = new CommonReturn();
         result = jmMtddMfService.saveMtdd(dto);
         return result;
