@@ -30,6 +30,9 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     JmPrdtService jmPrdtService;
 
     @Autowired
+    JmPrdtutService jmPrdtutService;
+
+    @Autowired
     InssysvarService inssysvarService;
 
     @Autowired
@@ -66,16 +69,6 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 JmMoMfMore more = new JmMoMfMore();
 
                 BeanUtils.copyProperties(moMfs.get(i), more);
-                //查询部门信息
-                QueryWrapper<InsorgEntity> insorgQueryWrapper = new QueryWrapper<>();
-                insorgQueryWrapper.eq("orgcode",moMfs.get(i).getSorg());
-                InsorgDTO sorg = insorgService.selectOne(insorgQueryWrapper);
-                more.setInsorg(sorg);
-                //查询产品信息
-                QueryWrapper<JmPrdtEntity> prdtQueryWrapper = new QueryWrapper<>();
-                prdtQueryWrapper.eq("prd_no",moMfs.get(i).getPrdNo());
-                JmPrdtDTO prdt = jmPrdtService.selectOne(prdtQueryWrapper);
-                more.setJmPrdt(prdt);
 
                 //查询原料名字
                 QueryWrapper<JmBomMfEntity> jmBomMfQueryWrapper = new QueryWrapper<>();
@@ -98,6 +91,12 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                     more.setPrdts(prdtDTOS);
                 }
 
+                //查询单位
+                String ubm = moMfs.get(i).getUnit();
+                QueryWrapper<JmPrdtutEntity> jmPrdtutEntityQueryWrapper = new QueryWrapper<>();
+                jmPrdtutEntityQueryWrapper.eq("ubm",moMfs.get(i).getUnit());
+                JmPrdtutDTO jmPrdtutDTO = jmPrdtutService.selectOne(jmPrdtutEntityQueryWrapper);
+                more.setJmPrdtutDTO(jmPrdtutDTO);
 
 
                 mores.add(more);
@@ -202,58 +201,20 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Override
     public CommonReturn getMoMfPage(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
-        //添加默认排序
-        QueryWrapper queryWrapper = getQueryWrapper(dto);
-        List<JmMoMfDTO> jmMoMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
-        List<JmMoMfMore> mores = new ArrayList<>();
-        if (jmMoMfDTOS==null){
-            result.setAll(10001,null,"参数错误");
-        }else{
-            //改变数据格式
-            for (int i = 0 ; i < jmMoMfDTOS.size() ; i++){
-                JmMoMfMore more = new JmMoMfMore();
-                BeanUtils.copyProperties(jmMoMfDTOS.get(i), more);
-                //查询部门信息
-                QueryWrapper<InsorgEntity> insorgQueryWrapper = new QueryWrapper<>();
-                insorgQueryWrapper.eq("orgcode",jmMoMfDTOS.get(i).getSorg());
-                InsorgDTO sorg = insorgService.selectOne(insorgQueryWrapper);
-                more.setInsorg(sorg);
-                //查询产品信息
-                QueryWrapper<JmPrdtEntity> prdtQueryWrapper = new QueryWrapper<>();
-                prdtQueryWrapper.eq("prd_no",jmMoMfDTOS.get(i).getPrdNo());
-                JmPrdtDTO prdt = jmPrdtService.selectOne(prdtQueryWrapper);
-                more.setJmPrdt(prdt);
-                //加入总页数
-                more.setTotal(this.list().size());
-                more.setPage(dto.getPage());
-                more.setPageSize(dto.getPageSize());
-
-                //加入原料信息
-                QueryWrapper<JmBomMfEntity> jmBomMfQueryWrapper = new QueryWrapper<>();
-                jmBomMfQueryWrapper.eq("prd_no",jmMoMfDTOS.get(i).getPrdNo());
-                JmBomMfDTO jmBomMfDTO = jmBomMfService.selectOne(jmBomMfQueryWrapper);
-
-                List<JmBomTfDTO> jmBomTfDTOS = new ArrayList<>();
-                if (jmBomMfDTO!=null && jmBomMfDTO.getBomNo()!=null){
-                    QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
-                    jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
-                    jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
-                }
-
-                if (jmBomTfDTOS!=null && jmBomTfDTOS.size()>0){
-                    List<String> prdNos = new ArrayList<>();
-                    jmBomTfDTOS.stream().forEach(t->prdNos.add(t.getPrdNo()));
-                    QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
-                    prdtEntityQueryWrapper.in("prd_no",prdNos);
-                    List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(prdtEntityQueryWrapper);
-                    more.setPrdts(prdtDTOS);
-                }
-
-                mores.add(more);
-            }
-
-            result.setAll(20000,mores,"查找成功");
+        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
+            dto.setDescOrder("create_date");
         }
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<JmMoMfMore> jmMoMfMores = (List<JmMoMfMore>) this.getMoMf(dto).getData();
+        PageInfo jmMoMfMorePageInfo = new PageInfo<JmMoMfMore>(jmMoMfMores);
+        jmMoMfMorePageInfo.setTotal(((List<JmMoMfMore>) this.getMoMf(dto).getData()).size());
+        result.setAll(20000,jmMoMfMorePageInfo,"操作成功");
         return result;
     }
 

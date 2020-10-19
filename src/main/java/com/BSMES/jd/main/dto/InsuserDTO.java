@@ -45,6 +45,7 @@ public class InsuserDTO extends BaseDTO implements Serializable {
     public String password;
 
     /**
+    /**
      * 部门
      */
     public String orgcode;
@@ -133,5 +134,20 @@ public class InsuserDTO extends BaseDTO implements Serializable {
      * BS端密码
      */
     public String pswd;
+
+    /**
+     * 备注
+     */
+    public String rem;
+
+    /**
+     * 是否超管
+     */
+    public String isSupper;
+
+    /**
+     * 状态
+     */
+    public String state;
 
 }

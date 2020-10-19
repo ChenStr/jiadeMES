@@ -90,14 +90,14 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
                 job.setQtyOk(sum);
             }
             //设置首尾模
-            if (job.getStatePre().equals("1")){
+            if ("1".equals(job.getFirsMd())){
                 job.setHeader(true);
                 job.setTail(false);
             }
-            else if(job.getStatePre().equals("2")){
+            else if("2".equals(job.getFirsMd())){
                 job.setTail(true);
                 job.setHeader(false);
-            }else if(job.getStatePre().equals("3")){
+            }else if("3".equals(job.getFirsMd())){
                 job.setTail(true);
                 job.setHeader(true);
             }else{
@@ -274,14 +274,14 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         List<JobRec> jobRecs = (List<JobRec>) this.getJobRecs(jobRec).getData();
         for (JobRec job:jobRecs){
             //设置首尾模
-            if (job.getStatePre().equals("1")){
+            if ("1".equals(job.getFirsMd())){
                 job.setHeader(true);
                 job.setTail(false);
             }
-            else if(job.getStatePre().equals("2")){
+            else if("2".equals(job.getFirsMd())){
                 job.setTail(true);
                 job.setHeader(false);
-            }else if(job.getStatePre().equals("3")){
+            }else if("3".equals(job.getFirsMd())){
                 job.setTail(true);
                 job.setHeader(true);
             }else{

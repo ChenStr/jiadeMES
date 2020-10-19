@@ -141,4 +141,9 @@ public class InsuserEntity{
      */
     public String pswd;
 
+    /**
+     * 备注
+     */
+    public String rem;
+
 }

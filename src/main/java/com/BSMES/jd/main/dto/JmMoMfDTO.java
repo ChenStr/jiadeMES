@@ -240,4 +240,9 @@ public class JmMoMfDTO extends BaseDTO implements Serializable {
      */
     public Integer astRelease;
 
+    /**
+     * 部门名称
+     */
+    public String sorgName;
+
 }

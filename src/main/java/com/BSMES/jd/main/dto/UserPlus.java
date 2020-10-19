@@ -3,8 +3,10 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class UserAndWorker extends BaseDTO {
+public class UserPlus extends BaseDTO {
 
     /**
      * 账户信息
@@ -16,6 +18,15 @@ public class UserAndWorker extends BaseDTO {
      */
     JmWorkerDTO jmWorkerDTO;
 
+    /**
+     * 与人员信息
+     */
+//    List<JmDevSalDTO> jmDevSalDTOS;
+
+    /**
+     * 设备信息
+     */
+    List<JmDevDTO> jmDevDTOS;
 
 
 }

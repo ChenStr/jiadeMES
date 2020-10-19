@@ -35,7 +35,7 @@ public class JmMoMfMore extends BaseDTO implements Serializable {
      */
     public String prdNo;
 
-    public JmPrdtDTO jmPrdt;
+//    public JmPrdtDTO jmPrdt;
 
     /**
      * 数量
@@ -137,6 +137,11 @@ public class JmMoMfMore extends BaseDTO implements Serializable {
      */
     public String unit;
 
+    /**
+     * 单位对象
+     */
+    public JmPrdtutDTO jmPrdtutDTO;
+
     public String unitErp;
 
     /**
@@ -173,10 +178,10 @@ public class JmMoMfMore extends BaseDTO implements Serializable {
      */
     public String sorg;
 
-    /**
-     * 详细部门信息
-     */
-    public InsorgDTO insorg;
+//    /**
+//     * 详细部门信息
+//     */
+//    public InsorgDTO insorg;
 
     public String cusName;
 

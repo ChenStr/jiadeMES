@@ -169,4 +169,13 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public String rmBn4;
 
+    /**
+     * ⚔🈚
+     */
+    public String firsMd;
+
+    /**
+     * 是否合格
+     */
+    public String stateOk;
 }

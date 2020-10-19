@@ -11,19 +11,21 @@ import java.util.List;
 
 public interface JmBomTfService extends BaseService<JmBomTfEntity , JmBomTfDTO> {
 
-    public CommonReturn getBomMf(JmBomTfDTO dto);
+    public CommonReturn getBomTf(JmBomTfDTO dto);
 
-    public CommonReturn saveBomMf(JmBomTfDTO dto);
+    public CommonReturn saveBomTf(JmBomTfDTO dto);
 
-    public CommonReturn editBomMf(JmBomTfDTO dto);
+    public CommonReturn saveBomTfs(List<JmBomTfDTO> dtos);
 
-    public CommonReturn delBomMf(List<String> bomNos,List<Integer> itms);
+    public CommonReturn editBomTf(JmBomTfDTO dto);
+
+    public CommonReturn delBomTf(List<String> bomNos,List<Integer> itms);
 
     /**
      * 获取全部的物料表身 分页
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getBomMfPage(JmBomTfDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getBomTfPage(JmBomTfDTO dto, QueryWrapper queryWrapper);
 
 }

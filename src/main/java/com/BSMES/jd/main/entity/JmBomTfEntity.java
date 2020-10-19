@@ -1,6 +1,7 @@
 package com.BSMES.jd.main.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,11 +19,13 @@ public class JmBomTfEntity {
     /**
      * bom代号
      */
+    @TableId
     public String bomNo;
 
     /**
      * bom表表身项次
      */
+    @TableId
     public Integer itm;
 
     /**

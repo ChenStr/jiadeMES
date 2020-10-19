@@ -1,30 +1,24 @@
-package com.BSMES.jd.main.entity;
+package com.BSMES.jd.main.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 /**
- * 检验标准子表
+ * 检验标准主表
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
-@TableName("jm_chkstd_tf")
-public class JmChkstdTfEntity {
+public class JmChkstdTfDTO extends BaseDTO {
 
     /**
      * 检验标准编码
      */
-    @TableId
     public String chkstdNo;
 
     /**
      * 项次
      */
-    @TableId
     public Integer cid;
 
     /**

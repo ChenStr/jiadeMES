@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmBomMfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveBoms" parameterType="com.BSMES.jd.main.dto.JmBomTfDTO">
+        insert into jm_bom_tf (bom_no,itm,prd_no,wh,unit,qty,los_rto,cst,qty_bas,id_no,prd_no_chg,unit_erp,zc_no,prd_mark,keyparts,kp_desc,feederspc,usin_no,zb_no) values
+        <foreach collection="list" item="jmBomMf" index="index" separator=",">
+--         cast(#{jmBomMf.qtyBas,jdbcType=DECIMAL} as decimal(22,8))
+            (#{jmBomMf.bomNo}, #{jmBomMf.itm}, #{jmBomMf.prdNo}, #{jmBomMf.wh},#{jmBomMf.unit},
+            cast(#{jmBomMf.qty,jdbcType=DECIMAL} as decimal(22,8)),cast(#{jmBomMf.losRto,jdbcType=DECIMAL} as decimal(22,8)),
+            cast(#{jmBomMf.cst,jdbcType=DECIMAL} as decimal(22,8)),cast(#{jmBomMf.qtyBas,jdbcType=DECIMAL} as decimal(22,8)),
+            #{jmBomMf.idNo},#{jmBomMf.prdNoChg},#{jmBomMf.unitErp},#{jmBomMf.zcNo},
+            #{jmBomMf.prdMark},#{jmBomMf.keyparts},#{jmBomMf.kpDesc},#{jmBomMf.feederspc},
+            #{jmBomMf.usinNo},#{jmBomMf.zbNo})
+        </foreach>
+    </insert>
+
+    <update id="updateJobRecB" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        UPDATE jm_bom_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="prdNo!=null">prd_no=#{prdNo},</if>
+            <if test="wh!=null">wh=#{wh},</if>
+            <if test="unit!=null">unit=#{unit},</if>
+            <if test="qty!=null">qty=#{qty},</if>
+            <if test="losRto!=null">los_rto=#{losRto},</if>
+            <if test="cst!=null">cst=#{cst},</if>
+            <if test="qtyBas!=null">qty_bas=#{qtyBas},</if>
+            <if test="idNo!=null">id_no=#{idNo},</if>
+            <if test="prdNoChg!=null">prd_no_chg=#{prdNoChg},</if>
+            <if test="unitErp!=null">unit_erp=#{unitErp},</if>
+            <if test="zcNo!=null">zc_no=#{zcNo},</if>
+            <if test="prdMark!=null">prd_mark=#{prdMark},</if>
+            <if test="keyparts!=null">keyparts=#{keyparts},</if>
+            <if test="kpDesc!=null">kp_desc=#{kpDesc},</if>
+            <if test="feederspc!=null">feederspc=#{feederspc},</if>
+            <if test="usinNo!=null">usin_no=#{usinNo},</if>
+            <if test="zbNo!=null">zb_no=#{zbNo},</if>
+        </trim>
+        WHERE bom_no=#{bomNo} and itm=#{itm}
+    </update>
+</mapper>

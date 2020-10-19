@@ -240,4 +240,9 @@ public class JmMoMfEntity {
      * 车间下达(判断是否是MES下达的数据)
      */
     public Integer astRelease;
+
+    /**
+     * 部门名称
+     */
+    public String sorgName;
 }

@@ -167,4 +167,14 @@ public class JmJobRecEntity {
      * 原料4批号
      */
     public String rmBn4;
+
+    /**
+     * ⚔🈚
+     */
+    public String firsMd;
+
+    /**
+     * 是否合格
+     */
+    public String stateOk;
 }

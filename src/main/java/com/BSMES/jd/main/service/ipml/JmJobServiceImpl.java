@@ -108,11 +108,19 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
             List<JmBomTfDTO> jmBomTfDTO = jmBomTfService.select(jmBomTfEntityQueryWrapper);
             List<String> prdNos = new ArrayList<>();
-            jmBomTfDTO.stream().forEach(T->prdNos.add(T.getPrdNo()));
+            for (int i=0; i < jmBomTfDTO.size(); i++){
+                if (jmBomTfDTO.get(i)!=null && jmBomTfDTO.get(i).getPrdNo()!=null){
+                    prdNos.add(jmBomTfDTO.get(i).getPrdNo());
+                }
+            }
             QueryWrapper<JmPrdtEntity> jmPrdtEntityQueryWrapper = new QueryWrapper<>();
             jmPrdtEntityQueryWrapper.in("prd_no",prdNos);
-            List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(jmPrdtEntityQueryWrapper);
-            jobJoin1.setPrdts(prdtDTOS);
+            if (prdNos!=null && prdNos.size()>0){
+                List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(jmPrdtEntityQueryWrapper);
+                if (prdtDTOS!=null && prdtDTOS.size()>0){
+                    jobJoin1.setPrdts(prdtDTOS);
+                }
+            }
             //已生产数量给算出来
             BigDecimal sum = new BigDecimal("0");
             QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();

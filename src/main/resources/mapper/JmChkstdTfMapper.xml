@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmChkstdTfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="insertJmChkstdTfs" parameterType="com.BSMES.jd.main.dto.JmChkstdTfDTO">
+        insert into jm_chkstd_tf (chkstd_no,cid,chk_no,chk_para,para_min,para_max,para_unit,tl_no,chk_rem,chk_file,rem,ts_no,chk_id) values
+        <foreach collection="list" item="jmChkstdTf" index="index" separator=",">
+--         cast(#{jmChkstdTf.paraMax,jdbcType=DECIMAL} as decimal(22,8))
+            (#{jmChkstdTf.chkstdNo}, #{jmChkstdTf.cid}, #{jmChkstdTf.chkNo}, #{jmChkstdTf.chkPara},
+            cast(#{jmChkstdTf.paraMin,jdbcType=DECIMAL} as decimal(22,8)),cast(#{jmChkstdTf.paraMax,jdbcType=DECIMAL} as decimal(22,8)),
+            #{jmChkstdTf.paraUnit},#{jmChkstdTf.tlNo},#{jmChkstdTf.chkRem},
+            #{jmChkstdTf.chkFile},#{jmChkstdTf.rem},#{jmChkstdTf.tsNo},#{jmChkstdTf.chkId})
+        </foreach>
+    </insert>
+
+    <update id="editJmChkstdTfs" parameterType="com.BSMES.jd.main.dto.JmChkstdTfDTO">
+        UPDATE jm_chkstd_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="chkNo!=null">chk_no=#{chkNo},</if>
+            <if test="chkPara!=null">chk_para=#{chkPara},</if>
+            <if test="paraMin!=null">para_min=#{paraMin},</if>
+            <if test="paraMax!=null">para_max=#{paraMax},</if>
+            <if test="paraUnit!=null">para_unit=#{paraUnit},</if>
+            <if test="tlNo!=null">tl_no=#{tlNo},</if>
+            <if test="chkRem!=null">chk_rem=#{chkRem},</if>
+            <if test="chkFile!=null">chk_file=#{chkFile},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="tsNo!=null">ts_no=#{tsNo},</if>
+            <if test="chkId!=null">chk_id=#{chkId},</if>
+        </trim>
+        WHERE opsid=#{chkstdNo} and cid=#{cid}
+    </update>
+</mapper>

@@ -70,7 +70,7 @@
         </if>
 	</select>
 
-    <resultMap id="countryPlusResultMap" type="com.BSMES.jd.main.dto.JmXjMf2">
+    <resultMap id="countryPlusResultMap" type="com.BSMES.jd.main.dto.BomPlus">
         <id column="jm_xj_mf_sid" property="jmXjMfDTO.sid"/>
         <result column="jm_xj_mf_hpdate" property="jmXjMfDTO.hpdate"/>
         <result column="jm_xj_mf_sbuid" property="jmXjMfDTO.sbuid"/>

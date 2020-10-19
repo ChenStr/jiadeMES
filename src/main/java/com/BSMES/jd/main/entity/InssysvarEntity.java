@@ -1,6 +1,7 @@
 package com.BSMES.jd.main.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ public class InssysvarEntity {
     /**
      * 变量名
      */
+    @TableId
     public String sname;
 
     /**

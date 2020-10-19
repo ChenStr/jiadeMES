@@ -143,16 +143,6 @@ public class JobRec extends BaseDTO {
     public String state;
 
     /**
-     * 是否合格
-     */
-    public String stateOk;
-
-    /**
-     * 收尾模状态
-     */
-    public String statePre;
-
-    /**
      * 检验批号
      */
     public String chkRmBn;
@@ -196,5 +186,15 @@ public class JobRec extends BaseDTO {
      * 设备号
      */
     public String rsNo;
+
+    /**
+     * ⚔🈚
+     */
+    public String firsMd;
+
+    /**
+     * 是否合格
+     */
+    public String stateOk;
 
 }

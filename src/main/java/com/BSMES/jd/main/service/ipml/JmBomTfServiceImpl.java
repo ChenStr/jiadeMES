@@ -23,6 +23,13 @@ import java.util.Map;
 
 @Service
 public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEntity , JmBomTfDTO> implements JmBomTfService {
+
+    @Autowired
+    JmBomMfService jmBomMfService;
+
+    @Autowired
+    JmBomTfDao jmBomTfDao;
+
     @Override
     public void beforeInsert(JmBomTfDTO dto) {
 
@@ -33,11 +40,8 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
 
     }
 
-    @Autowired
-    JmBomMfService jmBomMfService;
-
     @Override
-    public CommonReturn getBomMf(JmBomTfDTO dto) {
+    public CommonReturn getBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
         Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmBomTfDTO> bomTf = this.select(data);
@@ -50,7 +54,7 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
     }
 
     @Override
-    public CommonReturn saveBomMf(JmBomTfDTO dto) {
+    public CommonReturn saveBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getBomNo()) && dto.getItm()!=null ){
@@ -79,7 +83,20 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
     }
 
     @Override
-    public CommonReturn editBomMf(JmBomTfDTO dto) {
+    public CommonReturn saveBomTfs(List<JmBomTfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        try {
+            jmBomTfDao.saveBoms(dtos);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn editBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getBomNo()) && dto.getItm()!=null ){
@@ -102,12 +119,12 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
     }
 
     @Override
-    public CommonReturn delBomMf(List<String> bomNos, List<Integer> itms) {
+    public CommonReturn delBomTf(List<String> bomNos, List<Integer> itms) {
         return null;
     }
 
     @Override
-    public CommonReturn getBomMfPage(JmBomTfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getBomTfPage(JmBomTfDTO dto, QueryWrapper queryWrapper) {
         return null;
     }
 }
