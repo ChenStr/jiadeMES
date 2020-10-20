@@ -141,6 +141,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
             jmXj2TfDTO.setState("2");
             jmXj2TfDTO.setQtyMd(dto.getJmXj2TfDTO().getQtyMd());
             jmXj2TfDTO.setOpDd(dto.getJmXj2TfDTO().getOpDd());
+            jmXj2TfDTO.setSalNo(dto.getJmXj2TfDTO().getSalNo());
             jmXj2TfDao.editJmXj2Tf(jmXj2TfDTO);
             for (JmXj3TfDTO jmXj3TfDTO : dto.getJmXj3TfDTOS()){
                 jmXj3TfDao.editJmXj3Tfs(jmXj3TfDTO);

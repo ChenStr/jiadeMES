@@ -13,6 +13,8 @@ import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.main.service.JmMtddMfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -208,11 +210,22 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
     @Override
     public CommonReturn getMtddPage(JmMtddMfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMtddMfDTO> jmMtddMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
-        if (jmMtddMfDTOS==null){
-            result.setAll(10001,null,"参数错误");
-        }else{
-            result.setAll(20000,jmMtddMfDTOS,"查找成功");
+
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        try{
+            PageHelper.startPage(dto.getPage(), dto.getPageSize());
+            List<JmMtdd> dev = (List<JmMtdd>) this.getMtddPlus(dto).getData();
+            PageInfo pageInfo = new PageInfo<JmMtdd>(dev);
+            pageInfo.setTotal(((List<JmMtdd>) this.getMtddPlus(dto).getData()).size());
+            result.setAll(20000,pageInfo,"操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setAll(40000,null,"操作失败");
         }
         return result;
     }

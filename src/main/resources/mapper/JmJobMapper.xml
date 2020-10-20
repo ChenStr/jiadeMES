@@ -23,7 +23,6 @@
         JOIN jm_mo_mf as momf on momf.sid = job.sid
         JOIN jm_dev as dev on dev.dev_no = job.rs_no
         <where>
-                job.state &lt;&gt; 94
             <if test="prdNo != null and prdNo.length()>0">
                 and job.prd_no like #{prdNo}
             </if>

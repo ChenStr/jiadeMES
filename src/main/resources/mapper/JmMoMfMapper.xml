@@ -5,13 +5,82 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmMoMfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-<!--    <select id="joinTest" resultType="com.BSMES.jd.main.dao.JmMoMfDao">-->
-<!--        select * from jm_mo_mf as a join jm_prdt as b on a.prd_no = b.prd_no join insorg as c on a.sorg = c.orgcode-->
-<!--        <where>-->
-<!--            <if test="">-->
+    <select id="getMoMfMore" resultMap="countryMoMfMoreMap" resultType="com.BSMES.jd.main.dto.ResultType">
+        select mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,
+        prdt.prd_no as prdt_prd_no,prdt.name as prdt_name
+        FROM jm_mo_mf as mo
+        JOIN jm_bom_mf as bomf on mo.prd_no = bomf.prd_no
+        JOIN jm_bom_tf as bomt on bomf.bom_no = bomt.bom_no
+        JOIN jm_prdt as prdt on prdt.prd_no = bomt.prd_no
+        <where>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and jm_mo_mf.hpdate &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and jm_mo_mf.hpdate &lt;= #{endDd}
+            </if>
+            <if test="sid != null and sid.toString().length()>0" >
+                and jm_mo_mf.sid like CONCAT('%',#{sid},'%')
+            </if>
+            <if test="sorg != null and sorg.toString().length()>0" >
+                and jm_mo_mf.sorg = #{sorg}
+            </if>
+            <if test="prdNo != null and prdNo.toString().length()>0" >
+                and jm_mo_mf.prd_no = #{prdNo}
+            </if>
+            <if test="state != null and state.toString().length()>0" >
+                and jm_mo_mf.state = #{state}
+            </if>
+            <if test="prdName != null and prdName.toString().length()>0" >
+                and jm_mo_mf.prd_name like CONCAT('%',#{prdName},'%')
+            </if>
+        </where>
+    </select>
 
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
+    <resultMap id="countryMoMfMoreMap" type="com.BSMES.jd.main.dto.JmMoMfMore">
+        <id column="mo_sid" property="jmMoMfDTO.sid"/>
+        <result column="mo_sbuid" property="jmMoMfDTO.sbuid"/>
+        <result column="mo_hpdate" property="jmMoMfDTO.hpdate"/>
+        <result column="mo_prd_no" property="jmMoMfDTO.prdNo"/>
+        <result column="mo_qty" property="jmMoMfDTO.qty"/>
+        <result column="mo_qty_fin" property="jmMoMfDTO.qtyFin"/>
+        <result column="mo_beg_dd" property="jmMoMfDTO.begDd"/>
+        <result column="mo_end_dd" property="jmMoMfDTO.endDd"/>
+        <result column="mo_sta_dd" property="jmMoMfDTO.staDd"/>
+        <result column="mo_fin_dd" property="jmMoMfDTO.finDd"/>
+        <result column="mo_wh" property="jmMoMfDTO.wh"/>
+        <result column="mo_dep" property="jmMoMfDTO.dep"/>
+        <result column="mo_close_id" property="jmMoMfDTO.closeId"/>
+        <result column="mo_so_no" property="jmMoMfDTO.soNo"/>
+        <result column="mo_bom_no" property="jmMoMfDTO.bomNo"/>
+        <result column="mo_bom_no_zc" property="jmMoMfDTO.bomNoZc"/>
+        <result column="mo_mo_no_erp" property="jmMoMfDTO.moNoErp"/>
+        <result column="mo_est_dd" property="jmMoMfDTO.estDd"/>
+        <result column="mo_smake" property="jmMoMfDTO.smake"/>
+        <result column="mo_moditime" property="jmMoMfDTO.moditime"/>
+        <result column="mo_chk_man" property="jmMoMfDTO.chkMan"/>
+        <result column="mo_state" property="jmMoMfDTO.state"/>
+        <result column="mo_creftimes" property="jmMoMfDTO.creftimes"/>
+        <result column="mo_unit" property="jmMoMfDTO.unit"/>
+        <result column="mo_unit_erp" property="jmMoMfDTO.unitErp"/>
+        <result column="mo_state_pre" property="jmMoMfDTO.statePre"/>
+        <result column="mo_rem" property="jmMoMfDTO.rem"/>
+        <result column="mo_rw_id" property="jmMoMfDTO.rwId"/>
+        <result column="mo_control" property="jmMoMfDTO.control"/>
+        <result column="mo_bil_type" property="jmMoMfDTO.bilType"/>
+        <result column="mo_cus_no" property="jmMoMfDTO.cusNo"/>
+        <result column="mo_sorg" property="jmMoMfDTO.sorg"/>
+        <result column="mo_cus_name" property="jmMoMfDTO.cusName"/>
+        <result column="mo_prd_name" property="jmMoMfDTO.prdName"/>
+        <result column="mo_est_itm" property="jmMoMfDTO.estItm"/>
+        <result column="mo_mk_itm" property="jmMoMfDTO.mkItm"/>
+        <result column="mo_bomid" property="jmMoMfDTO.bomid"/>
+        <result column="mo_routingid" property="jmMoMfDTO.routingid"/>
+        <collection property="prdts" ofType="com.BSMES.jd.main.dto.JmPrdtDTO" >
+            <id column="prd_no" property="prdNo"/>
+            <result column="prd_name" property="name"/>
+        </collection>
+
+    </resultMap>
 
 </mapper>

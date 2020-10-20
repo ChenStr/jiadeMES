@@ -25,8 +25,7 @@ public class JmDevController {
         if (isPage==null || isPage==false){
             result = jmDevService.getDev(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmDevService.getDevPage(dto,queryWrapper);
+            result = jmDevService.getDevPage(dto);
         }
         return result;
     }

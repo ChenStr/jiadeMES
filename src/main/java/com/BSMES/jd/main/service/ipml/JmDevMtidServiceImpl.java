@@ -3,11 +3,14 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmDevMtidDao;
+import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.JmDevMtidDTO;
 import com.BSMES.jd.main.entity.JmDevMtidEntity;
 import com.BSMES.jd.main.service.JmDevMtidService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +31,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
     @Override
     public CommonReturn getDevMtid(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmDevMtidDTO> moulds = this.select(data);
+        List<JmDevMtidDTO> moulds = this.select(getQueryWrapper(dto));
         if(moulds.isEmpty()){
             result.setAll(20000,moulds,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -109,14 +111,53 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
     }
 
     @Override
-    public CommonReturn getDevMtidPage(JmDevMtidDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getDevMtidPage(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
-        List<JmDevMtidDTO> jmDevMtidDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
-        if (jmDevMtidDTOS==null){
-            result.setAll(10001,null,"参数错误");
-        }else{
-            result.setAll(20000,jmDevMtidDTOS,"查找成功");
+
+        if (dto.getPage()==null){
+            dto.setPage(1);
         }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        try{
+            PageHelper.startPage(dto.getPage(), dto.getPageSize());
+            List<JmDevMtidDTO> dev = (List<JmDevMtidDTO>) this.getDevMtid(dto).getData();
+            PageInfo pageInfo = new PageInfo<JmDevMtidDTO>(dev);
+            pageInfo.setTotal(((List<JmDevMtidDTO>) this.getDevMtid(dto).getData()).size());
+            result.setAll(20000,pageInfo,"操作成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setAll(40000,null,"操作失败");
+        }
+
         return result;
+    }
+
+    /**
+     * 填写筛选数据
+     * @param dto
+     * @return
+     */
+    private QueryWrapper getQueryWrapper(JmDevMtidDTO dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if (MyUtils.StringIsNull(dto.getDevNo())){
+            queryWrapper.eq("dev_no",dto.getDevNo());
+        }
+        if (MyUtils.StringIsNull(dto.getDevid())){
+            queryWrapper.eq("devid",dto.getDevid());
+        }
+        if (MyUtils.StringIsNull(dto.getMtId())){
+            queryWrapper.eq("mt_id",dto.getMtId());
+        }
+        if (MyUtils.StringIsNull(dto.getMtName())){
+            queryWrapper.eq("mt_name",dto.getMtName());
+        }
+        if (MyUtils.StringIsNull(dto.getMtRem())){
+            queryWrapper.eq("mt_rem",dto.getMtRem());
+        }
+
+        return queryWrapper;
     }
 }

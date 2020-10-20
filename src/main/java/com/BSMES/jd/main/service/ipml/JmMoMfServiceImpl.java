@@ -44,6 +44,9 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Autowired
     JmBomTfService jmBomTfService;
 
+    @Autowired
+    JmMoMfDao jmMoMfDao;
+
     @Override
     public void beforeInsert(JmMoMfDTO dto) {
         dto.setAstRelease(1);
@@ -59,53 +62,26 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     }
 
     @Override
-    public CommonReturn getMoMf(JmMoMfDTO dto) {
+    public CommonReturn getMoMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
         Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmMoMfDTO> moMfs = this.select(data);
-        List<JmMoMfMore> mores = new ArrayList<>();
+        List<JmMoMfMore> moMfs = jmMoMfDao.getMoMfMore(dto);
+
         if (moMfs!=null){
             for (int i = 0 ; i < moMfs.size() ; i++){
-                JmMoMfMore more = new JmMoMfMore();
-
-                BeanUtils.copyProperties(moMfs.get(i), more);
-
-                //查询原料名字
-                QueryWrapper<JmBomMfEntity> jmBomMfQueryWrapper = new QueryWrapper<>();
-                jmBomMfQueryWrapper.eq("prd_no",moMfs.get(i).getPrdNo());
-                JmBomMfDTO jmBomMfDTO = jmBomMfService.selectOne(jmBomMfQueryWrapper);
-
-                List<JmBomTfDTO> jmBomTfDTOS = new ArrayList<>();
-                if (jmBomMfDTO!=null && jmBomMfDTO.getBomNo()!=null){
-                    QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
-                    jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMfDTO.getBomNo());
-                    jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
-                }
-
-                if (jmBomTfDTOS!=null && jmBomTfDTOS.size()>0){
-                    List<String> prdNos = new ArrayList<>();
-                    jmBomTfDTOS.stream().forEach(t->prdNos.add(t.getPrdNo()));
-                    QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
-                    prdtEntityQueryWrapper.in("prd_no",prdNos);
-                    List<JmPrdtDTO> prdtDTOS = jmPrdtService.select(prdtEntityQueryWrapper);
-                    more.setPrdts(prdtDTOS);
-                }
-
                 //查询单位
-                String ubm = moMfs.get(i).getUnit();
+                String ubm = moMfs.get(i).getJmMoMfDTO().getUnit();
                 QueryWrapper<JmPrdtutEntity> jmPrdtutEntityQueryWrapper = new QueryWrapper<>();
-                jmPrdtutEntityQueryWrapper.eq("ubm",moMfs.get(i).getUnit());
+                jmPrdtutEntityQueryWrapper.eq("ubm",moMfs.get(i).getJmMoMfDTO().getUnit());
                 JmPrdtutDTO jmPrdtutDTO = jmPrdtutService.selectOne(jmPrdtutEntityQueryWrapper);
-                more.setJmPrdtutDTO(jmPrdtutDTO);
 
-
-                mores.add(more);
+                moMfs.get(i).setJmPrdtutDTO(jmPrdtutDTO);
             }
         }
-        if(mores.isEmpty()){
-            result.setAll(20000,mores,"没有查找结果，建议仔细核对查找条件");
+        if(moMfs.isEmpty()){
+            result.setAll(20000,moMfs,"没有查找结果，建议仔细核对查找条件");
         }else{
-            result.setAll(20000,mores,"查找成功");
+            result.setAll(20000,moMfs,"查找成功");
         }
         return result;
     }
@@ -199,7 +175,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     }
 
     @Override
-    public CommonReturn getMoMfPage(JmMoMfDTO dto) {
+    public CommonReturn getMoMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         if (dto.getDescOrder()==null && dto.getAscOrder()==null){
             dto.setDescOrder("create_date");
@@ -213,7 +189,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         PageHelper.startPage(dto.getPage(), dto.getPageSize());
         List<JmMoMfMore> jmMoMfMores = (List<JmMoMfMore>) this.getMoMf(dto).getData();
         PageInfo jmMoMfMorePageInfo = new PageInfo<JmMoMfMore>(jmMoMfMores);
-        jmMoMfMorePageInfo.setTotal(((List<JmMoMfMore>) this.getMoMf(dto).getData()).size());
+//        jmMoMfMorePageInfo.setTotal(((List<JmMoMfMore>) this.getMoMf(dto).getData()).size());
         result.setAll(20000,jmMoMfMorePageInfo,"操作成功");
         return result;
     }
@@ -226,7 +202,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     private QueryWrapper getQueryWrapper(JmMoMfDTO dto){
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.like("sid",dto.getSid());
+            queryWrapper.eq("sid",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("sorg",dto.getSorg());

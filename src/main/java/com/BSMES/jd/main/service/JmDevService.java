@@ -24,6 +24,6 @@ public interface JmDevService extends BaseService<JmDevEntity, JmDevDTO> {
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getDevPage(JmDevDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getDevPage(JmDevDTO dto);
 
 }

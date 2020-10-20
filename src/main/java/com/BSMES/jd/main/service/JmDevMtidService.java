@@ -24,6 +24,6 @@ public interface JmDevMtidService extends BaseService<JmDevMtidEntity, JmDevMtid
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getDevMtidPage(JmDevMtidDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getDevMtidPage(JmDevMtidDTO dto);
 
 }

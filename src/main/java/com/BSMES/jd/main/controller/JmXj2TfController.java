@@ -35,7 +35,7 @@ public class JmXj2TfController {
         return result;
     }
 
-    @PostMapping("savexj")
+    @PostMapping("/savexj")
     public CommonReturn saveXj2TfTo(@RequestBody JmXjMf dto){
         CommonReturn result = new CommonReturn();
         result = jmXj2TfService.saveXj2TfAndXj3Tf(dto);
@@ -64,6 +64,5 @@ public class JmXj2TfController {
         result = jmXj2TfService.checkXj2Tf(dto);
         return result;
     }
-
 
 }

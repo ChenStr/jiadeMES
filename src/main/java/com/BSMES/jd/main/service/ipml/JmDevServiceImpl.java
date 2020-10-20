@@ -3,11 +3,15 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmDevDao;
+import com.BSMES.jd.main.dto.InsuserDTO;
 import com.BSMES.jd.main.dto.JmDevDTO;
+import com.BSMES.jd.main.dto.UserPlus;
 import com.BSMES.jd.main.entity.JmDevEntity;
 import com.BSMES.jd.main.service.JmDevService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +33,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     @Override
     public CommonReturn getDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmDevDTO> devs = this.select(data);
+        List<JmDevDTO> devs = this.select(getQueryWrapper(dto));
         if(devs.isEmpty()){
             result.setAll(20000,devs,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -97,14 +100,86 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     }
 
     @Override
-    public CommonReturn getDevPage(JmDevDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getDevPage(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
-        List<JmDevDTO> jmDevDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
-        if (jmDevDTOS==null){
-            result.setAll(10001,null,"参数错误");
-        }else{
-            result.setAll(20000,jmDevDTOS,"查找成功");
+
+        if (dto.getPage()==null){
+            dto.setPage(1);
         }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<JmDevDTO> dev = (List<JmDevDTO>) this.getDev(dto).getData();
+        PageInfo pageInfo = new PageInfo<JmDevDTO>(dev);
+        pageInfo.setTotal(((List<JmDevDTO>) this.getDev(dto).getData()).size());
+        result.setAll(20000,pageInfo,"操作成功");
+
         return result;
+    }
+
+    /**
+     * 填写筛选数据
+     * @param dto
+     * @return
+     */
+    private QueryWrapper getQueryWrapper(JmDevDTO dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if (MyUtils.StringIsNull(dto.getDevNo())){
+            queryWrapper.like("dev_no",dto.getDevNo());
+        }
+        if (MyUtils.StringIsNull(dto.getName())){
+            queryWrapper.like("name",dto.getName());
+        }
+        if (MyUtils.StringIsNull(dto.getSpc())){
+            queryWrapper.eq("spc",dto.getSpc());
+        }
+        if (MyUtils.StringIsNull(dto.getRsNo())){
+            queryWrapper.like("rs_no",dto.getRsNo());
+        }
+        if (MyUtils.StringIsNull(dto.getCusname())){
+            queryWrapper.eq("cusname",dto.getCusname());
+        }
+        if (MyUtils.StringIsNull(dto.getMainNo())){
+            queryWrapper.eq("main_no",dto.getMainNo());
+        }
+        if (MyUtils.StringIsNull(dto.getDep())){
+            queryWrapper.eq("dep",dto.getDep());
+        }
+        if (dto.getMaxtime()!=null){
+            queryWrapper.eq("maxtime",dto.getMaxtime());
+        }
+        if (dto.getMaxqty()!=null){
+            queryWrapper.eq("maxqty",dto.getMaxqty());
+        }
+        if (dto.getTimeMk()!=null){
+            queryWrapper.eq("time_mk",dto.getTimeMk());
+        }
+        if (dto.getQtyMk()!=null){
+            queryWrapper.eq("qty_mk",dto.getQtyMk());
+        }
+        if (MyUtils.StringIsNull(dto.getState())){
+            queryWrapper.eq("state",dto.getState());
+        }
+        if (MyUtils.StringIsNull(dto.getDevid())){
+            queryWrapper.eq("devid",dto.getDevid());
+        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.eq("sorg",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getPicture())){
+            queryWrapper.eq("picture",dto.getPicture());
+        }
+        if (MyUtils.StringIsNull(dto.getLocation())){
+            queryWrapper.eq("location",dto.getLocation());
+        }
+        if (MyUtils.StringIsNull(dto.getIp())){
+            queryWrapper.eq("ip",dto.getIp());
+        }
+        if (MyUtils.StringIsNull(dto.getState())){
+            queryWrapper.eq("dep_name",dto.getDepName());
+        }
+        return queryWrapper;
     }
 }

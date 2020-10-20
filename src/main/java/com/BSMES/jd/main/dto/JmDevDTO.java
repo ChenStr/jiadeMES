@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 设备(加工资源)
@@ -97,5 +98,20 @@ public class JmDevDTO extends BaseDTO implements Serializable {
      * IP地址
      */
     public String ip;
-    
+
+    /**
+     * 部门名称
+     */
+    public String depName;
+
+    /**
+     * 创建时间
+     */
+    public Date hpdate;
+
+    /**
+     * 工序代号
+     */
+    public String zcNo;
+
 }

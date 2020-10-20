@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.BaseDTO;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmMoMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMoMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
 
-    public CommonReturn getMoMf(JmMoMfDTO dto);
+    public CommonReturn getMoMf(ResultType dto);
 
     public CommonReturn saveMoMf(JmMoMfDTO dto);
 
@@ -24,14 +25,6 @@ public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getMoMfPage(JmMoMfDTO dto);
-
-    /**
-     * 公共编码规则
-     * @param codeval
-     * @param val
-     * @return
-     */
-    public String getKey(String codeval,String val ,BaseService baseService, BaseDTO baseDTO);
+    public CommonReturn getMoMfPage(ResultType dto);
 
 }

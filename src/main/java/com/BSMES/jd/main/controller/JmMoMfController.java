@@ -2,6 +2,7 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmMoMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmMoMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class JmMoMfController {
     JmMoMfService jmMoMfService;
 
     @GetMapping()
-    public CommonReturn getJmMoMf(JmMoMfDTO dto, Boolean isPage){
+    public CommonReturn getJmMoMf(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmMoMfService.getMoMf(dto);
