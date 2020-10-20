@@ -102,4 +102,9 @@ public class JmXj2TfEntity {
      */
     public String state;
 
+    /**
+     * 填写人员
+     */
+    public String wkNo;
+
 }

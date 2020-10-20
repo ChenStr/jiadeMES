@@ -178,4 +178,9 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      * 是否合格
      */
     public String stateOk;
+
+    /**
+     * 重量
+     */
+    public BigDecimal qtyWt;
 }

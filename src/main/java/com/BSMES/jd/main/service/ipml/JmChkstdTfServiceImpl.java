@@ -12,6 +12,7 @@ import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.BSMES.jd.main.service.JmChkstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,11 @@ import java.util.Map;
 @Service
 public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChkstdTfEntity, JmChkstdTfDTO> implements JmChkstdTfService {
 
+    @Autowired
+    JmChkstdTfService jmChkstdTfService;
 
+    @Autowired
+    JmChkstdTfDao jmChkstdTfDao;
 
     @Override
     public void beforeInsert(JmChkstdTfDTO dto) {
@@ -67,6 +72,19 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
     }
 
     @Override
+    public CommonReturn saveChkstdTfs(List<JmChkstdTfDTO> dtos) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmChkstdTfDao.insertJmChkstdTfs(dtos);;
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public CommonReturn editChkstdTf(JmChkstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断 usrcode 是否有值
@@ -77,7 +95,8 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
             JmChkstdTfDTO chkstdTfDTO = this.selectOne(jmChkstdTfEntityQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmChkstdTfDao.editJmChkstdTfs(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

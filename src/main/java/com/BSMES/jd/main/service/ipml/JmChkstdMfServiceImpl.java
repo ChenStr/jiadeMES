@@ -4,14 +4,19 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmChkstdMfDao;
 import com.BSMES.jd.main.dto.InsorgDTO;
+import com.BSMES.jd.main.dto.JmChkstd;
 import com.BSMES.jd.main.dto.JmChkstdMfDTO;
 import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.entity.JmChkstdMfEntity;
+import com.BSMES.jd.main.entity.JmChkstdTfEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmChkstdMfService;
+import com.BSMES.jd.main.service.JmChkstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +24,11 @@ import java.util.Map;
 @Service
 public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChkstdMfEntity , JmChkstdMfDTO> implements JmChkstdMfService {
 
+    @Autowired
+    InssysvarService inssysvarService;
 
+    @Autowired
+    JmChkstdTfService jmChkstdTfService;
 
     @Override
     public void beforeInsert(JmChkstdMfDTO dto) {
@@ -44,23 +53,38 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         return result;
     }
 
+    @Transactional
     @Override
-    public CommonReturn saveChkstdMf(JmChkstdMfDTO dto) {
+    public CommonReturn saveChkstd(JmChkstd dto) {
         CommonReturn result = new CommonReturn();
-        //判断dto是否为空 判断dto的usrcode是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getChkstdNo())){
-            QueryWrapper<JmChkstdMfEntity> jmChkstdMfEntityQueryWrapper = new QueryWrapper<>();
-            jmChkstdMfEntityQueryWrapper.eq("chkstd_no",dto.getChkstdNo());
-            JmChkstdMfDTO chkstdMfDTO = this.selectOne(jmChkstdMfEntityQueryWrapper);
-            //判断 usrcode 是否重复
-            if (chkstdMfDTO==null || chkstdMfDTO.getChkstdNo()==null){
-                this.insert(dto);
-                result.setAll(20000,null,"操作成功");
-            }else{
-                result.setAll(10001,null,"部门号已经存在，不能新增!");
-            }
+        Boolean flag = true;
+        String sid = null;
+
+        //首先判断是添加还是修改
+        if (dto.getJmChkstdMfDTO()!=null && dto.getJmChkstdMfDTO().getChkstdNo()!=null){
+            flag=false;
+            sid = dto.getJmChkstdMfDTO().getChkstdNo();
+            this.edit(dto.getJmChkstdMfDTO());
         }else{
-            result.setAll(10001,null,"参数错误");
+            sid = this.getKey("JmChkstd","chkstd_no",inssysvarService,dto.getJmChkstdMfDTO());
+            dto.getJmChkstdMfDTO().setChkstdNo(sid);
+            this.insert(dto.getJmChkstdMfDTO());
+        }
+
+        try{
+
+            //如果是编辑的话先进行删除
+            if (flag==false){
+                //删除所有的原始数据
+                QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",sid);
+                jmChkstdTfService.remove(jmChkstdTfEntityQueryWrapper);
+            }
+            //将新的数据新增进去
+            jmChkstdTfService.saveChkstdTfs(dto.getJmChkstdTfDTOS());
+            result.setAll(20000,null,"");
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return result;
     }
@@ -112,11 +136,6 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         }
         return result;
     }
-
-//    @Override
-//    public InsorgDTO getTest(String id) {
-//        return null;
-//    }
 
 
 }

@@ -8,13 +8,12 @@ import com.BSMES.jd.main.entity.InsuserEntity;
 import com.BSMES.jd.main.entity.JmDevEntity;
 import com.BSMES.jd.main.entity.JmDevSalEntity;
 import com.BSMES.jd.main.entity.JmWorkerEntity;
-import com.BSMES.jd.main.service.InsuserService;
-import com.BSMES.jd.main.service.JmDevSalService;
-import com.BSMES.jd.main.service.JmDevService;
-import com.BSMES.jd.main.service.JmWorkerService;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.BSMES.jd.tools.password.PasswordUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,9 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
 
     @Autowired
     JmDevService jmDevService;
+
+    @Autowired
+    InssysvarService inssysvarService;
 
     @Override
     public void beforeInsert(InsuserDTO dto) {
@@ -76,14 +78,14 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         CommonReturn result = new CommonReturn();
         List<UserPlus> userPluses = new ArrayList<>();
         List<InsuserDTO> users = this.select(this.getQueryWrapper(dto));
-        if(users.isEmpty()){
+        if(users!=null && users.size()>0){
             for (InsuserDTO user : users){
 
                 UserPlus userPlus = new UserPlus();
 
                 //查询员工信息
                 QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
-                jmWorkerEntityQueryWrapper.eq("worker",user.getUsrcode());
+                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
                 JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
 
                 userPlus.setInsuserDTO(user);
@@ -91,10 +93,10 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
                 userPluses.add(userPlus);
 
             }
-            result.setAll(20000,users,"没有查找结果，建议仔细核对查找条件");
+            result.setAll(20000,userPluses,"没有查找结果，建议仔细核对查找条件");
         }else{
 
-            result.setAll(20000,users,"查找成功");
+            result.setAll(20000,userPluses,"查找成功");
         }
         return result;
     }
@@ -194,6 +196,9 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
     @Override
     public CommonReturn saveUser(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
+        if (dto.getUsrcode()==null){
+            dto.setUsrcode(this.getKey("User","usrcode",inssysvarService,dto));
+        }
         //判断dto是否为空 判断dto的usrcode是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getUsrcode())){
             QueryWrapper<InsuserEntity> insuserQueryWrapper = new QueryWrapper<>();
@@ -252,31 +257,42 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
     @Override
     public CommonReturn getUserPage(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
-        List<UserPlus> userAndWorkers = new ArrayList<>();
-        QueryWrapper queryWrapper = this.getQueryWrapper(dto);
-        List<InsuserDTO> insuserDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
-        if (insuserDTOS==null){
-            result.setAll(10001,null,"参数错误");
-        }else{
-            //将使用人信息也带出来
-            for (InsuserDTO user : insuserDTOS){
-                UserPlus userPlus = new UserPlus();
-                userPlus.setInsuserDTO(user);
-                //去人员表将用户的人员也找出来
-                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
-                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
-                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
-                if (jmWorkerDTO!=null && jmWorkerDTO.getWkNo()!=null){
-                    userPlus.setJmWorkerDTO(jmWorkerDTO);
-                }
-                userAndWorkers.add(userPlus);
-
-                userPlus.setPage(dto.getPage());
-                userPlus.setPageSize(dto.getPageSize());
-                userPlus.setTotal(insuserDTOS.size());
-            }
-            result.setAll(20000,insuserDTOS,"查找成功");
+        if (dto.getPage()==null){
+            dto.setPage(1);
         }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<UserPlus> userPluses = (List<UserPlus>) this.getUserPlus(dto).getData();
+        PageInfo pageInfo = new PageInfo<UserPlus>(userPluses);
+        pageInfo.setTotal(((List<UserPlus>) this.getUserPlus(dto).getData()).size());
+        result.setAll(20000,pageInfo,"操作成功");
+//        List<UserPlus> userAndWorkers = new ArrayList<>();
+//        QueryWrapper queryWrapper = this.getQueryWrapper(dto);
+//        List<InsuserDTO> insuserDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+//        if (insuserDTOS==null){
+//            result.setAll(10001,null,"参数错误");
+//        }else{
+//            //将使用人信息也带出来
+//            for (InsuserDTO user : insuserDTOS){
+//                UserPlus userPlus = new UserPlus();
+//                userPlus.setInsuserDTO(user);
+//                //去人员表将用户的人员也找出来
+//                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
+//                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
+//                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
+//                if (jmWorkerDTO!=null && jmWorkerDTO.getWkNo()!=null){
+//                    userPlus.setJmWorkerDTO(jmWorkerDTO);
+//                }
+//                userAndWorkers.add(userPlus);
+//
+//                userPlus.setPage(dto.getPage());
+//                userPlus.setPageSize(dto.getPageSize());
+//                userPlus.setTotal(insuserDTOS.size());
+//            }
+//            result.setAll(20000,insuserDTOS,"查找成功");
+//        }
         return result;
     }
 
@@ -333,7 +349,17 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
             queryWrapper.like("sicard",dto.getSicard());
         }
         //判定是否管理员
+        if(dto.getIsSupper()!=null && dto.getIsSupper()){
+            queryWrapper.eq("usrattr",1);
+        }else if (dto.getIsSupper()!=null && dto.getIsSupper()==false){
+            queryWrapper.notIn("usrattr",1);
+        }
         //状态判定
+        if(dto.getIsDisable()!=null && dto.getIsDisable()){
+            queryWrapper.notIn("usrattr",9);
+        }else if (dto.getIsDisable()!=null && dto.getIsDisable()==false){
+            queryWrapper.eq("usrattr",9);
+        }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }

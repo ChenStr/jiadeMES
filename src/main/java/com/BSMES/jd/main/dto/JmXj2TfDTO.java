@@ -98,4 +98,9 @@ public class JmXj2TfDTO extends BaseDTO implements Serializable {
      */
     public String state;
 
+    /**
+     * 填写人员
+     */
+    public String wkNo;
+
 }

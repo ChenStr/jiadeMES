@@ -16,6 +16,8 @@ public interface JmChkstdTfService extends BaseService<JmChkstdTfEntity, JmChkst
 
     public CommonReturn saveChkstdTf(JmChkstdTfDTO dto);
 
+    public CommonReturn saveChkstdTfs(List<JmChkstdTfDTO> dtos);
+
     public CommonReturn editChkstdTf(JmChkstdTfDTO dto);
 
     public CommonReturn delChkstdTf(List<String> chkstdNos,List<Integer> cid);

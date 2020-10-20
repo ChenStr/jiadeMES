@@ -69,4 +69,9 @@ public class JmJobRecBEntity {
      */
     public String spcNo;
 
+    /**
+     * 重量
+     */
+    public BigDecimal qtyWt;
+
 }

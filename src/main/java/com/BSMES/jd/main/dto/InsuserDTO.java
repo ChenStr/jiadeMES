@@ -143,11 +143,11 @@ public class InsuserDTO extends BaseDTO implements Serializable {
     /**
      * 是否超管
      */
-    public String isSupper;
+    public Boolean isSupper;
 
     /**
      * 状态
      */
-    public String state;
+    public Boolean isDisable;
 
 }

@@ -24,7 +24,7 @@ public class JmJobRecEntity {
     @TableId
     public String opsid;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     public String usr;
@@ -65,8 +65,10 @@ public class JmJobRecEntity {
      */
     public BigDecimal qtyLost;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date staDd;
 
     public String wkNo;
@@ -177,4 +179,9 @@ public class JmJobRecEntity {
      * 是否合格
      */
     public String stateOk;
+
+    /**
+     * 重量
+     */
+    public BigDecimal qtyWt;
 }

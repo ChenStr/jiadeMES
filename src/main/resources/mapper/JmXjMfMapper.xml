@@ -13,10 +13,10 @@
         mould.md_no as mould_md_no,mould.typeid as mould_typeid,mould.name as mould_name,mould.md_qty as mould_md_qty,mould.md_grp as mould_md_grp,mould.state as mould_state,mould.wh as mould_wh,mould.wh_loc as mould_wh_loc,mould.qty_max as mould_qty_max,mould.qty_mk as mould_qty_mk,mould.time_max as mould_time_max,mould.time_mk as mould_time_mk,mould.dep as mould_dep,
         dev.dev_no as dev_dev_no,dev.name as dev_name,dev.spc as dev_spc,dev.rs_no as dev_rs_no,dev.cusname as dev_cusname,dev.main_no as dev_main_no,dev.dep as dev_dep,dev.maxtime as dev_maxtime,dev.maxqty as dev_maxqty,dev.time_mk as dev_time_mk,dev.qty_mk as dev_qty_mk,dev.state as dev_state,dev.devid as dev_devid,dev.sorg as dev_sorg,dev.picture as dev_picture,dev.location as dev_location,dev.ip as dev_ip
         FROM jm_xj_mf
-        JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
-        JOIN jm_prdt as prdt on prdt.prd_no = jm_xj_mf.prd_no
-        JOIN jm_mould as mould on mould.md_no = jm_xj_mf.md_no
-        JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
+        left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
+        left JOIN jm_prdt as prdt on prdt.prd_no = jm_xj_mf.prd_no
+        left JOIN jm_mould as mould on mould.md_no = jm_xj_mf.md_no
+        left JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
 
         <where>
             <if test="type!=null and type.length()>0 and otherType!=null and otherType.length()>0 ">
@@ -70,7 +70,7 @@
         </if>
 	</select>
 
-    <resultMap id="countryPlusResultMap" type="com.BSMES.jd.main.dto.BomPlus">
+    <resultMap id="countryPlusResultMap" type="com.BSMES.jd.main.dto.JmXjMf2">
         <id column="jm_xj_mf_sid" property="jmXjMfDTO.sid"/>
         <result column="jm_xj_mf_hpdate" property="jmXjMfDTO.hpdate"/>
         <result column="jm_xj_mf_sbuid" property="jmXjMfDTO.sbuid"/>

@@ -2,6 +2,7 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.InsorgDTO;
+import com.BSMES.jd.main.dto.JmChkstd;
 import com.BSMES.jd.main.dto.JmChkstdMfDTO;
 import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -30,9 +31,9 @@ public class JmChkstdMfController {
     }
 
     @PostMapping()
-    public CommonReturn saveJmChkstdMf(@RequestBody JmChkstdMfDTO dto){
+    public CommonReturn saveJmChkstdMf(@RequestBody JmChkstd dto){
         CommonReturn result = new CommonReturn();
-        result = jmChkstdMfService.saveChkstdMf(dto);
+        result = jmChkstdMfService.saveChkstd(dto);
         return result;
     }
 
