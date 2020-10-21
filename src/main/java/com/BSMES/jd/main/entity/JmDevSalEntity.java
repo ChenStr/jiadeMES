@@ -19,17 +19,13 @@ public class JmDevSalEntity {
     /**
      * 设备代号
      */
-    public String devNo;
-
-    /**
-     * 项次
-     */
     @TableId
-    public Integer cid;
+    public String devNo;
 
     /**
      * 维护人员代号
      */
+    @TableId
     public String salNo;
 
     /**

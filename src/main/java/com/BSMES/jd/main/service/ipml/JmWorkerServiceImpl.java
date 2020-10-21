@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.JmWorkerEntity;
 import com.BSMES.jd.main.service.JmWorkerService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -98,7 +99,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
     @Override
     public CommonReturn getWorkerPage(JmWorkerDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmWorkerDTO> jmWorkerDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmWorkerDTO> jmWorkerDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmWorkerDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

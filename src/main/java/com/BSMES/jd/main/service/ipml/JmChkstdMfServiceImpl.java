@@ -14,6 +14,7 @@ import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.BSMES.jd.main.service.JmChkstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,7 +129,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     @Override
     public CommonReturn getChkstdMfPage(JmChkstdMfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmChkstdMfDTO> jmChkstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmChkstdMfDTO> jmChkstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmChkstdMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

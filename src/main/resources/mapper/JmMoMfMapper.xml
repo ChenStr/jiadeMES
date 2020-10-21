@@ -6,33 +6,36 @@
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <select id="getMoMfMore" resultMap="countryMoMfMoreMap" resultType="com.BSMES.jd.main.dto.ResultType">
-        select mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,
-        prdt.prd_no as prdt_prd_no,prdt.name as prdt_name
+        select
+        mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,
+--         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,
+        prdtut.ubm as prdtut_ubm , prdtut.umc as prdtut_umc
         FROM jm_mo_mf as mo
-        JOIN jm_bom_mf as bomf on mo.prd_no = bomf.prd_no
-        JOIN jm_bom_tf as bomt on bomf.bom_no = bomt.bom_no
-        JOIN jm_prdt as prdt on prdt.prd_no = bomt.prd_no
+--         JOIN jm_bom_mf as bomf on mo.prd_no = bomf.prd_no
+--         JOIN jm_bom_tf as bomt on bomf.bom_no = bomt.bom_no
+--         JOIN jm_prdt as prdt on prdt.prd_no = bomt.prd_no
+        left JOIN jm_prdtut as prdtut on prdtut.ubm = mo.unit
         <where>
             <if test="begDd != null and begDd.toString().length()>0" >
-                and jm_mo_mf.hpdate &gt;= #{begDd}
+                and mo.hpdate &gt;= #{begDd}
             </if>
             <if test="endDd != null and endDd.toString().length()>0" >
-                and jm_mo_mf.hpdate &lt;= #{endDd}
+                and mo.hpdate &lt;= #{endDd}
             </if>
             <if test="sid != null and sid.toString().length()>0" >
-                and jm_mo_mf.sid like CONCAT('%',#{sid},'%')
+                and mo.sid like CONCAT('%',#{sid},'%')
             </if>
             <if test="sorg != null and sorg.toString().length()>0" >
-                and jm_mo_mf.sorg = #{sorg}
+                and mo.sorg = #{sorg}
             </if>
             <if test="prdNo != null and prdNo.toString().length()>0" >
-                and jm_mo_mf.prd_no = #{prdNo}
+                and mo.prd_no = #{prdNo}
             </if>
             <if test="state != null and state.toString().length()>0" >
-                and jm_mo_mf.state = #{state}
+                and mo.state = #{state}
             </if>
             <if test="prdName != null and prdName.toString().length()>0" >
-                and jm_mo_mf.prd_name like CONCAT('%',#{prdName},'%')
+                and mo.prd_name like CONCAT('%',#{prdName},'%')
             </if>
         </where>
     </select>
@@ -76,10 +79,16 @@
         <result column="mo_mk_itm" property="jmMoMfDTO.mkItm"/>
         <result column="mo_bomid" property="jmMoMfDTO.bomid"/>
         <result column="mo_routingid" property="jmMoMfDTO.routingid"/>
-        <collection property="prdts" ofType="com.BSMES.jd.main.dto.JmPrdtDTO" >
-            <id column="prd_no" property="prdNo"/>
-            <result column="prd_name" property="name"/>
-        </collection>
+
+        <association property="jmPrdtutDTO" javaType="com.BSMES.jd.main.dto.JmPrdtutDTO">
+            <id column="prdtut_ubm" property="ubm"/>
+            <result column="prdtut_umc" property="umc"/>
+        </association>
+
+<!--        <collection property="prdts" ofType="com.BSMES.jd.main.dto.JmPrdtDTO" >-->
+<!--            <id column="prdt_prd_no" property="prdNo"/>-->
+<!--            <result column="prdt_name" property="name"/>-->
+<!--        </collection>-->
 
     </resultMap>
 

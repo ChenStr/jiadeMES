@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.service.InsorgService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -100,7 +101,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
     @Override
     public CommonReturn getSorgPage(InsorgDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<InsorgDTO> insorgDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<InsorgDTO> insorgDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (insorgDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

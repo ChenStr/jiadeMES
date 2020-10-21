@@ -33,7 +33,7 @@ public interface BaseService<T,D> extends DeepService<T> {
 
     public List<D> select(QueryWrapper<T> wrapper);
 
-    public List<D> selectPage(Object page,Object pageSize, QueryWrapper<T> queryWrapper);
+    public IPage<T> selectPage(Object page,Object pageSize, QueryWrapper<T> queryWrapper);
 
     public D selectOne(QueryWrapper<T> wrapper);
 

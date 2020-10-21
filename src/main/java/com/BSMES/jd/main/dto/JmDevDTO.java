@@ -3,6 +3,7 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -107,11 +108,23 @@ public class JmDevDTO extends BaseDTO implements Serializable {
     /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
      * 工序代号
      */
     public String zcNo;
+
+    /**
+     * 出厂日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public String staDd;
+
+    /**
+     * 模糊查询的devNo
+     */
+    public String dev_no;
 
 }

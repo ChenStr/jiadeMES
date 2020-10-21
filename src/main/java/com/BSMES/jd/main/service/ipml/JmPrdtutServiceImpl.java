@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmPrdtutEntity;
 import com.BSMES.jd.main.service.JmPrdtutService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
     @Override
     public CommonReturn getPrdtutPage(JmPrdtutDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmPrdtDTO> jmPrdtDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmPrdtDTO> jmPrdtDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmPrdtDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

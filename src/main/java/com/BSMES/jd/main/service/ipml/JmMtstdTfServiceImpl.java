@@ -15,6 +15,7 @@ import com.BSMES.jd.main.service.JmMtstdMfService;
 import com.BSMES.jd.main.service.JmMtstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -151,7 +152,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
     @Override
     public CommonReturn getMtstdTfPage(JmMtstdTfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMtstdTfDTO> jmMtstdTfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMtstdTfDTO> jmMtstdTfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmMtstdTfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

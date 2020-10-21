@@ -14,6 +14,7 @@ import com.BSMES.jd.main.service.JmXj2TfService;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -182,7 +183,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
     @Override
     public CommonReturn getXj2TfPage(JmXj2TfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmXj2TfDTO> jmXj2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmXj2TfDTO> jmXj2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmXj2TfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

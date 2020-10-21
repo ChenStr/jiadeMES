@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.JmWhEntity;
 import com.BSMES.jd.main.service.JmWhService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -98,7 +99,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
     @Override
     public CommonReturn getWhPage(JmWhDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmWhDTO> jmWhDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmWhDTO> jmWhDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmWhDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

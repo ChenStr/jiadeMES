@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -110,7 +111,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
     @Override
     public CommonReturn getMoMfPage(JmMouldDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMouldDTO> jmMouldDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMouldDTO> jmMouldDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmMouldDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

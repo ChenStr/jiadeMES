@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -308,7 +309,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Override
     public CommonReturn getJobPage(JmJobDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmJobDTO> jmJobDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmJobDTO> jmJobDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmJobDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

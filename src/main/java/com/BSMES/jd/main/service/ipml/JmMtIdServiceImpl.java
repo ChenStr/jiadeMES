@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmWhEntity;
 import com.BSMES.jd.main.service.JmMtIdService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
     @Override
     public CommonReturn getMtIdPage(JmMtIdDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMtIdDTO> jmMtIdDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMtIdDTO> jmMtIdDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmMtIdDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

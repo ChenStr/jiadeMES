@@ -64,21 +64,35 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     @Override
     public CommonReturn getMoMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         List<JmMoMfMore> moMfs = jmMoMfDao.getMoMfMore(dto);
-
-        if (moMfs!=null){
-            for (int i = 0 ; i < moMfs.size() ; i++){
-                //查询单位
-                String ubm = moMfs.get(i).getJmMoMfDTO().getUnit();
-                QueryWrapper<JmPrdtutEntity> jmPrdtutEntityQueryWrapper = new QueryWrapper<>();
-                jmPrdtutEntityQueryWrapper.eq("ubm",moMfs.get(i).getJmMoMfDTO().getUnit());
-                JmPrdtutDTO jmPrdtutDTO = jmPrdtutService.selectOne(jmPrdtutEntityQueryWrapper);
-
-                moMfs.get(i).setJmPrdtutDTO(jmPrdtutDTO);
-            }
-        }
         if(moMfs.isEmpty()){
+
+            //查询其中的原料信息
+            for (JmMoMfMore more : moMfs){
+                QueryWrapper<JmBomMfEntity> jmBomMfEntityQueryWrapper = new QueryWrapper<>();
+                jmBomMfEntityQueryWrapper.eq("prd_no",more.getJmMoMfDTO().getPrdNo());
+                JmBomMfDTO jmBomMf = jmBomMfService.selectOne(jmBomMfEntityQueryWrapper);
+                if (jmBomMf==null && jmBomMf.getBomNo()==null){
+                    break;
+                }
+
+                QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
+                jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMf.getBomNo());
+                List<JmBomTfDTO> jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
+
+                if (jmBomTfDTOS==null && jmBomTfDTOS.size()<=0){
+                    break;
+                }
+
+                List<String> prdNos = new ArrayList<>();
+                jmBomTfDTOS.stream().forEach(T->prdNos.add(T.getPrdNo()));
+                QueryWrapper<JmPrdtEntity> jmPrdtEntityQueryWrapper = new QueryWrapper<>();
+                jmPrdtEntityQueryWrapper.in("prd_no",prdNos);
+                List<JmPrdtDTO> jmPrdtDTOS = jmPrdtService.select(jmPrdtEntityQueryWrapper);
+
+                more.setPrdts(jmPrdtDTOS);
+            }
+
             result.setAll(20000,moMfs,"没有查找结果，建议仔细核对查找条件");
         }else{
             result.setAll(20000,moMfs,"查找成功");
@@ -188,8 +202,35 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         }
         PageHelper.startPage(dto.getPage(), dto.getPageSize());
         List<JmMoMfMore> jmMoMfMores = (List<JmMoMfMore>) this.getMoMf(dto).getData();
+
+        for (JmMoMfMore more : jmMoMfMores){
+            QueryWrapper<JmBomMfEntity> jmBomMfEntityQueryWrapper = new QueryWrapper<>();
+            jmBomMfEntityQueryWrapper.eq("prd_no",more.getJmMoMfDTO().getPrdNo());
+            JmBomMfDTO jmBomMf = jmBomMfService.selectOne(jmBomMfEntityQueryWrapper);
+            if (jmBomMf==null && jmBomMf.getBomNo()==null){
+                break;
+            }
+
+            QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
+            jmBomTfEntityQueryWrapper.eq("bom_no",jmBomMf.getBomNo());
+            List<JmBomTfDTO> jmBomTfDTOS = jmBomTfService.select(jmBomTfEntityQueryWrapper);
+
+            if (jmBomTfDTOS==null && jmBomTfDTOS.size()<=0){
+                break;
+            }
+
+            List<String> prdNos = new ArrayList<>();
+            jmBomTfDTOS.stream().forEach(T->prdNos.add(T.getPrdNo()));
+            if (prdNos!=null && prdNos.size()>0){
+                QueryWrapper<JmPrdtEntity> jmPrdtEntityQueryWrapper = new QueryWrapper<>();
+                jmPrdtEntityQueryWrapper.in("prd_no",prdNos);
+                List<JmPrdtDTO> jmPrdtDTOS = jmPrdtService.select(jmPrdtEntityQueryWrapper);
+                more.setPrdts(jmPrdtDTOS);
+            }
+        }
+
         PageInfo jmMoMfMorePageInfo = new PageInfo<JmMoMfMore>(jmMoMfMores);
-//        jmMoMfMorePageInfo.setTotal(((List<JmMoMfMore>) this.getMoMf(dto).getData()).size());
+
         result.setAll(20000,jmMoMfMorePageInfo,"操作成功");
         return result;
     }

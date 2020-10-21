@@ -43,7 +43,7 @@
             <if test="endDd != null and endDd.toString().length()>0" >
                 and jm_xj_mf.hpdate &lt;= #{endDd}
             </if>
-            <if test="state!=null and state.length()>0" >
+            <if test="state!=null and state.toString().length()>0" >
                 and jm_xj_mf.state = #{state}
             </if>
             <if test="devName!=null and devName.length()>0" >

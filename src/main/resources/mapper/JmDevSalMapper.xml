@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmDevSalDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveJmDevSals" parameterType="com.BSMES.jd.main.dto.JmDevSalDTO">
+        insert into jm_dev_sal (dev_no,sal_no,dep,dep_name,dev_name,hpdate,sal_name) values
+        <foreach collection="list" item="dto" index="index" separator=",">
+            (#{dto.devNo},#{dto.salNo},#{dto.dep},
+            #{dto.depName},#{dto.devName},#{dto.hpdate},#{dto.salName})
+        </foreach>
+    </insert>
+
+    <update id="editJmDevSal" parameterType="com.BSMES.jd.main.dto.JmDevSalDTO">
+        UPDATE jm_dev_sal
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dep!=null">dep=#{dep},</if>
+            <if test="depName!=null">dep_name=#{depName},</if>
+            <if test="devName!=null">dev_name=#{devName},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+            <if test="salName!=null">sal_name=#{salName},</if>
+        </trim>
+        WHERE dev_no=#{devNo} and sal_no=#{salNo}
+    </update>
+</mapper>

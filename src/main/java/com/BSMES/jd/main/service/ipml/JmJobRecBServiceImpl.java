@@ -15,6 +15,7 @@ import com.BSMES.jd.main.service.JmJobRecService;
 import com.BSMES.jd.main.service.JmJobService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -178,7 +179,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     @Override
     public CommonReturn getJobRecBPage(JmJobRecBDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmJobRecBDTO> jmJobRecBDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmJobRecBDTO> jmJobRecBDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmJobRecBDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

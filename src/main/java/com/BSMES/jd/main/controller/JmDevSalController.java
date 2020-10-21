@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmChkstdTfDTO;
 import com.BSMES.jd.main.dto.JmDevSalDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmDevSalService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,36 +20,36 @@ public class JmDevSalController {
 
 
     @GetMapping()
-    public CommonReturn getJmDevSal(JmDevSalDTO dto, Boolean isPage){
+    public CommonReturn getJmDevSal(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmDevSalService.getDevSal(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmDevSalService.getDevSalPage(dto,queryWrapper);
+            result = jmDevSalService.getDevSalPage(dto);
         }
         return result;
     }
 
     @PostMapping()
-    public CommonReturn saveJmChkstdTf(@RequestBody JmDevSalDTO dto){
+    public CommonReturn saveJmDevSal(@RequestBody List<JmDevSalDTO> dtos){
         CommonReturn result = new CommonReturn();
-        result = jmDevSalService.saveDevSal(dto);
+        result = jmDevSalService.saveDevSals(dtos);
         return result;
     }
 
     @PutMapping()
-    public CommonReturn editVar(@RequestBody JmDevSalDTO dto){
+    public CommonReturn editJmDevSal(@RequestBody JmDevSalDTO dto){
         CommonReturn result = new CommonReturn();
         result = jmDevSalService.editDevSal(dto);
         return result;
     }
 
     @DeleteMapping()
-    public CommonReturn delVar(Integer[] cids ){
+    public CommonReturn delJmDevSal(String[] devNos,String[] salNos ){
         CommonReturn result = new CommonReturn();
-        List<Integer> cids1 = java.util.Arrays.asList(cids);
-        result = jmDevSalService.delDevSal(cids1);
+        List<String> devNos1 = java.util.Arrays.asList(devNos);
+        List<String> salNos1 = java.util.Arrays.asList(salNos);
+        result = jmDevSalService.delDevSal(devNos1,salNos1);
         return result;
     }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMtRecBDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveMtRecBs" parameterType="com.BSMES.jd.main.dto.JmMtRecBDTO">
+        insert into jm_mt_rec_b (wx_no,cid,qty,rem,parts_name,prc_id,prc_name) values
+        <foreach collection="list" item="dto" index="index" separator=",">
+--         cast(#{dto.qty,jdbcType=DECIMAL} as decimal(22,8))
+            (#{dto.wxNo}, #{dto.cid},cast(#{dto.qty,jdbcType=DECIMAL} as decimal(22,8)),
+            #{dto.rem},#{dto.partsName},#{dto.prcId},#{dto.prcName})
+        </foreach>
+    </insert>
+
+    <update id="editMtRecB" parameterType="com.BSMES.jd.main.dto.JmMtRecBDTO">
+        UPDATE jm_mt_rec_b
+        <trim prefix="set" suffixOverrides=",">
+            <if test="qty!=null">qty=#{qty},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="partsName!=null">parts_name=#{partsName},</if>
+            <if test="prcId!=null">prc_id=#{prcId},</if>
+            <if test="prcName!=null">prc_name=#{prcName},</if>
+        </trim>
+        WHERE wx_no=#{wxNo} and cid=#{cid}
+    </update>
+</mapper>

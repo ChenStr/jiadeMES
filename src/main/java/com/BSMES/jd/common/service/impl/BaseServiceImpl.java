@@ -151,7 +151,8 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T> , T , D> extends D
      * @return
      */
     @Override
-    public List<D> selectPage(Object page,Object pageSize, QueryWrapper<T> queryWrapper){
+//    public List<D> selectPage(Object page,Object pageSize, QueryWrapper<T> queryWrapper){
+    public IPage<T> selectPage(Object page,Object pageSize, QueryWrapper<T> queryWrapper){
         if (page == null){
             page = 1;
         }
@@ -169,9 +170,9 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T> , T , D> extends D
         IPage<T> Ipage = new Page<>((int)page, (int)pageSize);
         //获取页数
         baseMapper.selectPage(Ipage,queryWrapper);
-        List<T> pages = Ipage.getRecords();
-        List<D> date = ConvertUtils.convert(pages,currentDtoClass());
-        return date;
+//        List<T> pages = Ipage.getRecords();
+//        List<D> date = ConvertUtils.convert(pages,currentDtoClass());
+        return baseMapper.selectPage(Ipage,queryWrapper);
     }
 
     @Override

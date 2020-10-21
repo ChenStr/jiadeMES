@@ -18,12 +18,6 @@ public class JmDevSalDTO extends BaseDTO {
     public String devNo;
 
     /**
-     * 项次
-     */
-    @TableId
-    public Integer cid;
-
-    /**
      * 维护人员代号
      */
     public String salNo;

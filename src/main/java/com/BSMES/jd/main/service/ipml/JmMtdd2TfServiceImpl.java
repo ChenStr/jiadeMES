@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.JmMtdd2TfEntity;
 import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,7 +129,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
     @Override
     public CommonReturn getMtdd2Page(JmMtdd2TfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmMtstd2TfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

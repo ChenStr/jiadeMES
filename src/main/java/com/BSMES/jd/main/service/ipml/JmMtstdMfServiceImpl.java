@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,7 +222,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     @Override
     public CommonReturn getMtstdMfPage(JmMtstdMfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmMtstdMfDTO> jmMtstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMtstdMfDTO> jmMtstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmMtstdMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

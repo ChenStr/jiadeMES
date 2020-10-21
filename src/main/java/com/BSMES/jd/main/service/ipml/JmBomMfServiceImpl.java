@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.JmBomMfService;
 import com.BSMES.jd.main.service.JmBomTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +147,7 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
     public CommonReturn getBomMfPage(JmBomMfDTO dto) {
         CommonReturn result = new CommonReturn();
         QueryWrapper queryWrapper = this.getQueryWrapper(dto);
-        List<JmBomMfDTO> jmBomMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmBomMfDTO> jmBomMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmBomMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

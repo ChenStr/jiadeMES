@@ -100,4 +100,14 @@ public class ResultType extends BaseDTO {
      */
     public String notSorg;
 
+    /**
+     * 人员代号
+     */
+    public String wkNo;
+
+    /**
+     * 人员姓名
+     */
+    public String wkName;
+
 }

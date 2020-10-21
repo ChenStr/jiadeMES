@@ -40,11 +40,18 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
     public void beforeInsert(InsuserDTO dto) {
         //首先先将cCorp默认值加上
         dto.setCCorp(0);
+        //加密密码
+        if (dto.getPswd()!=null){
+            dto.setPswd(PasswordUtils.encode(dto.getPswd()));
+        }
     }
 
     @Override
     public void beforEedit(InsuserDTO dto) {
-
+        //加密密码
+        if (dto.getPswd()!=null){
+            dto.setPswd(PasswordUtils.encode(dto.getPswd()));
+        }
     }
 
     @Override

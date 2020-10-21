@@ -13,6 +13,7 @@ import com.BSMES.jd.main.service.JmJobRecService;
 import com.BSMES.jd.main.service.JmJobService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -252,7 +253,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Override
     public CommonReturn getJobRecPage(JmJobRecDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmJobRecDTO> jmJobRecDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmJobRecDTO> jmJobRecDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmJobRecDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{

@@ -7,11 +7,13 @@ import com.BSMES.jd.main.dto.InsuserDTO;
 import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.UserPlus;
 import com.BSMES.jd.main.entity.JmDevEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,10 @@ import java.util.Map;
 
 @Service
 public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmDevDTO> implements JmDevService {
+
+    @Autowired
+    InssysvarService inssysvarService;
+
     @Override
     public void beforeInsert(JmDevDTO dto) {
 
@@ -45,6 +51,9 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     @Override
     public CommonReturn saveDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
+        if(dto.getDevNo()==null){
+            dto.setDevNo(getKey("Dev","dev_no",inssysvarService,dto));
+        }
         //判断dto是否为空 判断dto的 wk_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getDevNo())){
             QueryWrapper<JmDevEntity> devQueryWrapper = new QueryWrapper<>();
@@ -127,7 +136,9 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
         QueryWrapper queryWrapper = new QueryWrapper();
 
         if (MyUtils.StringIsNull(dto.getDevNo())){
-            queryWrapper.like("dev_no",dto.getDevNo());
+            queryWrapper.eq("dev_no",dto.getDevNo());
+        }else if(MyUtils.StringIsNull(dto.getDev_no())){
+            queryWrapper.like("dev_no",dto.getDev_no());
         }
         if (MyUtils.StringIsNull(dto.getName())){
             queryWrapper.like("name",dto.getName());

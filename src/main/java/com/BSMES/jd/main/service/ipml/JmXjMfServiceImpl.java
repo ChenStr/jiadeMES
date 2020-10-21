@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,24 +79,14 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
             jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
             //查询子表的子表信息
-            for (JmXj2TfDTO jmXj2TfDTO : jmXj2TfDTOs){
-                List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
-                JmXjMf jmXjMf = new JmXjMf();
-                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-                jmXj3TfEntityQueryWrapper.eq("sid",jmXj2TfDTO.getSid()).eq("cid",jmXj2TfDTO.getCid());
-                jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
-                jmXjMf.setJmXj2TfDTO(jmXj2TfDTO);
-                jmXjMf.setJmXj3TfDTOS(jmXj3TfDTOS);
-                jmXjMfs.add(jmXjMf);
+            if(jmXj2TfDTOs!=null && jmXj2TfDTOs.size()>0){
+                //查询Job表的数据
+                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+                jmJobEntityQueryWrapper.eq("jb_no",jmXjMf2.getJmXjMfDTO().getJbNo()).select("sid","jb_no","state","create_date");
+                JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
+                jmXjMf2.setJmJobDTO(jmJobDTO);
+                jmXjMf2.setJmXjMfs(jmXjMfs);
             }
-            //查询Job表的数据
-            QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
-            jmJobEntityQueryWrapper.eq("jb_no",jmXjMf2.getJmXjMfDTO().getJbNo()).select("sid","jb_no","state","create_date");
-            JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
-            jmXjMf2.setJmJobDTO(jmJobDTO);
-            jmXjMf2.setJmXjMfs(jmXjMfs);
-
-
         }
         result.setAll(20000,jmXjMfDTOS,"操作成功");
         return result;
@@ -239,7 +230,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn getXjMfPage(JmXjMfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        List<JmXjMfDTO> jmXjMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmXjMfDTO> jmXjMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
         if (jmXjMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
