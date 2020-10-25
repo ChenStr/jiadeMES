@@ -14,6 +14,13 @@ public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
 
     public CommonReturn getMoMf(ResultType dto);
 
+    /**
+     * 明细查找
+     * @param dto
+     * @return
+     */
+    public CommonReturn getMoNo(ResultType dto);
+
     public CommonReturn saveMoMf(JmMoMfDTO dto);
 
     public CommonReturn editMoMf(JmMoMfDTO dto);

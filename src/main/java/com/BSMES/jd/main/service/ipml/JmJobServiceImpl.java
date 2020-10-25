@@ -16,12 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , JmJobDTO> implements JmJobService {
@@ -178,7 +176,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
 
     @Transactional
     @Override
-    public CommonReturn saveJobs(JobSave jobSave) {
+    public CommonReturn saveJobs(MoSave jobSave) {
         CommonReturn result = new CommonReturn();
 
         List<JmJobDTO> dtos = jobSave.getJmJobDTOS();
@@ -343,6 +341,24 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }
         PageInfo jobPages = new PageInfo<JobJoin>(jobJoins);
         result.setAll(20000,jobPages,"操作成功");
+        return result;
+    }
+
+    @Override
+    public CommonReturn getJmJobReport(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<Report> jmJobRecBDTOS = jmJobDao.getJmJobReport(dto);
+
+        PageInfo pageInfo = new PageInfo<Report>(jmJobRecBDTOS);
+
+        result.setAll(20000,pageInfo,"操作成功");
         return result;
     }
 

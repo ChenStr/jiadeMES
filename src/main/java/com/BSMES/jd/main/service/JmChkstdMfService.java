@@ -5,6 +5,7 @@ import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.InsorgDTO;
 import com.BSMES.jd.main.dto.JmChkstd;
 import com.BSMES.jd.main.dto.JmChkstdMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmChkstdMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface JmChkstdMfService extends BaseService<JmChkstdMfEntity, JmChkstdMfDTO> {
 
-    public CommonReturn getChkstdMf(JmChkstdMfDTO dto);
+    public CommonReturn getChkstdMf(ResultType dto);
 
     /**
      * 保存表头与表身信息
@@ -30,7 +31,7 @@ public interface JmChkstdMfService extends BaseService<JmChkstdMfEntity, JmChkst
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getChkstdMfPage(JmChkstdMfDTO dto,QueryWrapper queryWrapper);
+    public CommonReturn getChkstdMfPage(ResultType dto);
 
 //    public InsorgDTO getTest(String id);
 

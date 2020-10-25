@@ -62,4 +62,14 @@ public class InsorgEntity {
      */
     public String rmb;
 
+    /**
+     * 备注
+     */
+    public String rem;
+
+    /**
+     * 排序
+     */
+    public Integer sort;
+
 }

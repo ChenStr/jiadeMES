@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 @Service
 public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntity, JmMtRecDTO> implements JmMtRecService {
@@ -42,11 +44,22 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
     public CommonReturn getMtRec(ResultType dto) {
 
         CommonReturn result = new CommonReturn();
+        List<JmMtRec> jmMtRecs = new ArrayList<>();
         List<JmMtRecDTO> mts = this.select(getQueryWrapper(dto));
         if(mts.isEmpty()){
             result.setAll(20000,mts,"没有查找结果，建议仔细核对查找条件");
         }else{
-            result.setAll(20000,mts,"查找成功");
+            //将子表里的内容带出来
+            for (JmMtRecDTO mt : mts){
+                JmMtRec jmMtRec = new JmMtRec();
+                QueryWrapper<JmMtRecBEntity> jmMtRecBEntityQueryWrapper = new QueryWrapper<>();
+                jmMtRecBEntityQueryWrapper.eq("wx_no",mt.getWxNo());
+                List<JmMtRecBDTO> jmMtRecBDTO = jmMtRecBService.select(jmMtRecBEntityQueryWrapper);
+                jmMtRec.setJmMtRecDTO(mt);
+                jmMtRec.setJmMtRecBDTOS(jmMtRecBDTO);
+                jmMtRecs.add(jmMtRec);
+            }
+            result.setAll(20000,jmMtRecs,"查找成功");
         }
         return result;
     }
@@ -118,9 +131,12 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
     public CommonReturn delMtRec(List<String> wxNos) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMtRecEntity> mtRecQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmMtRecBEntity> mtRecBEntityQueryWrapper = new QueryWrapper<>();
         mtRecQueryWrapper.in("wx_no",wxNos);
+        mtRecBEntityQueryWrapper.in("wx_no",wxNos);
         try{
             this.remove(mtRecQueryWrapper);
+            jmMtRecBService.remove(mtRecBEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -132,11 +148,23 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
     @Override
     public CommonReturn getMtRecPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmDevSalDTO> jmDevSalDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),getQueryWrapper(dto));
-        if (jmDevSalDTOS==null){
+        List<JmMtRec> jmMtRecs = new ArrayList<>();
+        IPage<JmMtRec> jmMtRecDTOs = this.selectPage(dto.getPage(),dto.getPageSize(),getQueryWrapper(dto));
+        //将子表里的内容带出来
+        for (JmMtRec mt : jmMtRecDTOs.getRecords()){
+            JmMtRec jmMtRec = new JmMtRec();
+            QueryWrapper<JmMtRecBEntity> jmMtRecBEntityQueryWrapper = new QueryWrapper<>();
+            jmMtRecBEntityQueryWrapper.eq("wx_no",mt.getJmMtRecDTO().getWxNo());
+            List<JmMtRecBDTO> jmMtRecBDTO = jmMtRecBService.select(jmMtRecBEntityQueryWrapper);
+            jmMtRec.setJmMtRecDTO(mt.getJmMtRecDTO());
+            jmMtRec.setJmMtRecBDTOS(jmMtRecBDTO);
+            jmMtRecs.add(jmMtRec);
+        }
+        jmMtRecDTOs.setRecords(jmMtRecs);
+        if (jmMtRecDTOs==null){
             result.setAll(10001,null,"参数错误");
         }else{
-            result.setAll(20000,jmDevSalDTOS,"查找成功");
+            result.setAll(20000,jmMtRecDTOs,"查找成功");
         }
         return result;
     }
@@ -168,7 +196,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }
-        if (dto.getDescOrder()!=null){
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
             queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
 

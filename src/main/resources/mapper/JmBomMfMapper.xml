@@ -5,7 +5,7 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmBomMfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <select id="getJmBomMfDao" resultMap="countryBomMap" resultType="com.BSMES.jd.main.dto.ResultType">
+    <select id="getJmBomMfDao" resultMap="countryBomMap" parameterType="com.BSMES.jd.main.dto.ResultType">
         SELECT mf.bom_no as mf_bom_no,mf.sbuid as mf_sbuid,mf.hpdate as mf_hpdate,mf.pf_no as mf_pf_no,mf.prd_no as mf_prd_no,mf.name as mf_name,mf.dep as mf_dep,mf.wh as mf_wh,mf.unit as mf_unit,mf.qty as mf_qty,mf.used_time as mf_used_time,mf.time_cnt as mf_time_cnt,mf.cst as mf_cst,mf.rem as mf_rem,mf.bomid as mf_bomid,mf.unit_erp as mf_unit_erp,mf.state as mf_state,mf.smake as mf_smake,mf.creftimes as mf_creftimes,mf.sorg as mf_sorg,mf.parentid as mf_parentid,mf.prd_mark as mf_prd_mark,mf.chk_id as mf_chk_id,
         tf.bom_no as tf_bom_no,tf.itm as tf_itm,tf.prd_no as tf_prd_no,tf.wh as tf_wh,tf.unit as tf_unit,tf.qty as tf_qty,tf.los_rto as tf_los_rto,tf.cst as tf_cst,tf.qty_bas as tf_qty_bas,tf.id_no as tf_id_no,tf.prd_no_chg as tf_prd_no_chg,tf.unit_erp as tf_unit_erp,tf.zc_no as tf_zc_no,tf.prd_mark as tf_prd_mark,tf.keyparts as tf_keyparts,tf.kp_desc as tf_kp_desc,tf.feederspc as tf_feederspc,tf.usin_no as tf_usin_no,tf.zb_no as tf_zb_no
         FROM jm_bom_mf as mf

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmMtdd;
 import com.BSMES.jd.main.dto.JmMtddMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmMtddMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +19,30 @@ public class JmMtddMfController {
     JmMtddMfService jmMtddMfService;
 
     @GetMapping()
-    public CommonReturn getMtId(JmMtddMfDTO dto, Boolean isPage){
+    public CommonReturn getMtId(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmMtddMfService.getMtdd(dto);
         }else{
             QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmMtddMfService.getMtddPage(dto,queryWrapper);
+            result = jmMtddMfService.getMtddPage(dto);
         }
         return result;
     }
 
     @GetMapping("/plus")
-    public CommonReturn getMtddPlus(JmMtddMfDTO dto){
+    public CommonReturn getMtddPlus(ResultType dto){
         CommonReturn result = new CommonReturn();
         result = jmMtddMfService.getMtddPlus(dto);
         return result;
     }
 
-    @GetMapping("/report")
-    public CommonReturn getMtddReport(JmMtddMfDTO dto){
-        CommonReturn result = new CommonReturn();
-        result = jmMtddMfService.getMtddReport(dto);
-        return result;
-    }
+//    @GetMapping("/report")
+//    public CommonReturn getMtddReport(JmMtddMfDTO dto){
+//        CommonReturn result = new CommonReturn();
+//        result = jmMtddMfService.getMtddReport(dto);
+//        return result;
+//    }
 
     @PostMapping()
     public CommonReturn saveMtId(@RequestBody JmMtdd dto){

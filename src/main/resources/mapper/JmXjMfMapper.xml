@@ -46,6 +46,9 @@
             <if test="state!=null and state.toString().length()>0" >
                 and jm_xj_mf.state = #{state}
             </if>
+            <if test="wkName!=null and wkName.toString().length()>0" >
+                and jm_xj_mf.wk_name = #{wkName}
+            </if>
             <if test="devName!=null and devName.length()>0" >
                 and dev.name like  CONCAT('%',#{devName},'%')
             </if>

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.InsorgDTO;
 import com.BSMES.jd.main.dto.InssysvarDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.InsorgService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,12 @@ public class InsorgController {
     InsorgService insorgService;
 
     @GetMapping()
-    public CommonReturn getVar(InsorgDTO dto, Boolean isPage){
+    public CommonReturn getVar(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = insorgService.getSorg(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = insorgService.getSorgPage(dto,queryWrapper);
+            result = insorgService.getSorgPage(dto);
         }
         return result;
     }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class JobSave extends BaseDTO {
+public class MoSave extends BaseDTO {
 
     /**
      * 调度单信息

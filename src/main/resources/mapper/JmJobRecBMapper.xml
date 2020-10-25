@@ -30,4 +30,121 @@
         WHERE opsid=#{opsid} and cid=#{cid}
     </update>
 
+    <select id="getJobRecReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select job.dep,job.jb_no as sid,job.prd_no as prd_no,job.prd_name as prd_name,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        left join jm_job_rec as rec on recb.opsid=rec.opsid
+        left join jm_job as job on job.jb_no=rec.jb_no
+        <where>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and recb.op_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and recb.op_dd &lt;= #{endDd}
+            </if>
+            <if test="sid != null and sid.toString().length()>0" >
+                and job.sid like CONCAT('%',#{sid},'%')
+            </if>
+            <if test="dep != null and dep.toString().length()>0" >
+                and job.dep like CONCAT('%',#{dep},'%')
+            </if>
+            <if test="prdNo != null and prdNo.toString().length()>0" >
+                and job.prd_no like CONCAT('%',#{prdNo},'%')
+            </if>
+            <if test="prdName != null and prdName.toString().length()>0" >
+                and job.prd_name like CONCAT('%',#{prdName},'%')
+            </if>
+        </where>
+        group by job.dep,job.jb_no,job.prd_no,job.prd_name
+--         order by job.dep,job.jb_no,job.prd_no
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+    <select id="getJobRecMonReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select job.dep,recb.wk_no,users.usrname as wk_name,job.prd_no,job.prd_name,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        left join jm_job_rec as rec on recb.opsid=rec.opsid
+        left join jm_job as job on job.jb_no=rec.jb_no
+        left join insuser as users on users.codeno=recb.wk_no
+--         where convert(date,recb.op_dd) between '2020-09-01' and '2020-09-30' and users.usrname='朱顺奎' and job.prd_no='F.D0.W02826'
+        <where>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and recb.op_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and recb.op_dd &lt;= #{endDd}
+            </if>
+            <if test="wkName != null and sid.toString().length()>0" >
+                and users.usrname like CONCAT('%',#{wkName},'%')
+            </if>
+            <if test="prdNo != null and prdNo.toString().length()>0" >
+                and job.prd_no like CONCAT('%',#{prdNo},'%')
+            </if>
+            <if test="wkNo != null and wkNo.toString().length()>0" >
+                and recb.wk_no like CONCAT('%',#{wkNo},'%')
+            </if>
+            <if test="prdName != null and prdName.toString().length()>0" >
+                and job.prd_name like CONCAT('%',#{prdName},'%')
+            </if>
+            <if test="dep != null and dep.toString().length()>0" >
+                and job.dep like CONCAT('%',#{dep},'%')
+            </if>
+        </where>
+        group by job.dep,recb.wk_no,users.usrname,job.prd_no,job.prd_name
+--         order by recb.wk_no,users.usrname,job.prd_no,job.prd_name
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+
+    <select id="getJobRecRsNoMonReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select rec.rs_no as dev_no,dev.name as dev_name,job.prd_no,job.prd_name,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        left join jm_job_rec as rec on recb.opsid=rec.opsid
+        left join jm_job as job on job.jb_no=rec.jb_no
+        left join jm_dev as dev on rec.rs_no=dev.dev_no
+--         where convert(date,recb.op_dd) between '2020-09-01' and '2020-09-30' and rec.rs_no='FAF-CC05'
+        <where>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and recb.op_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and recb.op_dd &lt;= #{endDd}
+            </if>
+            <if test="devNo != null and devNo.toString().length()>0" >
+                and rec.rs_no like CONCAT('%',#{devNo},'%')
+            </if>
+            <if test="prdNo != null and prdNo.toString().length()>0" >
+                and job.prd_no like CONCAT('%',#{prdNo},'%')
+            </if>
+            <if test="devName != null and devName.toString().length()>0" >
+                and dev.name like CONCAT('%',#{devName},'%')
+            </if>
+            <if test="prdName != null and prdName.toString().length()>0" >
+                and job.prd_name like CONCAT('%',#{prdName},'%')
+            </if>
+            <if test="dep != null and dep.toString().length()>0" >
+                and job.dep like CONCAT('%',#{dep},'%')
+            </if>
+        </where>
+        group by rec.rs_no,dev.name,job.prd_no,job.prd_name
+--         order by rec.rs_no,dev.name,job.prd_no,job.prd_name
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+
+
+
+
 </mapper>

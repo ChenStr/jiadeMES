@@ -25,7 +25,7 @@ public interface JmMtRecBService extends BaseService<JmMtRecBEntity , JmMtRecBDT
 
     public CommonReturn editMtRecB(JmMtRecBDTO dto);
 
-    public CommonReturn delMtRecB( List<String> wxNos,List<Integer> cid);
+    public CommonReturn delMtRecB( List<String> wxNos,List<Integer> cids);
 
     /**
      * 获取全部的检点项目表 分页

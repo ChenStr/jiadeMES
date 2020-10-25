@@ -5,7 +5,7 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmMoMfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
-    <select id="getMoMfMore" resultMap="countryMoMfMoreMap" resultType="com.BSMES.jd.main.dto.ResultType">
+    <select id="getMoMfMore" resultMap="countryMoMfMoreMap" parameterType="com.BSMES.jd.main.dto.ResultType">
         select
         mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,
 --         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,
@@ -38,6 +38,12 @@
                 and mo.prd_name like CONCAT('%',#{prdName},'%')
             </if>
         </where>
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
     </select>
 
     <resultMap id="countryMoMfMoreMap" type="com.BSMES.jd.main.dto.JmMoMfMore">
@@ -85,11 +91,99 @@
             <result column="prdtut_umc" property="umc"/>
         </association>
 
-<!--        <collection property="prdts" ofType="com.BSMES.jd.main.dto.JmPrdtDTO" >-->
-<!--            <id column="prdt_prd_no" property="prdNo"/>-->
-<!--            <result column="prdt_name" property="name"/>-->
-<!--        </collection>-->
+    </resultMap>
 
+    <select id="getMoNo" resultMap="MoNoSave" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.end_dd as mo_end_dd,mo.moditime as mo_moditime,mo.state as mo_state,mo.unit as mo_unit,mo.rem as mo_rem,mo.sorg as mo_sorg,mo.prd_name as mo_prd_name,mo.qty_alled as mo_qty_alled,mo.qty_ast as mo_qty_ast,mo.ast_dd as mo_ast_dd,mo.ast_release as mo_ast_release,
+        job.sid as job_sid,job.cid as job_cid,job.jb_no as job_jb_no,job.prd_no as job_prd_no,job.prd_name as job_prd_name,job.unit as job_unit,job.qty as job_qty,job.beg_dd as job_beg_dd,job.end_dd as job_end_dd,job.rs_no as job_rs_no,job.dev_name as job_dev_name,job.wk_no as job_wk_no,job.md_name as job_md_name,job.state as job_state,job.dep as job_dep,job.sorg as job_sorg,job.qty_ship as job_qty_ship,job.create_date as job_create_date,job.md_no as job_md_no,job.zc_rem as job_zc_rem,
+        rec.opsid as rec_opsid,rec.op_dd as rec_op_dd,rec.prd_no as rec_prd_no,rec.qty_cur as rec_qty_cur,rec.rs_no as rec_rs_no,rec.jb_no as rec_jb_no,rec.qty_wt as rec_qty_wt,rec.qty_lost as rec_qty_lost,rec.end_dd as rec_end_dd,rec.rm_bn1 as rec_rm_bn1,rec.rm_bn2 as rec_rm_bn2,rec.rm_bn3 as rec_rm_bn3,rec.rm_bn4 as rec_rm_bn4,rec.qty_rm1 as rec_qty_rm1,rec.qty_rm2 as rec_qty_rm2,rec.qty_rm3 as rec_qty_rm3,rec.qty_rm4 as rec_qty_rm4,rec.firs_md as rec_firs_md,rec.state_ok as rec_state_ok,rec.state as rec_state,
+        recb.opsid as recb_opsid,recb.cid as recb_cid,recb.wk_no as recb_wk_no,recb.qty_ok as recb_qty_ok,recb.qty_lost as recb_qty_lost,recb.spc_no as recb_spc_no,recb.chk_no as recb_chk_no,recb.chk_rm_bn as recb_chk_rm_bn,recb.op_dd as recb_op_dd,recb.zc_no as recb_zc_no,recb.qty_wt as recb_qty_wt,recb.smake as recb_smake
+        from jm_mo_mf as mo
+        left join jm_job as job on job.sid=mo.sid
+        left join jm_job_rec as rec on rec.jb_no=job.jb_no
+        left join jm_job_rec_b as recb on recb.opsid=rec.opsid
+        <where>
+            <if test="sid != null and sid.toString().length()>0" >
+                and mo.sid = #{sid}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="MoNoSave" type="com.BSMES.jd.main.dto.MoNoSave">
+        <id column="mo_sid" property="jmMoMfDTO.sid"/>
+        <result column="mo_sbuid" property="jmMoMfDTO.sbuid"/>
+        <result column="mo_hpdate" property="jmMoMfDTO.hpdate"/>
+        <result column="mo_prd_no" property="jmMoMfDTO.prdNo"/>
+        <result column="mo_qty" property="jmMoMfDTO.qty"/>
+        <result column="mo_end_dd" property="jmMoMfDTO.endDd"/>
+        <result column="mo_moditime" property="jmMoMfDTO.moditime"/>
+        <result column="mo_state" property="jmMoMfDTO.state"/>
+        <result column="mo_unit" property="jmMoMfDTO.unit"/>
+        <result column="mo_rem" property="jmMoMfDTO.rem"/>
+        <result column="mo_sorg" property="jmMoMfDTO.sorg"/>
+        <result column="mo_prd_name" property="jmMoMfDTO.prdName"/>
+        <result column="mo_qty_alled" property="jmMoMfDTO.qtyAlled"/>
+        <result column="mo_qty_ast" property="jmMoMfDTO.qtyAst"/>
+        <result column="mo_ast_dd" property="jmMoMfDTO.astDd"/>
+        <result column="mo_ast_release" property="jmMoMfDTO.astRelease"/>
+        <collection property="jobs" ofType="com.BSMES.jd.main.dto.JobAndRec" column="sid">
+            <id column="job_sid" property="jobDTO.sid"/>
+            <id column="job_cid" property="jobDTO.cid"/>
+            <result column="job_jb_no" property="jobDTO.jbNo"/>
+            <result column="job_prd_no" property="jobDTO.prdNo"/>
+            <result column="job_prd_name" property="jobDTO.prdName"/>
+            <result column="job_unit" property="jobDTO.unit"/>
+            <result column="job_qty" property="jobDTO.qty"/>
+            <result column="job_beg_dd" property="jobDTO.begDd"/>
+            <result column="job_end_dd" property="jobDTO.endDd"/>
+            <result column="job_rs_no" property="jobDTO.rsNo"/>
+            <result column="job_dev_name" property="jobDTO.devName"/>
+            <result column="job_wk_no" property="jobDTO.wkNo"/>
+            <result column="job_md_name" property="jobDTO.mdName"/>
+            <result column="job_state" property="jobDTO.state"/>
+            <result column="job_dep" property="jobDTO.dep"/>
+            <result column="job_sorg" property="jobDTO.sorg"/>
+            <result column="job_qty_ship" property="jobDTO.qtyShip"/>
+            <result column="job_create_date" property="jobDTO.createDate"/>
+            <result column="job_md_no" property="jobDTO.mdNo"/>
+            <result column="job_zc_rem" property="jobDTO.zcRem"/>
+            <collection property="jobRecSaves" ofType="com.BSMES.jd.main.dto.JobRecSave" column="jb_no">
+                <id column="rec_opsid" property="jmJobRecDTO.opsid"/>
+                <result column="rec_op_dd" property="jmJobRecDTO.opDd"/>
+                <result column="rec_prd_no" property="jmJobRecDTO.prdNo"/>
+                <result column="rec_qty_cur" property="jmJobRecDTO.qtyCur"/>
+                <result column="rec_rs_no" property="jmJobRecDTO.rsNo"/>
+                <result column="rec_jb_no" property="jmJobRecDTO.jbNo"/>
+                <result column="rec_qty_wt" property="jmJobRecDTO.qtyWt"/>
+                <result column="rec_qty_lost" property="jmJobRecDTO.qtyLost"/>
+                <result column="rec_end_dd" property="jmJobRecDTO.endDd"/>
+                <result column="rec_rm_bn1" property="jmJobRecDTO.rmBn1"/>
+                <result column="rec_rm_bn2" property="jmJobRecDTO.rmBn2"/>
+                <result column="rec_rm_bn3" property="jmJobRecDTO.rmBn3"/>
+                <result column="rec_rm_bn4" property="jmJobRecDTO.rmBn4"/>
+                <result column="rec_qty_rm1" property="jmJobRecDTO.qtyRm1"/>
+                <result column="rec_qty_rm2" property="jmJobRecDTO.qtyRm2"/>
+                <result column="rec_qty_rm3" property="jmJobRecDTO.qtyRm3"/>
+                <result column="rec_qty_rm4" property="jmJobRecDTO.qtyRm4"/>
+                <result column="rec_firs_md" property="jmJobRecDTO.firsMd"/>
+                <result column="rec_state_ok" property="jmJobRecDTO.stateOk"/>
+                <result column="rec_state" property="jmJobRecDTO.state"/>
+                <collection property="jmJobRecBDTOS" ofType="com.BSMES.jd.main.dto.JmJobRecBDTO" column="opsid">
+                    <id column="recb_opsid" property="opsid"/>
+                    <id column="recb_cid" property="cid"/>
+                    <result column="recb_wk_no" property="wkNo"/>
+                    <result column="recb_qty_ok" property="qtyOk"/>
+                    <result column="recb_qty_lost" property="qtyLost"/>
+                    <result column="recb_spc_no" property="spcNo"/>
+                    <result column="recb_chk_no" property="chkNo"/>
+                    <result column="recb_chk_rm_bn" property="chkRmBn"/>
+                    <result column="recb_op_dd" property="opDd"/>
+                    <result column="recb_zc_no" property="zcNo"/>
+                    <result column="recb_qty_wt" property="qtyWt"/>
+                    <result column="recb_smake" property="smake"/>
+                </collection>
+            </collection>
+        </collection>
     </resultMap>
 
 </mapper>

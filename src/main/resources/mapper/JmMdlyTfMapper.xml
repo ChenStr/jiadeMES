@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMdlyTfDao">
+
+    <insert id="insertMdlys" useGeneratedKeys="true" keyProperty="opsid" parameterType="com.BSMES.jd.main.dto.JmMdlyTfDTO">
+        insert into jm_mdly_tf (sid,cid,md_no,wh,wh_loc,mo_no,rem,hpdate,ed_locked,typeid,mdly_no,mdly_dd,
+        md_name,jb_no) values
+        <foreach collection="list" item="dto" index="index" separator=",">
+            (#{dto.sid}, #{dto.cid}, #{dto.mdNo}, #{dto.wh},#{dto.whLoc},#{dto.moNo},#{dto.rem},
+            #{dto.hpdate},#{dto.edLocked},#{dto.typeid},#{dto.mdlyNo},#{dto.mdlyDd},#{dto.mdName},
+            #{dto.jbNo})
+        </foreach>
+    </insert>
+
+
+    <update id="editMdly" parameterType="com.BSMES.jd.main.dto.JmMdlyTfDTO">
+        UPDATE jm_mdly_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="mdNo!=null">md_no=#{mdNo},</if>
+            <if test="wh!=null">wh=#{wh},</if>
+            <if test="whLoc!=null">wh_loc=#{whLoc},</if>
+            <if test="moNo!=null">mo_no=#{moNo},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+            <if test="edLocked!=null">ed_locked=#{edLocked},</if>
+            <if test="typeid!=null">typeid=#{typeid},</if>
+            <if test="mdlyNo!=null">mdly_no=#{mdlyNo},</if>
+            <if test="mdlyDd!=null">mdly_dd=#{mdlyDd},</if>
+            <if test="mdName!=null">md_name=#{mdName},</if>
+            <if test="jbNo!=null">jb_no=#{jbNo},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
+
+</mapper>

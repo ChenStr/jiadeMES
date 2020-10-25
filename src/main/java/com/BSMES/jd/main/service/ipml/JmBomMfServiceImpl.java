@@ -17,8 +17,10 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 @Service
 public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEntity , JmBomMfDTO> implements JmBomMfService {
@@ -34,7 +36,7 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
 
     @Override
     public void beforeInsert(JmBomMfDTO dto) {
-
+        dto.setHpdate(new Date());
     }
 
     @Override
@@ -133,9 +135,12 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
     public CommonReturn delBomMf(List<String> bomNos) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmBomMfEntity> bomMfQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmBomTfEntity> jmBomTfEntityQueryWrapper = new QueryWrapper<>();
         bomMfQueryWrapper.in("bom_no",bomNos);
+        jmBomTfEntityQueryWrapper.in("bom_no",bomNos);
         try{
             this.remove(bomMfQueryWrapper);
+            jmBomTfService.remove(jmBomTfEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -160,7 +165,7 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
     public CommonReturn getBomPlusPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         if (dto.getDescOrder()==null && dto.getAscOrder()==null){
-            dto.setDescOrder("create_date");
+            dto.setDescOrder("hpdate");
         }
         if (dto.getPage()==null){
             dto.setPage(1);

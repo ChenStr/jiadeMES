@@ -232,4 +232,13 @@ public class JmXjMfEntity {
      */
     public String wkName;
 
+    /**
+     * 制单人名称
+     */
+    public String smakeName;
+
+    /**
+     * 产品名称
+     */
+    public String prdName;
 }

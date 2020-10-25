@@ -32,13 +32,12 @@ public class JmXjMfController {
     }
 
     @GetMapping()
-    public CommonReturn getJmXjMf(JmXjMfDTO dto, Boolean isPage){
+    public CommonReturn getJmXjMf(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmXjMfService.getXjMf(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmXjMfService.getXjMfPage(dto,queryWrapper);
+            result = jmXjMfService.getXjMfPage(dto);
         }
         return result;
     }

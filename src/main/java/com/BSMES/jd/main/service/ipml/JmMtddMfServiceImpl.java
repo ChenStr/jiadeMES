@@ -13,6 +13,7 @@ import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.main.service.JmMtddMfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,9 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
     }
 
     @Override
-    public CommonReturn getMtdd(JmMtddMfDTO dto) {
+    public CommonReturn getMtdd(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmMtddMfDTO> mtddMfDTOS = this.select(data);
+        List<JmMtddMfDTO> mtddMfDTOS = this.select(this.getQueryWrapper(dto));
         if(mtddMfDTOS.isEmpty()){
             result.setAll(20000,null,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -65,10 +65,9 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
      * @return
      */
     @Override
-    public CommonReturn getMtddPlus(JmMtddMfDTO dto) {
+    public CommonReturn getMtddPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
         List<JmMtdd> jmMtdds = new ArrayList<>();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
         //查询主表信息
         List<JmMtddMfDTO> mtddMfDTOS = this.select(this.getQueryWrapper(dto));
         /**
@@ -112,27 +111,27 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         return result;
     }
 
-    @Override
-    public CommonReturn getMtddReport(JmMtddMfDTO dto) {
-        CommonReturn result = new CommonReturn();
-        List<JmMtdd> jmMtdds = new ArrayList<>();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmMtddMfDTO> mtddMfDTOS = this.select(data);
-        if (dto!=null && dto.getJbNo()!=null){
-            for (JmMtddMfDTO mtddMfDTO : mtddMfDTOS){
-                JmMtdd jmMtdd = new JmMtdd();
-                QueryWrapper<JmMtdd2TfEntity> jmMtstd2TfEntityQueryWrapper = new QueryWrapper<>();
-                jmMtstd2TfEntityQueryWrapper.eq("sid",mtddMfDTO.getSid());
-                List<JmMtdd2TfDTO> jmMtdd2TfDTO = jmMtdd2TfService.select(jmMtstd2TfEntityQueryWrapper);
-                jmMtdd.setJmMtdd2TfDTOS(jmMtdd2TfDTO);
-                jmMtdd.setJmMtddMfDTO(mtddMfDTO);
-                jmMtdds.add(jmMtdd);
-            }
-        }
-        result.setAll(20000,mtddMfDTOS,"操作成功");
-
-        return result;
-    }
+//    @Override
+//    public CommonReturn getMtddReport(JmMtddMfDTO dto) {
+//        CommonReturn result = new CommonReturn();
+//        List<JmMtdd> jmMtdds = new ArrayList<>();
+//        Map<String,Object> data = MyUtils.objectToMap(dto,true);
+//        List<JmMtddMfDTO> mtddMfDTOS = this.select(data);
+//        if (dto!=null && dto.getJbNo()!=null){
+//            for (JmMtddMfDTO mtddMfDTO : mtddMfDTOS){
+//                JmMtdd jmMtdd = new JmMtdd();
+//                QueryWrapper<JmMtdd2TfEntity> jmMtstd2TfEntityQueryWrapper = new QueryWrapper<>();
+//                jmMtstd2TfEntityQueryWrapper.eq("sid",mtddMfDTO.getSid());
+//                List<JmMtdd2TfDTO> jmMtdd2TfDTO = jmMtdd2TfService.select(jmMtstd2TfEntityQueryWrapper);
+//                jmMtdd.setJmMtdd2TfDTOS(jmMtdd2TfDTO);
+//                jmMtdd.setJmMtddMfDTO(mtddMfDTO);
+//                jmMtdds.add(jmMtdd);
+//            }
+//        }
+//        result.setAll(20000,mtddMfDTOS,"操作成功");
+//
+//        return result;
+//    }
 
     @Transactional
     @Override
@@ -196,9 +195,12 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
     public CommonReturn delMtdd(List<String> sids) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMtddMfEntity> jmMtddMfEntityQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmMtdd2TfEntity> jmMtdd2TfEntityQueryWrapper = new QueryWrapper<>();
         jmMtddMfEntityQueryWrapper.in("sid",sids);
+        jmMtdd2TfEntityQueryWrapper.in("sid",sids);
         try{
             this.remove(jmMtddMfEntityQueryWrapper);
+            jmMtdd2TfService.remove(jmMtdd2TfEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -208,7 +210,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
     }
 
     @Override
-    public CommonReturn getMtddPage(JmMtddMfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getMtddPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
 
         if (dto.getPage()==null){
@@ -217,16 +219,14 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         if (dto.getPageSize()==null){
             dto.setPageSize(10);
         }
-        try{
-            PageHelper.startPage(dto.getPage(), dto.getPageSize());
-            List<JmMtdd> dev = (List<JmMtdd>) this.getMtddPlus(dto).getData();
-            PageInfo pageInfo = new PageInfo<JmMtdd>(dev);
-            pageInfo.setTotal(((List<JmMtdd>) this.getMtddPlus(dto).getData()).size());
-            result.setAll(20000,pageInfo,"操作成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            result.setAll(40000,null,"操作失败");
+
+        IPage<JmMtdd> jmMtddIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
+        if (jmMtddIPage==null){
+            result.setAll(10001,null,"参数错误");
+        }else{
+            result.setAll(20000,jmMtddIPage,"查找成功");
         }
+
         return result;
     }
 
@@ -235,7 +235,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
      * @param dto
      * @return
      */
-    private QueryWrapper getQueryWrapper(JmMtddMfDTO dto){
+    private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.like("sid",dto.getSid());
@@ -252,31 +252,10 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());
         }
-        if (MyUtils.StringIsNull(dto.getSmake())){
-            queryWrapper.like("smake",dto.getSmake());
-        }
-        if (MyUtils.StringIsNull(dto.getChkMan())){
-            queryWrapper.eq("chk_man",dto.getChkMan());
-        }
-        if(MyUtils.StringIsNull(dto.getRem())){
-            queryWrapper.eq("rem",dto.getRem());
-        }
-        if(MyUtils.StringIsNull(dto.getSorg())){
-            queryWrapper.eq("sorg",dto.getSorg());
-        }
-        if(MyUtils.StringIsNull(dto.getDevid())){
-            queryWrapper.eq("devid",dto.getDevid());
-        }
-        if(MyUtils.StringIsNull(dto.getJbNo())){
-            queryWrapper.eq("jb_no",dto.getJbNo());
-        }
-        if(MyUtils.StringIsNull(dto.getDevState())){
-            queryWrapper.eq("dev_state",dto.getSorg());
-        }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }
-        if (dto.getDescOrder()!=null){
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
             queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
         return queryWrapper;

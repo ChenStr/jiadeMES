@@ -3,10 +3,7 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobRecBDao;
-import com.BSMES.jd.main.dto.JmJobDTO;
-import com.BSMES.jd.main.dto.JmJobRecBDTO;
-import com.BSMES.jd.main.dto.JmJobRecDTO;
-import com.BSMES.jd.main.dto.JmMouldDTO;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmJobRecBEntity;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import com.BSMES.jd.main.entity.JmMouldEntity;
@@ -16,6 +13,8 @@ import com.BSMES.jd.main.service.JmJobService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +43,9 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     }
 
     @Override
-    public CommonReturn getJobRecB(JmJobRecBDTO dto) {
+    public CommonReturn getJobRecB(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmJobRecBDTO> jobRecBs = this.select(data);
+        List<JmJobRecBDTO> jobRecBs = this.select(this.getQueryWrapper(dto));
         if(jobRecBs.isEmpty()){
             result.setAll(20000,jobRecBs,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -177,14 +175,95 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     }
 
     @Override
-    public CommonReturn getJobRecBPage(JmJobRecBDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getJobRecBPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmJobRecBDTO> jmJobRecBDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmJobRecBDTO> jmJobRecBDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmJobRecBDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
             result.setAll(20000,jmJobRecBDTOS,"查找成功");
         }
         return result;
+    }
+
+    @Override
+    public CommonReturn getJobRecReportPage(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecReport(dto);
+
+        PageInfo pageInfo = new PageInfo<Report>(jmJobRecBDTOS);
+
+        result.setAll(20000,pageInfo,"操作成功");
+        return result;
+    }
+
+    @Override
+    public CommonReturn getJobRecMonReport(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecMonReport(dto);
+
+        PageInfo pageInfo = new PageInfo<Report>(jmJobRecBDTOS);
+
+        result.setAll(20000,pageInfo,"操作成功");
+        return result;
+    }
+
+    @Override
+    public CommonReturn getJobRecRsNoMonReport(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecRsNoMonReport(dto);
+
+        PageInfo pageInfo = new PageInfo<Report>(jmJobRecBDTOS);
+
+        result.setAll(20000,pageInfo,"操作成功");
+        return result;
+    }
+
+
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("op_dd");
+        }
+
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("opsid",dto.getSid());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("op_dd",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("op_dd",dto.getEndDd());
+        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+
+        return queryWrapper;
     }
 }

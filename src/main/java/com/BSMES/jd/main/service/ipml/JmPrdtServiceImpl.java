@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmPrdtDao;
 import com.BSMES.jd.main.dto.JmPrdtDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.service.JmPrdtService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +29,9 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
     }
 
     @Override
-    public CommonReturn getPrdt(JmPrdtDTO dto) {
+    public CommonReturn getPrdt(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmPrdtDTO> prdts = this.select(data);
+        List<JmPrdtDTO> prdts = this.select(this.getQueryWrapper(dto));
         if(prdts.isEmpty()){
             result.setAll(20000,prdts,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -97,14 +98,59 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
     }
 
     @Override
-    public CommonReturn getPrdtPage(JmPrdtDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getPrdtPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmPrdtDTO> jmPrdtDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        QueryWrapper queryWrapper1 = this.getQueryWrapper(dto);
+        List<JmPrdtEntity> i = this.list(queryWrapper1);
+
+        IPage<JmPrdtDTO> jmPrdtDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmPrdtDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
             result.setAll(20000,jmPrdtDTOS,"查找成功");
         }
         return result;
+    }
+
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("prd_no");
+        }
+
+        if (MyUtils.StringIsNull(dto.getPrdNo())){
+            queryWrapper.like("prd_no",dto.getPrdNo());
+        }
+        if (MyUtils.StringIsNull(dto.getPrdName())){
+            queryWrapper.like("name",dto.getPrdName());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("knd",dto.getType());
+        }
+        if ("T".equals(dto.getNotType())){
+            //没有停用的货品
+            queryWrapper.isNull("nouse_dd");
+        }else if("F".equals(dto.getNotType())){
+            //找出停用的货品
+            queryWrapper.isNotNull("nouse_dd");
+        }
+
+//        if (dto.getBegDd()!=null){
+//            queryWrapper.ge("hpdate",dto.getBegDd());
+//        }
+//        if(dto.getEndDd()!=null){
+//            queryWrapper.le("hpdate",dto.getEndDd());
+//        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+
+
+        return queryWrapper;
     }
 }

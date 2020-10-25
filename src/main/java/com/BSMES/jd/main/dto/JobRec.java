@@ -51,6 +51,11 @@ public class JobRec extends BaseDTO {
     public String prdName;
 
     /**
+     * 产品信息
+     */
+    public JmPrdtDTO jmPrdtDTO;
+
+    /**
      * 计划产量
      */
     public BigDecimal qty;

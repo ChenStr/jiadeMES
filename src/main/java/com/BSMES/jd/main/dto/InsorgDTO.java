@@ -59,4 +59,14 @@ public class InsorgDTO extends BaseDTO implements Serializable {
      */
     public String rmb;
 
+    /**
+     * 备注
+     */
+    public String rem;
+
+    /**
+     * 排序
+     */
+    public Integer sort;
+
 }

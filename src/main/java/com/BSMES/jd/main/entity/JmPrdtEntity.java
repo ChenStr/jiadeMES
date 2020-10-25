@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -107,4 +108,21 @@ public class JmPrdtEntity {
      * 部门车间
      */
     public String sorg;
+
+    /**
+     * 停用日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date nouseDd;
+
+    /**
+     * 副单位
+     */
+    public String ut1;
+
+    /**
+     * 换算公式
+     */
+    public String formula;
+
 }

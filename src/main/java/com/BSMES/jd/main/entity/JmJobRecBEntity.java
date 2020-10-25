@@ -74,4 +74,14 @@ public class JmJobRecBEntity {
      */
     public BigDecimal qtyWt;
 
+    /**
+     * 工序
+     */
+    public String zcNo;
+
+    /**
+     * 制单人
+     */
+    public String smake;
+
 }

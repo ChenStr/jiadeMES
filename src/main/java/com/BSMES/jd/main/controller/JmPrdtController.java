@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmMouldDTO;
 import com.BSMES.jd.main.dto.JmPrdtDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmPrdtService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,12 @@ public class JmPrdtController  {
     JmPrdtService jmPrdtService;
 
     @GetMapping()
-    public CommonReturn getPrdt(JmPrdtDTO dto, Boolean isPage){
+    public CommonReturn getPrdt(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmPrdtService.getPrdt(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmPrdtService.getPrdtPage(dto,queryWrapper);
+            result = jmPrdtService.getPrdtPage(dto);
         }
         return result;
     }

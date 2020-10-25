@@ -91,29 +91,6 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
     @Transactional
     @Override
     public CommonReturn saveMtstdMfPlus(JmMtstd dto) {
-//        CommonReturn result = new CommonReturn();
-//        try{
-//            //新增表头或者编辑表头
-//            QueryWrapper<JmMtstdMfEntity> jmMtstdMfEntityQueryWrapper = new QueryWrapper<>();
-//            jmMtstdMfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
-//            JmMtstdMfDTO jmMtstdMfDTO = this.selectOne(jmMtstdMfEntityQueryWrapper);
-//            if (jmMtstdMfDTO!=null && jmMtstdMfDTO.getMtstdNo()!=null){
-//                this.editMtstdMf(dto.getJmMtstdMfDTO());
-//            }else{
-//                this.saveMtstdMf(dto.getJmMtstdMfDTO());
-//            }
-//            //删除表身所有数据
-//            QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
-//            jmMtstdTfEntityQueryWrapper.eq("mtstd_no",dto.getJmMtstdMfDTO().getMtstdNo());
-//            jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
-//            //新增表身数据
-//            jmMtstdTfDao.SaveJmMtstdTfs(dto.getJmMtstdTfs());
-//            result.setAll(20000,null,"操作成功");
-//        }catch (Exception e){
-//            result.setAll(40000,null,"操作失败");
-//        }
-//        return result;
-
         CommonReturn result = new CommonReturn();
         Boolean flag = true;
         String sid = null;
@@ -201,18 +178,12 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMtstdMfEntity> mtstdMfQueryWrapper = new QueryWrapper<>();
         mtstdMfQueryWrapper.in("mtstd_no",mtstdNos);
-        List<JmMtstdMfDTO> jmMtstdMfDTOS = this.select(mtstdMfQueryWrapper);
+        QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
+        jmMtstdTfEntityQueryWrapper.eq("mtstd_no",mtstdNos);
         try{
-            if (jmMtstdMfDTOS!=null && jmMtstdMfDTOS.size()>0){
-                //查找是否有子数据
-                for (JmMtstdMfDTO jmMtstdMfDTO : jmMtstdMfDTOS){
-                    QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
-                    jmMtstdTfEntityQueryWrapper.eq("mtstd_no",jmMtstdMfDTO.getMtstdNo());
-                    jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
-                }
-                this.remove(mtstdMfQueryWrapper);
-                result.setAll(20000,null,"操作成功");
-            }
+            this.remove(mtstdMfQueryWrapper);
+            jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
+            result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
         }

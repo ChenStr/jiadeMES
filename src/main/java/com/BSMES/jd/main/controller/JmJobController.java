@@ -1,10 +1,7 @@
 package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
-import com.BSMES.jd.main.dto.JmDevDTO;
-import com.BSMES.jd.main.dto.JmJobDTO;
-import com.BSMES.jd.main.dto.JobJoin;
-import com.BSMES.jd.main.dto.JobSave;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.service.JmJobService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +42,7 @@ public class JmJobController {
 
 
     @PostMapping()
-    public CommonReturn saveJmJobs(@RequestBody JobSave jobSave){
+    public CommonReturn saveJmJobs(@RequestBody MoSave jobSave){
         CommonReturn result = new CommonReturn();
 //        result = jmJobService.saveJob(dto);
         result = jmJobService.saveJobs(jobSave);
@@ -76,6 +73,18 @@ public class JmJobController {
         List<String> sids2 = java.util.Arrays.asList(sids);
         List<Integer> cids2 = java.util.Arrays.asList(cids);
         result = jmJobService.delJob(sids2,cids2);
+        return result;
+    }
+
+    /**
+     * 车间生产月报表
+     * @param dto
+     * @return
+     */
+    @GetMapping("/monreport")
+    public CommonReturn getDayReport(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobService.getJmJobReport(dto);
         return result;
     }
 

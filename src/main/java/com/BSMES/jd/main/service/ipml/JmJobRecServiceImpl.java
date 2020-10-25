@@ -7,10 +7,8 @@ import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmJobEntity;
 import com.BSMES.jd.main.entity.JmJobRecBEntity;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmJobRecBService;
-import com.BSMES.jd.main.service.JmJobRecService;
-import com.BSMES.jd.main.service.JmJobService;
+import com.BSMES.jd.main.entity.JmPrdtEntity;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,6 +31,10 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Autowired
     JmJobRecBService jmJobRecBService;
+
+    @Autowired
+    JmPrdtService jmPrdtService;
+
 
     @Autowired
     InssysvarService inssysvarService;
@@ -110,6 +112,14 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
             List<JmJobRecBDTO> jmJobRecBDTO = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
             job.setJobRecB(jmJobRecBDTO);
             job.setQtyOk(sum);
+
+            //查找产品信息
+            if(job.getPrdNo()!=null){
+                QueryWrapper<JmPrdtEntity> jmPrdtDTOQueryWrapper = new QueryWrapper<>();
+                jmPrdtDTOQueryWrapper.eq("prd_no",job.getPrdNo());
+                JmPrdtDTO prdtDTO = jmPrdtService.selectOne(jmPrdtDTOQueryWrapper);
+                job.setJmPrdtDTO(prdtDTO);
+            }
         }
         result.setAll(20000,jobRecs,"操作成功");
         return result;

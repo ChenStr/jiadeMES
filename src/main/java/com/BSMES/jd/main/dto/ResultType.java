@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 公共条件类
@@ -27,6 +28,11 @@ public class ResultType extends BaseDTO {
      */
     private String otherId;
 
+    /**
+     * 其他单号
+     */
+    private List<String> otherIds;
+
 
     /**
      * 车间名称
@@ -47,6 +53,16 @@ public class ResultType extends BaseDTO {
      * 设备名称
      */
     public String devName;
+
+    /**
+     * 设备类型
+     */
+    public String devid;
+
+    /**
+     * 模具代号
+     */
+    public String mouldNo;
 
     /**
      * 模具名称

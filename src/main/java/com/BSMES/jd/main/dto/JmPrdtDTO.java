@@ -3,9 +3,11 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 产品表
@@ -104,4 +106,19 @@ public class JmPrdtDTO extends BaseDTO implements Serializable {
      */
     public String sorg;
 
+    /**
+     * 停用日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date nouseDd;
+
+    /**
+     * 副单位
+     */
+    public String ut1;
+
+    /**
+     * 换算公式
+     */
+    public String formula;
 }

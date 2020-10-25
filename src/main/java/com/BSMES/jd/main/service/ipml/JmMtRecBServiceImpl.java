@@ -105,11 +105,11 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
     }
 
     @Override
-    public CommonReturn delMtRecB(List<String> wxNos, List<Integer> salNos) {
+    public CommonReturn delMtRecB(List<String> wxNos, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmMtRecBEntity> mtRecQueryWrapper = new QueryWrapper<>();
         mtRecQueryWrapper.in("wx_no",wxNos);
-        mtRecQueryWrapper.in("sal_no",salNos);
+        mtRecQueryWrapper.in("cids",cids);
         try{
             this.remove(mtRecQueryWrapper);
             result.setAll(20000,null,"操作成功");
@@ -153,7 +153,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }
-        if (dto.getDescOrder()!=null){
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
             queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
 

@@ -21,16 +21,13 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    JmMtstdMfService service;
+    JmMoMfService service;
 
 
     @GetMapping()
     public CommonReturn test(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        BigDecimal a = new BigDecimal("3.6");
-        BigDecimal b = new BigDecimal("1.673");
-        a = a.add(b);
-        result.setAll(20000,a,"加密成功");
+        result = service.getMoNo(dto);
         return result;
     }
 

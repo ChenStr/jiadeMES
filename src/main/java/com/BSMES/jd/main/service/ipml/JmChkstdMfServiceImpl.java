@@ -3,9 +3,7 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmChkstdMfDao;
-import com.BSMES.jd.main.dto.InsorgDTO;
-import com.BSMES.jd.main.dto.JmChkstd;
-import com.BSMES.jd.main.dto.JmChkstdMfDTO;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.entity.JmChkstdMfEntity;
 import com.BSMES.jd.main.entity.JmChkstdTfEntity;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,14 +41,23 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     }
 
     @Override
-    public CommonReturn getChkstdMf(JmChkstdMfDTO dto) {
+    public CommonReturn getChkstdMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmChkstdMfDTO> dtos = this.select(data);
+        List<JmChkstd> jmChkstds = new ArrayList<>();
+        List<JmChkstdMfDTO> dtos = this.select(this.getQueryWrapper(dto));
         if(dtos.isEmpty()){
             result.setAll(20000,dtos,"没有查找结果，建议仔细核对查找条件");
         }else{
-            result.setAll(20000,dtos,"查找成功");
+            for (JmChkstdMfDTO dto1 : dtos){
+                JmChkstd jmChkstd = new JmChkstd();
+                jmChkstd.setJmChkstdMfDTO(dto1);
+                QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",dto1.getChkstdNo());
+                List<JmChkstdTfDTO> jmChkstdTfDTOS = jmChkstdTfService.select(jmChkstdTfEntityQueryWrapper);
+                jmChkstd.setJmChkstdTfDTOS(jmChkstdTfDTOS);
+                jmChkstds.add(jmChkstd);
+            }
+            result.setAll(20000,jmChkstds,"查找成功");
         }
         return result;
     }
@@ -116,9 +124,12 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     public CommonReturn delChkstdMf(List<String> chkstdNos) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmChkstdMfEntity> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
         queryWrapper.in("chkstd_no",chkstdNos);
+        jmChkstdTfEntityQueryWrapper.in("chkstd_no",chkstdNos);
         try{
             this.remove(queryWrapper);
+            jmChkstdTfService.remove(jmChkstdTfEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -127,16 +138,50 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     }
 
     @Override
-    public CommonReturn getChkstdMfPage(JmChkstdMfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getChkstdMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmChkstdMfDTO> jmChkstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmChkstd> jmChkstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmChkstdMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
+            List<JmChkstd> jmChkstdMfDTOS1 = jmChkstdMfDTOS.getRecords();
+            for (JmChkstd dto1 : jmChkstdMfDTOS1){
+                QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",dto1.getJmChkstdMfDTO().getChkstdNo());
+                List<JmChkstdTfDTO> jmChkstdTfDTOS = jmChkstdTfService.select(jmChkstdTfEntityQueryWrapper);
+                dto1.setJmChkstdTfDTOS(jmChkstdTfDTOS);
+            }
+            jmChkstdMfDTOS.setRecords(jmChkstdMfDTOS1);
             result.setAll(20000,jmChkstdMfDTOS,"查找成功");
         }
         return result;
     }
 
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
 
+//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+//            dto.setDescOrder("sort");
+//        }
+
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("chkstd_no",dto.getSid());
+        }
+//        if (MyUtils.StringIsNull(dto.getDevName())){
+//            queryWrapper.like("orgname",dto.getDevName());
+//        }
+//        if (MyUtils.StringIsNull(dto.getType())){
+//            queryWrapper.eq("cattr",dto.getType());
+//        }
+
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+
+
+        return queryWrapper;
+    }
 }

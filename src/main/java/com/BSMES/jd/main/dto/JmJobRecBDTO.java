@@ -72,4 +72,14 @@ public class JmJobRecBDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyWt;
 
+    /**
+     * 工序
+     */
+    public String zcNo;
+
+    /**
+     * 制单人
+     */
+    public String smake;
+
 }

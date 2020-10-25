@@ -185,7 +185,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }
-        if (dto.getDescOrder()!=null){
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
             queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
         return queryWrapper;

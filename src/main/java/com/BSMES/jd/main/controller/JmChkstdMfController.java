@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.InsorgDTO;
 import com.BSMES.jd.main.dto.JmChkstd;
 import com.BSMES.jd.main.dto.JmChkstdMfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class JmChkstdMfController {
     JmChkstdMfService jmChkstdMfService;
 
     @GetMapping()
-    public CommonReturn getJmChkstdMf(JmChkstdMfDTO dto, Boolean isPage){
+    public CommonReturn getJmChkstdMf(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmChkstdMfService.getChkstdMf(dto);
         }else{
             QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmChkstdMfService.getChkstdMfPage(dto,queryWrapper);
+            result = jmChkstdMfService.getChkstdMfPage(dto);
         }
         return result;
     }

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.dao;
 import com.BSMES.jd.common.dao.BaseDao;
 import com.BSMES.jd.main.dto.JmMoMfDTO;
 import com.BSMES.jd.main.dto.JmMoMfMore;
+import com.BSMES.jd.main.dto.MoNoSave;
 import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMoMfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,5 +16,7 @@ import java.util.List;
 public interface JmMoMfDao extends BaseDao<JmMoMfEntity> {
 
     List<JmMoMfMore> getMoMfMore(ResultType dto);
+
+    List<MoNoSave> getMoNo(ResultType dto);
 
 }

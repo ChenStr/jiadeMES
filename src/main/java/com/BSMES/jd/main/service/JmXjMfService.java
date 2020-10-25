@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
-    public CommonReturn getXjMf(JmXjMfDTO dto);
+    public CommonReturn getXjMf(ResultType dto);
 
     public CommonReturn getXjMfPlus(ResultType dto);
 
@@ -30,7 +30,7 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getXjMfPage(JmXjMfDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getXjMfPage(ResultType dto);
 
     public CommonReturn getXjMfPlusPage(ResultType dto);
 

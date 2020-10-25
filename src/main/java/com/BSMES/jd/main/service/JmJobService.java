@@ -4,7 +4,8 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmJobDTO;
 import com.BSMES.jd.main.dto.JobJoin;
-import com.BSMES.jd.main.dto.JobSave;
+import com.BSMES.jd.main.dto.MoSave;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmJobEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -28,7 +29,7 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
      */
     public CommonReturn saveJob(JmJobDTO dto);
 
-    public CommonReturn saveJobs(JobSave jobSave);
+    public CommonReturn saveJobs(MoSave jobSave);
 
     public CommonReturn editJob(JmJobDTO dto);
 
@@ -42,5 +43,10 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
     public CommonReturn getJobPage(JmJobDTO dto, QueryWrapper queryWrapper);
 
     public CommonReturn getJobJoinPage(JobJoin jobJoin);
+
+    /**
+     * 车间生产月报表
+     */
+    public CommonReturn getJmJobReport(ResultType dto);
 
 }

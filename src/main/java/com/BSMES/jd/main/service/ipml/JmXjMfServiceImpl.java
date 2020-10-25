@@ -36,6 +36,12 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     JmJobService jmJobService;
 
     @Autowired
+    JmChkstdMfService jmChkstdMfService;
+
+    @Autowired
+    JmChkstdTfService jmChkstdTfService;
+
+    @Autowired
     JmXjMfDao jmXjMfDao;
 
     @Override
@@ -50,10 +56,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     }
 
     @Override
-    public CommonReturn getXjMf(JmXjMfDTO dto) {
+    public CommonReturn getXjMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmXjMfDTO> xjMfs = this.select(data);
+        List<JmXjMfDTO> xjMfs = this.select(this.getQueryWrapper(dto));
         if(xjMfs.isEmpty()){
             result.setAll(20000,xjMfs,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -67,27 +72,64 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         CommonReturn result = new CommonReturn();
         List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);;
         if (jmXjMfDTOS==null && jmXjMfDTOS.size()==0){
-            jmXjMfDTOS = new ArrayList<>();
-            result.setAll(20000,jmXjMfDTOS,"未查到数据");
-            return result;
-        }
-        //查询子表与其他信息
-        for (JmXjMf2 jmXjMf2 : jmXjMfDTOS){
-            List<JmXjMf> jmXjMfs = new ArrayList<>();
-            List<JmXj2TfDTO> jmXj2TfDTOs = new ArrayList<>();
-            QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
-            jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
-            jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
-            //查询子表的子表信息
-            if(jmXj2TfDTOs!=null && jmXj2TfDTOs.size()>0){
-                //查询Job表的数据
-                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
-                jmJobEntityQueryWrapper.eq("jb_no",jmXjMf2.getJmXjMfDTO().getJbNo()).select("sid","jb_no","state","create_date");
-                JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
-                jmXjMf2.setJmJobDTO(jmJobDTO);
+            JmXjMf2 jmXjMf2 = new JmXjMf2();
+            //如果找不到数据的话那么就说明只有一条并且把他的模板数据带出来，如果没有那是真的没有
+            if(dto.getPrdName()==null){
+                result.setAll(20000,jmXjMfDTOS,"未查到数据");
+//                return result;
+            }else{
+                //通过产品名称去检验标准表里去查询
+                QueryWrapper<JmChkstdMfEntity> jmChkstdMfEntityQueryWrapper = new QueryWrapper<>();
+                jmChkstdMfEntityQueryWrapper.eq("prd_name",dto.getPrdName());
+                JmChkstdMfDTO jmChkstdMfDTO = jmChkstdMfService.selectOne(jmChkstdMfEntityQueryWrapper);
+                //查询其表身数据
+                QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",jmChkstdMfDTO.getChkstdNo());
+                List<JmChkstdTfDTO> jmChkstdTfDTOS = jmChkstdTfService.select(jmChkstdTfEntityQueryWrapper);
+                if (jmChkstdMfDTO!=null && jmChkstdTfDTOS!=null && jmChkstdMfDTO.getChkstdNo()!=null && jmChkstdTfDTOS.size()>0){
+                    //将格式进行转换   将部门信息、产品信息带入即可
+                    JmXjMfDTO jmXjMfDTO = new JmXjMfDTO();
+                    jmXjMfDTO.setSorg(jmChkstdMfDTO.getSorg());
+                    jmXjMfDTO.setPrdNo(jmChkstdMfDTO.getPrdNo());
+                    jmXjMfDTO.setPrdName(jmXjMfDTO.getPrdName());
+                    List<JmXjMf> jmXjMfs = new ArrayList<>();
+                    for (int i = 0; i < jmChkstdTfDTOS.size() ; i++){
+                        JmXjMf jmXjMf = new JmXjMf();
+                        JmXj2TfDTO jmXj2TfDTO = new JmXj2TfDTO();
+                        jmXj2TfDTO.setCid(jmChkstdTfDTOS.get(i).getCid());
+                        jmXj2TfDTO.setChkPara(jmChkstdTfDTOS.get(i).getChkPara());
+                        jmXj2TfDTO.setParaMin(jmChkstdTfDTOS.get(i).getParaMin());
+                        jmXj2TfDTO.setParaMax(jmChkstdTfDTOS.get(i).getParaMax());
+                        jmXjMfs.add(jmXjMf);
+                    }
+                    jmXjMf2.setJmXjMfDTO(jmXjMfDTO);
+                    jmXjMf2.setJmXjMfs(jmXjMfs);
+                    jmXjMfDTOS.add(jmXjMf2);
+                }
+                result.setAll(20000,jmXjMfDTOS,"查询到模板数据");
+            }
+
+        }else{
+            //查询子表与其他信息
+            for (JmXjMf2 jmXjMf2 : jmXjMfDTOS){
+                List<JmXjMf> jmXjMfs = new ArrayList<>();
+                QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
+                jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
+                List<JmXj2TfDTO> jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
+                for (JmXj2TfDTO jmXj2TfDTO : jmXj2TfDTOs){
+                    JmXjMf jmXjMf = new JmXjMf();
+                    jmXjMf.setJmXj2TfDTO(jmXj2TfDTO);
+                    //查询子表的子表的信息
+                    QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
+                    jmXj3TfEntityQueryWrapper.eq("sid",jmXj2TfDTO.getSid()).eq("cid",jmXj2TfDTO.getCid());
+                    List<JmXj3TfDTO> jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
+                    jmXjMf.setJmXj3TfDTOS(jmXj3TfDTOS);
+                    jmXjMfs.add(jmXjMf);
+                }
                 jmXjMf2.setJmXjMfs(jmXjMfs);
             }
         }
+
         result.setAll(20000,jmXjMfDTOS,"操作成功");
         return result;
     }
@@ -205,21 +247,16 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     public CommonReturn delXjMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmXjMfEntity> xjMfQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
         xjMfQueryWrapper.in("sid",sids);
+        jmXj2TfEntityQueryWrapper.eq("sid",sids);
+        jmXj3TfEntityQueryWrapper.eq("sid",sids);
         List<JmXjMfDTO> jmXjMfDTOS = this.select(xjMfQueryWrapper);
-        if (jmXjMfDTOS!=null && jmXjMfDTOS.size()>0){
-            for (JmXjMfDTO jmXjMfDTO : jmXjMfDTOS){
-                QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
-                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-                //删除子单据
-                jmXj2TfEntityQueryWrapper.eq("sid",jmXjMfDTO.getSid());
-                jmXj3TfEntityQueryWrapper.eq("sid",jmXjMfDTO.getSid());
-                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
-                jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
-            }
-        }
         try{
             this.remove(xjMfQueryWrapper);
+            jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
+            jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -228,9 +265,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     }
 
     @Override
-    public CommonReturn getXjMfPage(JmXjMfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getXjMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmXjMfDTO> jmXjMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmXjMfDTO> jmXjMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmXjMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
@@ -242,9 +279,6 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn getXjMfPlusPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        if (dto.getDescOrder()==null && dto.getAscOrder()==null){
-            dto.setDescOrder("hpdate");
-        }
         if (dto.getPage()==null){
             dto.setPage(1);
         }
@@ -256,5 +290,57 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         PageInfo dataPages = new PageInfo<JmXjMf2>(data);
         result.setAll(20000,dataPages,"操作成功");
         return result;
+    }
+
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+//            dto.setDescOrder("sort");
+//        }
+
+        if (dto.getOtherIds()!=null && dto.getOtherIds().size()>0){
+            queryWrapper.in("xjid",dto.getOtherIds());
+        }
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.eq("sorg",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getPrdName())){
+            queryWrapper.like("prd_name",dto.getPrdName());
+        }
+        if (MyUtils.StringIsNull(dto.getMouldNo())){
+            queryWrapper.eq("md_no",dto.getMouldNo());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
+        if (MyUtils.StringIsNull(dto.getWkName())){
+            queryWrapper.eq("wk_name",dto.getWkName());
+        }
+        if (MyUtils.StringIsNull(dto.getDevNo())){
+            queryWrapper.eq("rs_no",dto.getDevNo());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("jb_no",dto.getOtherId());
+        }
+
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+
+
+        return queryWrapper;
     }
 }

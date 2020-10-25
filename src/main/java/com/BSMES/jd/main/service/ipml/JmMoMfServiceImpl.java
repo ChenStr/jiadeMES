@@ -101,6 +101,19 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     }
 
     @Override
+    public CommonReturn getMoNo(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<MoNoSave> moNoSaves = jmMoMfDao.getMoNo(dto);
+            result.setAll(20000,moNoSaves,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn saveMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
         dto.setSid(this.getKey("JmMoMf","sid",inssysvarService,dto));
@@ -192,7 +205,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     public CommonReturn getMoMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         if (dto.getDescOrder()==null && dto.getAscOrder()==null){
-            dto.setDescOrder("create_date");
+            dto.setDescOrder("hpdate");
         }
         if (dto.getPage()==null){
             dto.setPage(1);
@@ -266,7 +279,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }
-        if (dto.getDescOrder()!=null){
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
             queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
         }
         return queryWrapper;

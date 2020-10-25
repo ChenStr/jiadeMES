@@ -31,6 +31,13 @@ public class JmMoMfController {
         return result;
     }
 
+    @GetMapping("/detailed")
+    public CommonReturn getMoNo(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmMoMfService.getMoNo(dto);
+        return result;
+    }
+
     @PostMapping()
     public CommonReturn saveJmMoMf(@RequestBody JmMoMfDTO dto){
         CommonReturn result = new CommonReturn();
