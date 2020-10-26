@@ -2,6 +2,7 @@ package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public class JmMtRecDTO extends BaseDTO {
     /**
      * 录单日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
@@ -29,11 +31,13 @@ public class JmMtRecDTO extends BaseDTO {
     /**
      * 始修日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date staDd;
 
     /**
      * 修复日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date finDd;
 
     /**

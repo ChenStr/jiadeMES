@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmMtRecBService;
 import com.BSMES.jd.main.service.JmMtRecService;
+import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 @Service
 public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntity, JmMtRecDTO> implements JmMtRecService {
@@ -32,7 +30,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
 
     @Override
     public void beforeInsert(JmMtRecDTO dto) {
-
+        dto.setHpdate(new Date());
     }
 
     @Override
@@ -74,7 +72,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         if (dto.getJmMtRecDTO()!=null && dto.getJmMtRecDTO().getWxNo()!=null){
             flag=false;
             sid = dto.getJmMtRecDTO().getWxNo();
-            this.editMtRec(dto.getJmMtRecDTO());
+            this.edit(dto.getJmMtRecDTO());
         }else{
             sid = this.getKey("Mt","wx_no",inssysvarService,dto.getJmMtRecDTO());
             dto.getJmMtRecDTO().setWxNo(sid);
@@ -86,15 +84,19 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
             if (flag==false){
                 //删除所有原始数据
                 QueryWrapper<JmMtRecBEntity> jmMtRecBEntityQueryWrapper = new QueryWrapper<>();
-                jmMtRecBEntityQueryWrapper.eq("wk_no",sid);
+                jmMtRecBEntityQueryWrapper.eq("wx_no",sid);
                 jmMtRecBService.remove(jmMtRecBEntityQueryWrapper);
             }
             //将sid补全
-            for (JmMtRecBDTO jmMtRecBDTO : dto.getJmMtRecBDTOS()){
-                jmMtRecBDTO.setWxNo(sid);
+            if(dto.getJmMtRecBDTOS()!=null && dto.getJmMtRecBDTOS().size()>0){
+                for (JmMtRecBDTO jmMtRecBDTO : dto.getJmMtRecBDTOS()){
+                    jmMtRecBDTO.setWxNo(sid);
+                }
+                //将新的数据添加进去
+                jmMtRecBService.saveMtRecBs(dto.getJmMtRecBDTOS());
             }
-            //将新的数据添加进去
-            jmMtRecBService.saveMtRecBs(dto.getJmMtRecBDTOS());
+
+
 
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
@@ -150,13 +152,23 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         CommonReturn result = new CommonReturn();
         List<JmMtRec> jmMtRecs = new ArrayList<>();
         IPage<JmMtRec> jmMtRecDTOs = this.selectPage(dto.getPage(),dto.getPageSize(),getQueryWrapper(dto));
+        IPage<JmMtRecEntity> jmMtRecEntityIPage = this.selectPage(dto.getPage(),dto.getPageSize(),getQueryWrapper(dto));
         //将子表里的内容带出来
-        for (JmMtRec mt : jmMtRecDTOs.getRecords()){
+//        for (JmMtRec mt : jmMtRecDTOs.getRecords()){
+//            JmMtRec jmMtRec = new JmMtRec();
+//            QueryWrapper<JmMtRecBEntity> jmMtRecBEntityQueryWrapper = new QueryWrapper<>();
+//            jmMtRecBEntityQueryWrapper.eq("wx_no",mt.getJmMtRecDTO().getWxNo());
+//            List<JmMtRecBDTO> jmMtRecBDTO = jmMtRecBService.select(jmMtRecBEntityQueryWrapper);
+//            jmMtRec.setJmMtRecDTO(mt.getJmMtRecDTO());
+//            jmMtRec.setJmMtRecBDTOS(jmMtRecBDTO);
+//            jmMtRecs.add(jmMtRec);
+//        }
+        for (JmMtRecEntity mt : jmMtRecEntityIPage.getRecords()){
             JmMtRec jmMtRec = new JmMtRec();
             QueryWrapper<JmMtRecBEntity> jmMtRecBEntityQueryWrapper = new QueryWrapper<>();
-            jmMtRecBEntityQueryWrapper.eq("wx_no",mt.getJmMtRecDTO().getWxNo());
+            jmMtRecBEntityQueryWrapper.eq("wx_no",mt.getWxNo());
             List<JmMtRecBDTO> jmMtRecBDTO = jmMtRecBService.select(jmMtRecBEntityQueryWrapper);
-            jmMtRec.setJmMtRecDTO(mt.getJmMtRecDTO());
+            jmMtRec.setJmMtRecDTO(ConvertUtils.convert(mt,currentDtoClass()));
             jmMtRec.setJmMtRecBDTOS(jmMtRecBDTO);
             jmMtRecs.add(jmMtRec);
         }

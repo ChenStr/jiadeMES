@@ -41,9 +41,15 @@
 			</exclusions>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.microsoft</groupId>-->
+<!--			<artifactId>sqljdbc4</artifactId>-->
+<!--		</dependency>-->
+
 		<dependency>
-			<groupId>com.microsoft</groupId>
-			<artifactId>sqljdbc4</artifactId>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>6.1.0.jre8</version>
 		</dependency>
 
 		<dependency>

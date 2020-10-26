@@ -3,6 +3,8 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class JmDevMtidDTO extends BaseDTO {
 
@@ -30,5 +32,11 @@ public class JmDevMtidDTO extends BaseDTO {
      * 点检内容
      */
     public String mtRem;
+
+    public String checkId;
+
+    public String smake;
+
+    public Date hpdate;
 
 }

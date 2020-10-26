@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmDevMtidDao">
+
+    <update id="edit" parameterType="com.BSMES.jd.main.dto.JmDevMtidDTO">
+        UPDATE jm_dev_mtid
+        <trim prefix="set" suffixOverrides=",">
+            <if test="devNo!=null">dev_no=#{devNo},</if>
+            <if test="mtName!=null">mt_name=#{mtName},</if>
+            <if test="mtRem!=null">mt_rem=#{mtRem},</if>
+            <if test="checkId!=null">check_id=#{checkId},</if>
+            <if test="smake!=null">smake=#{smake},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+        </trim>
+        WHERE mt_id=#{mtId} and devid=#{devid}
+    </update>
+
+</mapper>

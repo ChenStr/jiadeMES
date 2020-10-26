@@ -17,6 +17,13 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
     public CommonReturn getXjMfPlus(ResultType dto);
 
+    /**
+     * 首末检查
+     * @param dto
+     * @return
+     */
+    public CommonReturn getXjMfdetailed(ResultType dto);
+
     public CommonReturn saveXjMf(JmXjMf2 dto);
 
     public CommonReturn saveXjMfs(List<JmXjMfDTO> dtos);

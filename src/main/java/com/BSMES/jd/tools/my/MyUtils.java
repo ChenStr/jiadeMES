@@ -135,7 +135,6 @@ public class MyUtils {
             //设置对象的访问权限，保证对private的属性的访问
             return  field.get(object);
         } catch (Exception e) {
-
             return null;
         }
     }

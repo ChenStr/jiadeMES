@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 设备维修项目
  */
@@ -39,5 +41,11 @@ public class JmDevMtidEntity {
      * 点检内容
      */
     public String mtRem;
+
+    public String checkId;
+
+    public String smake;
+
+    public Date hpdate;
 
 }

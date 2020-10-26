@@ -40,7 +40,7 @@ public class JmMtRecBEntity {
     /**
      * 部件名称
      */
-    public String partName;
+    public String partsName;
 
     /**
      * 修或换

@@ -19,6 +19,16 @@ public class JmXjMfController {
     @Autowired
     JmXjMfService jmXjMfService;
 
+
+    @GetMapping("/detailed")
+    public CommonReturn getJmXjMfDetailed(ResultType dto){
+        CommonReturn result = new CommonReturn();
+
+        result = jmXjMfService.getXjMfdetailed(dto);
+
+        return result;
+    }
+
     @GetMapping("/plus")
     public CommonReturn getJmXjMfPlus(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
@@ -30,6 +40,8 @@ public class JmXjMfController {
         }
         return result;
     }
+
+
 
     @GetMapping()
     public CommonReturn getJmXjMf(ResultType dto, Boolean isPage){

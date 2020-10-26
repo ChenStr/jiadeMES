@@ -7,7 +7,7 @@
     <!-- id 为方法名 resultType 返回结果(需要带上路径)  parameterType="com.BSMES.jd.main.dto.JmXjMf2" -->
 
     <select id="getJmXjMf2" resultMap="countryPlusResultMap" parameterType="com.BSMES.jd.main.dto.ResultType">
-        SELECT jm_xj_mf.sid as jm_xj_mf_sid,jm_xj_mf.hpdate as jm_xj_mf_hpdate,jm_xj_mf.sbuid as jm_xj_mf_sbuid,jm_xj_mf.smake as jm_xj_mf_smake,jm_xj_mf.moditime as jm_xj_mf_moditime,jm_xj_mf.chk_man as jm_xj_mf_chk_man,jm_xj_mf.state as jm_xj_mf_state,jm_xj_mf.creftimes as jm_xj_mf_creftimes,jm_xj_mf.rs_no as jm_xj_mf_rs_no,jm_xj_mf.mo_no as jm_xj_mf_mo_no,jm_xj_mf.prd_no as jm_xj_mf_prd_no,jm_xj_mf.bat_no as jm_xj_mf_bat_no,jm_xj_mf.zx_code as jm_xj_mf_zx_code,jm_xj_mf.xjid as jm_xj_mf_xjid,jm_xj_mf.wk_no as jm_xj_mf_wk_no,jm_xj_mf.sorg as jm_xj_mf_sorg,jm_xj_mf.qty_cur as jm_xj_mf_qty_cur,jm_xj_mf.qty_ok as jm_xj_mf_qty_ok,jm_xj_mf.qty_lost as jm_xj_mf_qty_lost,jm_xj_mf.spc_chk as jm_xj_mf_spc_chk,jm_xj_mf.spc_btn as jm_xj_mf_spc_btn,jm_xj_mf.chk_id as jm_xj_mf_chk_id,jm_xj_mf.op_rem as jm_xj_mf_op_rem,jm_xj_mf.fin_judge as jm_xj_mf_fin_judge,jm_xj_mf.xjms as jm_xj_mf_xjms,jm_xj_mf.xjjd as jm_xj_mf_xjjd,jm_xj_mf.test_bo as jm_xj_mf_test_bo,jm_xj_mf.first_chk as jm_xj_mf_first_chk,jm_xj_mf.aspect_chk as jm_xj_mf_aspect_chk,jm_xj_mf.inter_chk as jm_xj_mf_inter_chk,jm_xj_mf.welc_chk as jm_xj_mf_welc_chk,jm_xj_mf.jb_no as jm_xj_mf_jb_no,jm_xj_mf.qcopper as jm_xj_mf_qcopper,jm_xj_mf.hcopper as jm_xj_mf_hcopper,jm_xj_mf.zcopper as jm_xj_mf_zcopper,jm_xj_mf.plastic as jm_xj_mf_plastic,jm_xj_mf.rohs as jm_xj_mf_rohs,jm_xj_mf.techno as jm_xj_mf_techno,jm_xj_mf.chk_rem as jm_xj_mf_chk_rem,jm_xj_mf.rm_name as jm_xj_mf_rm_name,jm_xj_mf.wk_name as jm_xj_mf_wk_name,
+        SELECT jm_xj_mf.sid as jm_xj_mf_sid,jm_xj_mf.hpdate as jm_xj_mf_hpdate,jm_xj_mf.sbuid as jm_xj_mf_sbuid,jm_xj_mf.smake as jm_xj_mf_smake,jm_xj_mf.moditime as jm_xj_mf_moditime,jm_xj_mf.chk_man as jm_xj_mf_chk_man,jm_xj_mf.state as jm_xj_mf_state,jm_xj_mf.creftimes as jm_xj_mf_creftimes,jm_xj_mf.rs_no as jm_xj_mf_rs_no,jm_xj_mf.mo_no as jm_xj_mf_mo_no,jm_xj_mf.prd_no as jm_xj_mf_prd_no,jm_xj_mf.bat_no as jm_xj_mf_bat_no,jm_xj_mf.zx_code as jm_xj_mf_zx_code,jm_xj_mf.xjid as jm_xj_mf_xjid,jm_xj_mf.wk_no as jm_xj_mf_wk_no,jm_xj_mf.sorg as jm_xj_mf_sorg,jm_xj_mf.qty_cur as jm_xj_mf_qty_cur,jm_xj_mf.qty_ok as jm_xj_mf_qty_ok,jm_xj_mf.qty_lost as jm_xj_mf_qty_lost,jm_xj_mf.spc_chk as jm_xj_mf_spc_chk,jm_xj_mf.spc_btn as jm_xj_mf_spc_btn,jm_xj_mf.chk_id as jm_xj_mf_chk_id,jm_xj_mf.op_rem as jm_xj_mf_op_rem,jm_xj_mf.fin_judge as jm_xj_mf_fin_judge,jm_xj_mf.xjms as jm_xj_mf_xjms,jm_xj_mf.xjjd as jm_xj_mf_xjjd,jm_xj_mf.test_bo as jm_xj_mf_test_bo,jm_xj_mf.first_chk as jm_xj_mf_first_chk,jm_xj_mf.aspect_chk as jm_xj_mf_aspect_chk,jm_xj_mf.inter_chk as jm_xj_mf_inter_chk,jm_xj_mf.welc_chk as jm_xj_mf_welc_chk,jm_xj_mf.jb_no as jm_xj_mf_jb_no,jm_xj_mf.qcopper as jm_xj_mf_qcopper,jm_xj_mf.hcopper as jm_xj_mf_hcopper,jm_xj_mf.zcopper as jm_xj_mf_zcopper,jm_xj_mf.plastic as jm_xj_mf_plastic,jm_xj_mf.rohs as jm_xj_mf_rohs,jm_xj_mf.techno as jm_xj_mf_techno,jm_xj_mf.chk_rem as jm_xj_mf_chk_rem,jm_xj_mf.rm_name as jm_xj_mf_rm_name,jm_xj_mf.wk_name as jm_xj_mf_wk_name,jm_xj_mf.smake_name as jm_xj_mf_smake_name,
         sorg.c_corp as sorg_c_corp,sorg.orgcode as sorg_orgcode,sorg.orgname as sorg_orgname,sorg.orgnamexa as sorg_orgnamexa,sorg.orgnamexb as sorg_orgnamexb,sorg.ilevl as sorg_ilevl,sorg.blast as sorg_blast,sorg.corg as sorg_corg,sorg.eymd as sorg_eymd,sorg.cattr as sorg_cattr,sorg.rmb as sorg_rmb,
         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,prdt.snm as prdt_snm,prdt.knd as prdt_knd,prdt.idx1 as prdt_idx1,prdt.unit as prdt_unit,prdt.spc as prdt_spc,prdt.qty_min as prdt_qty_min,prdt.wh as prdt_wh,prdt.cst_std as prdt_cst_std,prdt.ut as prdt_ut,prdt.partid as prdt_partid,prdt.paraname as prdt_paraname,prdt.pk2_ut as prdt_pk2_ut,prdt.pk2_qty as prdt_pk2_qty,prdt.pk3_ut as prdt_pk3_ut,prdt.pk3_qty as prdt_pk3_qty,prdt.rank as prdt_rank,prdt.havesn as prdt_havesn,prdt.smcs_hzzh as prdt_smcs_hzzh,prdt.sbm as prdt_sbm,prdt.up_jj as prdt_up_jj,prdt.zx_qty as prdt_zx_qty,prdt.min_wg as prdt_min_wg,prdt.max_wg as prdt_max_wg,prdt.sorg as prdt_sorg,
         mould.md_no as mould_md_no,mould.typeid as mould_typeid,mould.name as mould_name,mould.md_qty as mould_md_qty,mould.md_grp as mould_md_grp,mould.state as mould_state,mould.wh as mould_wh,mould.wh_loc as mould_wh_loc,mould.qty_max as mould_qty_max,mould.qty_mk as mould_qty_mk,mould.time_max as mould_time_max,mould.time_mk as mould_time_mk,mould.dep as mould_dep,
@@ -117,6 +117,7 @@
         <result column="jm_xj_mf_chk_rem" property="jmXjMfDTO.chkRem"/>
         <result column="jm_xj_mf_rm_name" property="jmXjMfDTO.rmName"/>
         <result column="jm_xj_mf_wk_name" property="jmXjMfDTO.wkName"/>
+        <result column="jm_xj_mf_smake_name" property="jmXjMfDTO.smakeName"/>
         <association property="insorgDTO" javaType="com.BSMES.jd.main.dto.InsorgDTO">
             <id column="sorg_orgcode" property="orgcode"/>
             <result column="sorg_orgname" property="orgname"/>
@@ -194,7 +195,233 @@
         </association>
     </resultMap>
 
-<!--    cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8))-->
+    <select id="getJmXjMf2detailed" resultMap="JmXjMf2detailed" parameterType="com.BSMES.jd.main.dto.ResultType">
+        SELECT jm_xj_mf.sid as jm_xj_mf_sid,jm_xj_mf.hpdate as jm_xj_mf_hpdate,jm_xj_mf.sbuid as jm_xj_mf_sbuid,jm_xj_mf.smake as jm_xj_mf_smake,jm_xj_mf.moditime as jm_xj_mf_moditime,jm_xj_mf.chk_man as jm_xj_mf_chk_man,jm_xj_mf.state as jm_xj_mf_state,jm_xj_mf.creftimes as jm_xj_mf_creftimes,jm_xj_mf.rs_no as jm_xj_mf_rs_no,jm_xj_mf.mo_no as jm_xj_mf_mo_no,jm_xj_mf.prd_no as jm_xj_mf_prd_no,jm_xj_mf.bat_no as jm_xj_mf_bat_no,jm_xj_mf.zx_code as jm_xj_mf_zx_code,jm_xj_mf.xjid as jm_xj_mf_xjid,jm_xj_mf.wk_no as jm_xj_mf_wk_no,jm_xj_mf.sorg as jm_xj_mf_sorg,jm_xj_mf.qty_cur as jm_xj_mf_qty_cur,jm_xj_mf.qty_ok as jm_xj_mf_qty_ok,jm_xj_mf.qty_lost as jm_xj_mf_qty_lost,jm_xj_mf.spc_chk as jm_xj_mf_spc_chk,jm_xj_mf.spc_btn as jm_xj_mf_spc_btn,jm_xj_mf.chk_id as jm_xj_mf_chk_id,jm_xj_mf.op_rem as jm_xj_mf_op_rem,jm_xj_mf.fin_judge as jm_xj_mf_fin_judge,jm_xj_mf.xjms as jm_xj_mf_xjms,jm_xj_mf.xjjd as jm_xj_mf_xjjd,jm_xj_mf.test_bo as jm_xj_mf_test_bo,jm_xj_mf.first_chk as jm_xj_mf_first_chk,jm_xj_mf.aspect_chk as jm_xj_mf_aspect_chk,jm_xj_mf.inter_chk as jm_xj_mf_inter_chk,jm_xj_mf.welc_chk as jm_xj_mf_welc_chk,jm_xj_mf.jb_no as jm_xj_mf_jb_no,jm_xj_mf.qcopper as jm_xj_mf_qcopper,jm_xj_mf.hcopper as jm_xj_mf_hcopper,jm_xj_mf.zcopper as jm_xj_mf_zcopper,jm_xj_mf.plastic as jm_xj_mf_plastic,jm_xj_mf.rohs as jm_xj_mf_rohs,jm_xj_mf.techno as jm_xj_mf_techno,jm_xj_mf.chk_rem as jm_xj_mf_chk_rem,jm_xj_mf.rm_name as jm_xj_mf_rm_name,jm_xj_mf.wk_name as jm_xj_mf_wk_name,jm_xj_mf.smake_name as jm_xj_mf_smake_name,
+        sorg.c_corp as sorg_c_corp,sorg.orgcode as sorg_orgcode,sorg.orgname as sorg_orgname,sorg.orgnamexa as sorg_orgnamexa,sorg.orgnamexb as sorg_orgnamexb,sorg.ilevl as sorg_ilevl,sorg.blast as sorg_blast,sorg.corg as sorg_corg,sorg.eymd as sorg_eymd,sorg.cattr as sorg_cattr,sorg.rmb as sorg_rmb,
+        prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,prdt.snm as prdt_snm,prdt.knd as prdt_knd,prdt.idx1 as prdt_idx1,prdt.unit as prdt_unit,prdt.spc as prdt_spc,prdt.qty_min as prdt_qty_min,prdt.wh as prdt_wh,prdt.cst_std as prdt_cst_std,prdt.ut as prdt_ut,prdt.partid as prdt_partid,prdt.paraname as prdt_paraname,prdt.pk2_ut as prdt_pk2_ut,prdt.pk2_qty as prdt_pk2_qty,prdt.pk3_ut as prdt_pk3_ut,prdt.pk3_qty as prdt_pk3_qty,prdt.rank as prdt_rank,prdt.havesn as prdt_havesn,prdt.smcs_hzzh as prdt_smcs_hzzh,prdt.sbm as prdt_sbm,prdt.up_jj as prdt_up_jj,prdt.zx_qty as prdt_zx_qty,prdt.min_wg as prdt_min_wg,prdt.max_wg as prdt_max_wg,prdt.sorg as prdt_sorg,
+        mould.md_no as mould_md_no,mould.typeid as mould_typeid,mould.name as mould_name,mould.md_qty as mould_md_qty,mould.md_grp as mould_md_grp,mould.state as mould_state,mould.wh as mould_wh,mould.wh_loc as mould_wh_loc,mould.qty_max as mould_qty_max,mould.qty_mk as mould_qty_mk,mould.time_max as mould_time_max,mould.time_mk as mould_time_mk,mould.dep as mould_dep,
+        dev.dev_no as dev_dev_no,dev.name as dev_name,dev.spc as dev_spc,dev.rs_no as dev_rs_no,dev.cusname as dev_cusname,dev.main_no as dev_main_no,dev.dep as dev_dep,dev.maxtime as dev_maxtime,dev.maxqty as dev_maxqty,dev.time_mk as dev_time_mk,dev.qty_mk as dev_qty_mk,dev.state as dev_state,dev.devid as dev_devid,dev.sorg as dev_sorg,dev.picture as dev_picture,dev.location as dev_location,dev.ip as dev_ip,
+        xj2.sid as xj2_sid,xj2.cid as xj2_cid,xj2.jb_no as xj2_jb_no,xj2.op_rem as xj2_op_rem,xj2.sal_no as xj2_sal_no,xj2.op_dd as xj2_op_dd,xj2.prd_sn as xj2_prd_sn,xj2.dmdel as xj2_dmdel,xj2.delay_b as xj2_delay_b,xj2.over_e as xj2_over_e,xj2.para_max as xj2_para_max,xj2.para_min as xj2_para_min,xj2.chk_para as xj2_chk_para,xj2.chk_name as xj2_chk_name,xj2.chk_value as xj2_chk_value,xj2.state as xj2_state,xj2.qty_md as xj2_qty_md,xj2.wk_no as xj2_wk_no,xj2.sta_dd as xj2_sta_dd,
+        xj3.sid as xj3_sid,xj3.cid as xj3_cid,xj3.chk_no as xj3_chk_no,xj3.cur_para as xj3_cur_para,xj3.rlt as xj3_rlt,xj3.spc_type as xj3_spc_type,xj3.spc_chk as xj3_spc_chk,xj3.op_rem as xj3_op_rem,xj3.op_dd as xj3_op_dd,xj3.dmdel as xj3_dmdel,xj3.dervi_id as xj3_dervi_id,xj3.derviation as xj3_derviation,xj3.chkviation as xj3_chkviation
+        FROM jm_xj_mf
+        left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
+        left JOIN jm_prdt as prdt on prdt.prd_no = jm_xj_mf.prd_no
+        left JOIN jm_mould as mould on mould.md_no = jm_xj_mf.md_no
+        left JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
+        left JOIN jm_xj2_tf as xj2 on jm_xj_mf.sid = xj2.sid
+        left JOIN jm_xj3_tf as xj3 on jm_xj_mf.sid = xj3.sid
+        <where>
+            <if test="otherIds!=null and otherIds.length()>0 ">
+                and jm_xj_mf.xjid in
+                <foreach item="item" index="index" collection="otherIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type!=null and type.length()>0 and otherType==null">
+                and jm_xj_mf.xjid = #{type}
+            </if>
+            <if test="sid!=null and sid.length()>0" >
+                and jm_xj_mf.sid like CONCAT('%',#{sid},'%')
+            </if>
+            <if test="dep != null and dep.length()>0">
+                and sorg.orgname like CONCAT('%',#{dep},'%')
+            </if>
+            <if test="prdName != null and prdName.length()>0">
+                and prdt.name like CONCAT('%',#{prdName},'%')
+            </if>
+            <if test="mouldName != null and mouldName.length()>0" >
+                and mould.name like CONCAT('%',#{mouldName},'%')
+            </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and jm_xj_mf.hpdate &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and jm_xj_mf.hpdate &lt;= #{endDd}
+            </if>
+            <if test="state!=null and state.toString().length()>0" >
+                and jm_xj_mf.state = #{state}
+            </if>
+            <if test="wkName!=null and wkName.toString().length()>0" >
+                and jm_xj_mf.wk_name = #{wkName}
+            </if>
+            <if test="devName!=null and devName.length()>0" >
+                and dev.name like  CONCAT('%',#{devName},'%')
+            </if>
+            <if test="otherId!=null and otherId.length()>0" >
+                and jm_xj_mf.jb_no like CONCAT('%',#{otherId},'%')
+            </if>
+            <if test="notType!=null and notType.length()>0" >
+                and jm_xj_mf.xjid &lt;&gt; #{notType}
+            </if>
+            <if test="notSorg!=null and notSorg.length()>0" >
+                and sorg.orgcode &lt;&gt; #{notSorg}
+            </if>
+            <if test="devNo!=null and devNo.length()>0" >
+                and dev.dev_no = #{devNo}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="JmXjMf2detailed" type="com.BSMES.jd.main.dto.JmXjMf2">
+        <id column="jm_xj_mf_sid" property="jmXjMfDTO.sid"/>
+        <result column="jm_xj_mf_hpdate" property="jmXjMfDTO.hpdate"/>
+        <result column="jm_xj_mf_sbuid" property="jmXjMfDTO.sbuid"/>
+        <result column="jm_xj_mf_smake" property="jmXjMfDTO.smake"/>
+        <result column="jm_xj_mf_moditime" property="jmXjMfDTO.moditime"/>
+        <result column="jm_xj_mf_chk_man" property="jmXjMfDTO.chkMan"/>
+        <result column="jm_xj_mf_state" property="jmXjMfDTO.state"/>
+        <result column="jm_xj_mf_creftimes" property="jmXjMfDTO.creftimes"/>
+        <result column="jm_xj_mf_rs_no" property="jmXjMfDTO.rsNo"/>
+        <result column="jm_xj_mf_mo_no" property="jmXjMfDTO.moNo"/>
+        <result column="jm_xj_mf_prd_no" property="jmXjMfDTO.prdNo"/>
+        <result column="jm_xj_mf_bat_no" property="jmXjMfDTO.batNo"/>
+        <result column="jm_xj_mf_zc_no" property="jmXjMfDTO.zcNo"/>
+        <result column="jm_xj_mf_xjid" property="jmXjMfDTO.xjid"/>
+        <result column="jm_xj_mf_wk_no" property="jmXjMfDTO.wkNo"/>
+        <result column="jm_xj_mf_sorg" property="jmXjMfDTO.sorg"/>
+        <result column="jm_xj_mf_zx_code" property="jmXjMfDTO.zxCode"/>
+        <result column="jm_xj_mf_qty_cur" property="jmXjMfDTO.qtyCur"/>
+        <result column="jm_xj_mf_qty_ok" property="jmXjMfDTO.qtyOk"/>
+        <result column="jm_xj_mf_qty_lost" property="jmXjMfDTO.qtyLost"/>
+        <result column="jm_xj_mf_spc_chk" property="jmXjMfDTO.spcChk"/>
+        <result column="jm_xj_mf_spc_btn" property="jmXjMfDTO.spcBtn"/>
+        <result column="jm_xj_mf_chk_id" property="jmXjMfDTO.chkId"/>
+        <result column="jm_xj_mf_op_rem" property="jmXjMfDTO.opRem"/>
+        <result column="jm_xj_mf_fin_judge" property="jmXjMfDTO.finJudge"/>
+        <result column="jm_xj_mf_xjms" property="jmXjMfDTO.xjms"/>
+        <result column="jm_xj_mf_xjjd" property="jmXjMfDTO.xjjd"/>
+        <result column="jm_xj_mf_test_bo" property="jmXjMfDTO.testBo"/>
+        <result column="jm_xj_mf_md_no" property="jmXjMfDTO.mdNo"/>
+        <result column="jm_xj_mf_first_chk" property="jmXjMfDTO.firstChk"/>
+        <result column="jm_xj_mf_aspect_chk" property="jmXjMfDTO.aspectChk"/>
+        <result column="jm_xj_mf_inter_chk" property="jmXjMfDTO.interChk"/>
+        <result column="jm_xj_mf_welc_chk" property="jmXjMfDTO.welcChk"/>
+        <result column="jm_xj_mf_jb_no" property="jmXjMfDTO.jbNo"/>
+        <result column="jm_xj_mf_qcopper" property="jmXjMfDTO.qcopper"/>
+        <result column="jm_xj_mf_hcopper" property="jmXjMfDTO.hcopper"/>
+        <result column="jm_xj_mf_zcopper" property="jmXjMfDTO.zcopper"/>
+        <result column="jm_xj_mf_plastic" property="jmXjMfDTO.plastic"/>
+        <result column="jm_xj_mf_rohs" property="jmXjMfDTO.rohs"/>
+        <result column="jm_xj_mf_techno" property="jmXjMfDTO.techno"/>
+        <result column="jm_xj_mf_chk_rem" property="jmXjMfDTO.chkRem"/>
+        <result column="jm_xj_mf_rm_name" property="jmXjMfDTO.rmName"/>
+        <result column="jm_xj_mf_wk_name" property="jmXjMfDTO.wkName"/>
+        <result column="jm_xj_mf_smake_name" property="jmXjMfDTO.smakeName"/>
+        <association property="insorgDTO" javaType="com.BSMES.jd.main.dto.InsorgDTO">
+            <id column="sorg_orgcode" property="orgcode"/>
+            <result column="sorg_orgname" property="orgname"/>
+            <result column="sorg_c_corp" property="cCorp"/>
+            <result column="sorg_orgnamexa" property="orgnamexa"/>
+            <result column="sorg_orgnamexb" property="orgnamexb"/>
+            <result column="sorg_ilevl" property="ilevl"/>
+            <result column="sorg_blast" property="blast"/>
+            <result column="sorg_corg" property="corg"/>
+            <result column="sorg_eymd" property="eymd"/>
+            <result column="sorg_cattr" property="cattr"/>
+            <result column="sorg_rmb" property="rmb"/>
+        </association>
+        <association property="jmPrdtDTO" javaType="com.BSMES.jd.main.dto.JmPrdtDTO">
+            <id column="prdt_prd_no" property="prdNo"/>
+            <result column="prdt_name" property="name"/>
+            <result column="prdt_snm" property="snm"/>
+            <result column="prdt_knd" property="knd"/>
+            <result column="prdt_idx1" property="idx1"/>
+            <result column="prdt_unit" property="unit"/>
+            <result column="prdt_spc" property="spc"/>
+            <result column="prdt_qty_min" property="qtyMin"/>
+            <result column="prdt_wh" property="wh"/>
+            <result column="prdt_cst_std" property="cstStd"/>
+            <result column="prdt_ut" property="ut"/>
+            <result column="prdt_partid" property="partid"/>
+            <result column="prdt_paraname" property="paraname"/>
+            <result column="prdt_pk2_ut" property="pk2Ut"/>
+            <result column="prdt_pk2_qty" property="pk2Qty"/>
+            <result column="prdt_pk3_ut" property="pk3Ut"/>
+            <result column="prdt_pk3_qty" property="pk3Qty"/>
+            <result column="prdt_rank" property="rank"/>
+            <result column="prdt_havesn" property="havesn"/>
+            <result column="prdt_smcs_hzzh" property="smcsHzzh"/>
+            <result column="prdt_sbm" property="sbm"/>
+            <result column="prdt_up_jj" property="upJj"/>
+            <result column="prdt_zx_qty" property="zxQty"/>
+            <result column="prdt_min_wg" property="minWg"/>
+            <result column="prdt_max_wg" property="maxWg"/>
+            <result column="prdt_sorg" property="sorg"/>
+        </association>
+        <association property="jmMouldDTO" javaType="com.BSMES.jd.main.dto.JmMouldDTO">
+            <id column="mould_md_no" property="mdNo"/>
+            <id column="mould_typeid" property="typeid"/>
+            <result column="mould_name" property="name"/>
+            <result column="mould_md_qty" property="mdQty"/>
+            <result column="mould_md_grp" property="mdGrp"/>
+            <result column="mould_state" property="state"/>
+            <result column="mould_wh" property="wh"/>
+            <result column="mould_wh_loc" property="whLoc"/>
+            <result column="mould_qty_max" property="qtyMax"/>
+            <result column="mould_qty_mk" property="qtyMk"/>
+            <result column="mould_time_max" property="timeMax"/>
+            <result column="mould_time_mk" property="timeMk"/>
+            <result column="mould_dep" property="dep"/>
+        </association>
+        <association property="jmDevDTO" javaType="com.BSMES.jd.main.dto.JmDevDTO">
+            <id column="dev_dev_no" property="devNo"/>
+            <id column="dev_name" property="name"/>
+            <result column="dev_spc" property="spc"/>
+            <result column="dev_rs_no" property="rsNo"/>
+            <result column="dev_cusname" property="cusname"/>
+            <result column="dev_main_no" property="mainNo"/>
+            <result column="dev_dep" property="dep"/>
+            <result column="dev_maxtime" property="maxtime"/>
+            <result column="dev_maxqty" property="maxqty"/>
+            <result column="dev_time_mk" property="timeMk"/>
+            <result column="dev_qty_mk" property="qtyMk"/>
+            <result column="dev_state" property="state"/>
+            <result column="dev_devid" property="devid"/>
+            <result column="dev_sorg" property="sorg"/>
+            <result column="dev_picture" property="picture"/>
+            <result column="dev_location" property="location"/>
+            <result column="dev_ip" property="ip"/>
+        </association>
+        <collection property="jmXjMfs" ofType="com.BSMES.jd.main.dto.JmXjMf" column="sid">
+            <id column="xj2_sid" property="jmXj2TfDTO.sid"/>
+            <id column="xj2_cid" property="jmXj2TfDTO.cid"/>
+            <result column="xj2_jb_no" property="jmXj2TfDTO.jbNo"/>
+            <result column="xj2_op_rem" property="jmXj2TfDTO.opRem"/>
+            <result column="xj2_sal_no" property="jmXj2TfDTO.salNo"/>
+            <result column="xj2_op_dd" property="jmXj2TfDTO.opDd"/>
+            <result column="xj2_prd_sn" property="jmXj2TfDTO.prdSn"/>
+            <result column="xj2_dmdel" property="jmXj2TfDTO.dmdel"/>
+            <result column="xj2_delay_b" property="jmXj2TfDTO.delayB"/>
+            <result column="xj2_over_e" property="jmXj2TfDTO.overE"/>
+            <result column="xj2_para_max" property="jmXj2TfDTO.paraMax"/>
+            <result column="xj2_para_min" property="jmXj2TfDTO.paraMin"/>
+            <result column="xj2_chk_para" property="jmXj2TfDTO.chkPara"/>
+            <result column="xj2_chk_name" property="jmXj2TfDTO.chkName"/>
+            <result column="xj2_chk_value" property="jmXj2TfDTO.chkValue"/>
+            <result column="xj2_qty_md" property="jmXj2TfDTO.qtyMd"/>
+            <result column="xj2_state" property="jmXj2TfDTO.state"/>
+            <result column="xj2_wk_no" property="jmXj2TfDTO.wkNo"/>
+            <collection property="jmXj3TfDTOS" ofType="com.BSMES.jd.main.dto.JmXj3TfDTO">
+                <id column="xj3_sid" property="sid"/>
+                <id column="xj3_cid" property="cid"/>
+                <id column="xj3_chk_no" property="chkNo"/>
+                <result column="xj3_cur_para" property="curPara"/>
+                <result column="xj3_rlt" property="rlt"/>
+                <result column="xj3_spc_type" property="spcType"/>
+                <result column="xj3_spc_chk" property="spcChk"/>
+                <result column="xj3_op_rem" property="opRem"/>
+                <result column="xj3_op_dd" property="opDd"/>
+                <result column="xj3_dmdel" property="dmdel"/>
+                <result column="xj3_dervi_id" property="derviId"/>
+                <result column="xj3_derviation" property="derviation"/>
+                <result column="xj3_chkviation" property="chkviation"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    
+
+    <!--    cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8))-->
     <insert id="saveJmXjMfs" parameterType="com.BSMES.jd.main.dto.JmXjMfDTO">
         insert into jm_xj_mf (sid,hpdate,sbuid,smake,moditime,chk_man,state,creftimes,rs_no,mo_no,prd_no,bat_no,zc_no,xjid,wk_no,sorg,zx_code,qty_cur,qty_ok,
         qty_lost,spc_chk,spc_btn,chk_id,op_rem,fin_judge,xjms,xjjd,test_bo,md_no,first_chk,aspect_chk,inter_chk,welc_chk,jb_no,qcopper,hcopper,zcopper,plastic,

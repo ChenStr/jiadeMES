@@ -6,11 +6,13 @@ import com.BSMES.jd.main.dao.JmDevMtidDao;
 import com.BSMES.jd.main.dto.JmDevDTO;
 import com.BSMES.jd.main.dto.JmDevMtidDTO;
 import com.BSMES.jd.main.entity.JmDevMtidEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevMtidService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,14 @@ import java.util.Map;
 
 @Service
 public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMtidEntity , JmDevMtidDTO> implements JmDevMtidService {
+
+
+    @Autowired
+    JmDevMtidDao jmDevMtidDao;
+
+    @Autowired
+    InssysvarService inssysvarService;
+
     @Override
     public void beforeInsert(JmDevMtidDTO dto) {
 
@@ -43,6 +53,9 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
     @Override
     public CommonReturn saveDevMtid(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
+        if (dto.getMtId()==null){
+            dto.setMtId(getKey("Mt","mt_id",inssysvarService,dto));
+        }
         //判断dto是否为空 判断dto的 md_no 是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getDevid()) && dto.getMtId()!=null){
             QueryWrapper<JmDevMtidEntity> jmDevMtidEntityQueryWrapper = new QueryWrapper<>();
@@ -69,12 +82,13 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
         if (dto!=null && MyUtils.StringIsNull(dto.getDevid()) && dto.getMtId()!=null ){
             //获取原先的人员属性值
             QueryWrapper<JmDevMtidEntity> jmDevMtidEntityQueryWrapper = new QueryWrapper<>();
-            jmDevMtidEntityQueryWrapper.eq("md_no",dto.getDevid());
-            jmDevMtidEntityQueryWrapper.eq("typeid",dto.getMtId());
+            jmDevMtidEntityQueryWrapper.eq("devid",dto.getDevid());
+            jmDevMtidEntityQueryWrapper.eq("mt_id",dto.getMtId());
             JmDevMtidDTO JmMould = this.selectOne(jmDevMtidEntityQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmDevMtidDao.edit(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

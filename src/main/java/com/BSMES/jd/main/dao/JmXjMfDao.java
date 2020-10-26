@@ -14,6 +14,8 @@ public interface JmXjMfDao extends BaseDao<JmXjMfEntity> {
 
     List<JmXjMf2> getJmXjMf2(ResultType dto);
 
+    List<JmXjMf2> getJmXjMf2detailed(ResultType dto);
+
     void saveJmXjMfs(List<JmXjMfDTO> dtos);
 
 }

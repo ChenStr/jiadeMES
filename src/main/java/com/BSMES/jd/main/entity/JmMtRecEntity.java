@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ public class JmMtRecEntity {
     /**
      * 录单日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
@@ -34,11 +36,13 @@ public class JmMtRecEntity {
     /**
      * 始修日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date staDd;
 
     /**
      * 修复日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date finDd;
 
     /**

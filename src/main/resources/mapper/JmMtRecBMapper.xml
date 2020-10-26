@@ -8,7 +8,6 @@
     <insert id="saveMtRecBs" parameterType="com.BSMES.jd.main.dto.JmMtRecBDTO">
         insert into jm_mt_rec_b (wx_no,cid,qty,rem,parts_name,prc_id,prc_name) values
         <foreach collection="list" item="dto" index="index" separator=",">
---         cast(#{dto.qty,jdbcType=DECIMAL} as decimal(22,8))
             (#{dto.wxNo}, #{dto.cid},cast(#{dto.qty,jdbcType=DECIMAL} as decimal(22,8)),
             #{dto.rem},#{dto.partsName},#{dto.prcId},#{dto.prcName})
         </foreach>
