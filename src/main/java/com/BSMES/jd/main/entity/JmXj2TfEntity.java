@@ -107,4 +107,10 @@ public class JmXj2TfEntity {
      */
     public String wkNo;
 
+    public String staDd;
+
+    public String wkName;
+
+    public String salName;
+
 }

@@ -240,6 +240,12 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.like("sid",dto.getSid());
         }
+        if (MyUtils.StringIsNull(dto.getDevid())){
+            queryWrapper.like("devid",dto.getDevid());
+        }
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.like("jb_no",dto.getOtherId());
+        }
         if (dto.getBegDd()!=null){
             queryWrapper.ge("hpdate",dto.getBegDd());
         }
@@ -251,6 +257,9 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         }
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());
+        }
+        if (dto.getDevName()!=null){
+            queryWrapper.like("dev_name",dto.getDevName());
         }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));

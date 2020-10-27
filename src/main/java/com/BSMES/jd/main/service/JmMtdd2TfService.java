@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmMtdd2TfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMtdd2TfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface JmMtdd2TfService extends BaseService<JmMtdd2TfEntity, JmMtdd2TfDTO> {
 
-    public CommonReturn getMtdd2(JmMtdd2TfDTO dto);
+    public CommonReturn getMtdd2(ResultType dto);
 
     public CommonReturn saveMtdd2(JmMtdd2TfDTO dto);
 
@@ -25,6 +26,6 @@ public interface JmMtdd2TfService extends BaseService<JmMtdd2TfEntity, JmMtdd2Tf
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getMtdd2Page(JmMtdd2TfDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getMtdd2Page(ResultType dto);
 
 }

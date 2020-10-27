@@ -103,4 +103,10 @@ public class JmXj2TfDTO extends BaseDTO implements Serializable {
      */
     public String wkNo;
 
+    public String staDd;
+
+    public String wkName;
+
+    public String salName;
+
 }

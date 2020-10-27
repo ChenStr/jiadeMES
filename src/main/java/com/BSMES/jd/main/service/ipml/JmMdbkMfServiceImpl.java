@@ -3,12 +3,12 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdbkMfDao;
-import com.BSMES.jd.main.dto.InsorgDTO;
-import com.BSMES.jd.main.dto.JmMdbkMfDTO;
-import com.BSMES.jd.main.dto.ResultType;
-import com.BSMES.jd.main.entity.InsorgEntity;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmMdbkMfEntity;
+import com.BSMES.jd.main.entity.JmMdbkTfEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmMdbkMfService;
+import com.BSMES.jd.main.service.JmMdbkTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -21,7 +21,10 @@ import java.util.List;
 public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEntity, JmMdbkMfDTO> implements JmMdbkMfService {
 
     @Autowired
-    InssysvarServiceImpl inssysvarService;
+    InssysvarService inssysvarService;
+
+    @Autowired
+    JmMdbkTfService jmMdbkTfService;
 
     @Override
     public void beforeInsert(JmMdbkMfDTO dto) {
@@ -36,12 +39,57 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
     @Override
     public CommonReturn getMdbkMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        List<InsorgDTO> sorgs = this.select(this.getQueryWrapper(dto));
+        List<JmMdbkMfDTO> sorgs = this.select(this.getQueryWrapper(dto));
         if(sorgs.isEmpty()){
             result.setAll(20000,sorgs,"没有查找结果，建议仔细核对查找条件");
         }else{
             result.setAll(20000,sorgs,"查找成功");
         }
+        return result;
+    }
+
+    @Override
+    public CommonReturn saveMdbk(JmMdbk dto) {
+        CommonReturn result = new CommonReturn();
+        Boolean flag = true;
+        String sid = null;
+
+        //首先判断是添加还是修改
+        if (dto.getJmMdbkMfDTO()!=null && dto.getJmMdbkMfDTO().getSid()!=null){
+            flag=false;
+            sid = dto.getJmMdbkMfDTO().getSid();
+            this.editMdbkMf(dto.getJmMdbkMfDTO());
+        }else{
+            sid = this.getKey("Mdbk","sid",inssysvarService,dto.getJmMdbkMfDTO());
+            dto.getJmMdbkMfDTO().setSid(sid);
+            this.insert(dto.getJmMdbkMfDTO());
+        }
+
+        try{
+            //如果是编辑的话
+            if (flag==false){
+                //删除所有原始数据
+                QueryWrapper<JmMdbkTfEntity> jmMdbkTfEntityQueryWrapper = new QueryWrapper<>();
+                jmMdbkTfEntityQueryWrapper.eq("sid",sid);
+                jmMdbkTfService.remove(jmMdbkTfEntityQueryWrapper);
+            }
+            //将sid补全
+            if(dto.getJmMdbkTfDTOS()!=null && dto.getJmMdbkTfDTOS().size()>0){
+                for (JmMdbkTfDTO jmMdbkTfDTO : dto.getJmMdbkTfDTOS()){
+                    jmMdbkTfDTO.setSid(sid);
+                }
+                //将新的数据添加进去
+                jmMdbkTfService.saveMdbkTfs(dto.getJmMdbkTfDTOS());
+            }
+
+
+
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+
         return result;
     }
 
@@ -53,9 +101,9 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         }
         //判断dto是否为空 判断dto的usrcode是否有值
         if (dto!=null && MyUtils.StringIsNull(dto.getSid())){
-            QueryWrapper<JmMdbkMfEntity> sorgQueryWrapper = new QueryWrapper<>();
-            sorgQueryWrapper.eq("sid",dto.getSid());
-            JmMdbkMfDTO jmMdbkMfDTO = this.selectOne(sorgQueryWrapper);
+            QueryWrapper<JmMdbkMfEntity> jmMdbkMfEntityQueryWrapper = new QueryWrapper<>();
+            jmMdbkMfEntityQueryWrapper.eq("sid",dto.getSid());
+            JmMdbkMfDTO jmMdbkMfDTO = this.selectOne(jmMdbkMfEntityQueryWrapper);
             //判断 usrcode 是否重复
             if (jmMdbkMfDTO==null || jmMdbkMfDTO.getSid()==null){
                 this.insert(dto);
@@ -122,23 +170,35 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
 //        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
 //            dto.setDescOrder("sort");
 //        }
-//
-//        if (MyUtils.StringIsNull(dto.getSid())){
-//            queryWrapper.like("orgcode",dto.getSid());
-//        }
-//        if (MyUtils.StringIsNull(dto.getDevName())){
-//            queryWrapper.like("orgname",dto.getDevName());
-//        }
-//        if (MyUtils.StringIsNull(dto.getType())){
-//            queryWrapper.eq("cattr",dto.getType());
-//        }
-//
-//        if (dto.getAscOrder()!=null){
-//            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
-//        }
-//        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
-//            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
-//        }
+
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.like("dep",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.eq("jb_no",dto.getOtherId());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
+        if (dto.getSorg()!=null){
+            queryWrapper.eq("sorg",dto.getSorg());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
 
 
         return queryWrapper;

@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMtdd2TfDao;
 import com.BSMES.jd.main.dto.JmMtdd2TfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMtdd2TfEntity;
 import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -33,10 +34,9 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
     }
 
     @Override
-    public CommonReturn getMtdd2(JmMtdd2TfDTO dto) {
+    public CommonReturn getMtdd2(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.select(data);
+        List<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.select(this.getQueryWrapper(dto));
         if(jmMtstd2TfDTOS.isEmpty()){
             result.setAll(20000,jmMtstd2TfDTOS,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -127,14 +127,45 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
     }
 
     @Override
-    public CommonReturn getMtdd2Page(JmMtdd2TfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getMtdd2Page(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMtdd2TfDTO> jmMtstd2TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmMtstd2TfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
             result.setAll(20000,jmMtstd2TfDTOS,"查找成功");
         }
         return result;
+    }
+
+    /**
+     * 筛选条件
+     * @param dto
+     * @return
+     */
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getWkNo())){
+            queryWrapper.like("wk_no",dto.getWkNo());
+        }
+        if (MyUtils.StringIsNull(dto.getWkName())){
+            queryWrapper.like("wk_name",dto.getWkName());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if (dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+        return queryWrapper;
     }
 }

@@ -102,13 +102,18 @@ public class JmMtddMfDTO extends BaseDTO {
     /**
      * 开始时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date begDd;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    public Date begDd;
+//
+//    /**
+//     * 结束时间
+//     */
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    public Date endDd;
 
     /**
-     * 结束时间
+     * 制单人
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date endDd;
+    public String smakeName;
 
 }
