@@ -15,14 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , JmJobDTO> implements JmJobService {
+
+    @Autowired
+    HttpServletResponse response;
 
     @Autowired
     JmMoMfService jmMoMfService;
@@ -359,6 +362,30 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         PageInfo pageInfo = new PageInfo<Report>(jmJobRecBDTOS);
 
         result.setAll(20000,pageInfo,"操作成功");
+        return result;
+    }
+
+    @Override
+    public CommonReturn exportExcel(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> jmJobRecBDTOS = jmJobDao.getJmJobReport(dto);
+            HashMap<String,String> map = new HashMap<>();
+            map.put("dep","车间名称");
+            map.put("prdNo","产品代号");
+            map.put("prdName","产品名称");
+            map.put("dqty","订单数量");
+            map.put("jqty","计划数量");
+            map.put("wqty","计划完成数");
+            map.put("sqty","当月完成计划数");
+            String fileName = "车间生产月报表.xlsx";
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
         return result;
     }
 

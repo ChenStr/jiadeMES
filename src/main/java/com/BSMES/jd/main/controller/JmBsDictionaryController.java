@@ -44,10 +44,17 @@ public class JmBsDictionaryController {
         return result;
     }
 
-    @DeleteMapping()
-    public CommonReturn delVar( String[] codes ){
+    @DeleteMapping("/false")
+    public CommonReturn delFalse(JmBsDictionaryDTO dto){
         CommonReturn result = new CommonReturn();
-        List<String> codes1 = java.util.Arrays.asList(codes);
+        result = jmBsDictionaryService.delfalseDictionary(dto);
+        return result;
+    }
+
+    @DeleteMapping()
+    public CommonReturn delVar( String[] ids ){
+        CommonReturn result = new CommonReturn();
+        List<String> codes1 = java.util.Arrays.asList(ids);
         result = jmBsDictionaryService.delDictionary(codes1);
         return result;
     }

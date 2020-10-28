@@ -88,4 +88,16 @@ public class JmJobController {
         return result;
     }
 
+    /**
+     * 车间生产月报表 导出
+     * @param dto
+     * @return
+     */
+    @GetMapping("/sorgmonexcel")
+    public CommonReturn getSorgMonReportExcel(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobService.exportExcel(dto);
+        return result;
+    }
+
 }

@@ -3,7 +3,9 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMouldDao;
+import com.BSMES.jd.main.dto.JmMoMfDTO;
 import com.BSMES.jd.main.dto.JmMouldDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +21,8 @@ import java.util.Map;
 public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEntity , JmMouldDTO> implements JmMouldService {
     @Override
     public void beforeInsert(JmMouldDTO dto) {
-
+        dto.setHpdate(new Date());
+        dto.setTypeid(1);
     }
 
     @Override
@@ -27,10 +31,9 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
     }
 
     @Override
-    public CommonReturn getMould(JmMouldDTO dto) {
+    public CommonReturn getMould(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmMouldDTO> moulds = this.select(data);
+        List<JmMouldDTO> moulds = this.select(this.getQueryWrapper(dto));
         if(moulds.isEmpty()){
             result.setAll(20000,moulds,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -109,14 +112,48 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
     }
 
     @Override
-    public CommonReturn getMoMfPage(JmMouldDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getMoMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmMouldDTO> jmMouldDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmMouldDTO> jmMouldDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmMouldDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
             result.setAll(20000,jmMouldDTOS,"查找成功");
         }
         return result;
+    }
+
+    /**
+     * 筛选条件
+     * @param dto
+     * @return
+     */
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("mdNo",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.eq("dep",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getMouldName())){
+            queryWrapper.like("name",dto.getMouldName());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+        return queryWrapper;
     }
 }

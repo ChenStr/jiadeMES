@@ -66,6 +66,18 @@ public class JmJobRecBController {
     }
 
     /**
+     * 车间生产日报表 Excel 导出
+     * @param dto
+     * @return
+     */
+    @GetMapping("/sorgdayexcel")
+    public CommonReturn getSorgDayExcel(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobRecBService.getSorgDayReportExcel(dto);
+        return result;
+    }
+
+    /**
      * 人员生产月报表
      * @param dto
      * @return
@@ -74,6 +86,18 @@ public class JmJobRecBController {
     public CommonReturn getJobRecMonReport(ResultType dto){
         CommonReturn result = new CommonReturn();
         result = jmJobRecBService.getJobRecMonReport(dto);
+        return result;
+    }
+
+    /**
+     * 人员生产月报表 Excel 导出
+     * @param dto
+     * @return
+     */
+    @GetMapping("/usermonexcel")
+    public CommonReturn getUserMonExcel(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobRecBService.getUserMonReportExcel(dto);
         return result;
     }
 

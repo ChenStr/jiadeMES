@@ -26,7 +26,8 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
 
     @Override
     public void beforeInsert(JmBsDictionaryDTO dto) {
-
+        dto.setState(1);
+        dto.setIsDel("0");
     }
 
     @Override
@@ -49,13 +50,13 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
     @Override
     public CommonReturn saveDictionary(JmBsDictionaryDTO dto) {
         CommonReturn result = new CommonReturn();
-        if (dto.getCode()==null){
-            dto.setCode(getKey("Dis","code",inssysvarService,dto));
+        if (dto.getId()==null){
+            dto.setId(getKey("Dis","id",inssysvarService,dto));
         }
         //判断dto是否为空 判断dto的usrcode是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getTypeId())){
+        if (dto!=null && MyUtils.StringIsNull(dto.getId())){
             QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
-            jmBsDictionaryEntityQueryWrapper.eq("code",dto.getCode());
+            jmBsDictionaryEntityQueryWrapper.eq("id",dto.getId());
             JmBsDictionaryDTO dis = this.selectOne(jmBsDictionaryEntityQueryWrapper);
             //判断 usrcode 是否重复
             if (dis==null || dis.getCode()==null){
@@ -77,7 +78,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         if (dto!=null && MyUtils.StringIsNull(dto.getCode())){
             //获取原先的用户属性值
             QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
-            jmBsDictionaryEntityQueryWrapper.eq("code",dto.getCode());
+            jmBsDictionaryEntityQueryWrapper.eq("id",dto.getId());
             JmBsDictionaryDTO var = this.selectOne(jmBsDictionaryEntityQueryWrapper);
             //设置用户不能操作的属性
             try{
@@ -93,10 +94,27 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
     }
 
     @Override
-    public CommonReturn delDictionary(List<String> codes) {
+    public CommonReturn delfalseDictionary(JmBsDictionaryDTO dto) {
+        CommonReturn result = new CommonReturn();
+        if(dto!=null && dto.getId()!=null){
+            //判断他是父亲还是孩子
+            QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+            jmBsDictionaryEntityQueryWrapper.eq("id",dto.getId()).or().eq("pid",dto.getId());
+            JmBsDictionaryEntity jmBsDictionaryEntity = new JmBsDictionaryEntity();
+            jmBsDictionaryEntity.setIsDel("1");
+            update(jmBsDictionaryEntity,jmBsDictionaryEntityQueryWrapper);
+            result.setAll(20000,null,"操作成功");
+        }else{
+            result.setAll(10001,null,"参数错误");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn delDictionary(List<String> ids) {
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmBsDictionaryEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("code",codes);
+        queryWrapper.in("id",ids);
         try{
             this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
@@ -121,18 +139,24 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
-//        }
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("sort");
+        }
 
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.like("code",dto.getSid());
+            queryWrapper.like("id",dto.getSid());
         }
-        if (MyUtils.StringIsNull(dto.getType())){
-            queryWrapper.like("type",dto.getType());
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.like("pid",dto.getOtherId());
         }
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.like("is_del",dto.getType());
         }
 
         if (dto.getAscOrder()!=null){

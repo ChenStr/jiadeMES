@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -82,5 +84,57 @@ public class JmMouldEntity {
      * 领用部门
      */
     public String dep;
+
+    /**
+     * 责任人
+     */
+    public String pressName;
+
+    /**
+     * 维修人
+     */
+    public String wxName;
+
+    /**
+     * 创建时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date hpdate;
+
+    /**
+     * 制单人员
+     */
+    public String smake;
+
+    /**
+     * 制作日期
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date creDd;
+
+    /**
+     * 确认人
+     */
+    public String confirName;
+
+    /**
+     * 使用单位
+     */
+    public String userunit;
+
+    /**
+     * 责任人代号
+     */
+    public String pressNo;
+
+    /**
+     * 确认人代号
+     */
+    public String confirNo;
+
+    /**
+     * 维修人代号
+     */
+    public String wxNo;
 
 }

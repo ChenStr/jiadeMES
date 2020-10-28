@@ -1,14 +1,19 @@
 package com.BSMES.jd.tools.my;
 
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -228,6 +233,70 @@ public class MyUtils {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    /**
+     *
+     * @param list  要导出的数据
+     * @param map   要导出数据的列明中文与英文   key 列明  val 中文注释
+     * @param fileName  导出后文件名
+     * @param <T>
+     */
+    public static <T> void exportExcel(List<T> list, HashMap<String, String> map, String fileName, HttpServletResponse response){
+        //新建一张表
+        XSSFWorkbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("Goods");
+
+        if (list!=null && list.size()>0){
+            for(int i = 0 ; i <= list.size() ; i++){
+                //使用迭代器 遍历 HashMap
+                Iterator iter = map.keySet().iterator();
+                //列名
+                Row titleRow = sheet.createRow(i);
+                Integer item = 0;
+                while(iter.hasNext()){
+                    //创建第一行，起始为0
+                    String key = (String) iter.next();
+                    String val = map.get(key);
+                    if (i==0){
+                        //定义第一列的信息
+                        titleRow.createCell(item).setCellValue(val);
+                    }else{
+//                        titleRow.createCell(item).setCellValue(key);
+                        //定义后面几列的信息
+                        String value = "";
+                        try{
+                            value = MyUtils.getFieldValueByFieldName(key,list.get(i-1)).toString();
+                        }catch (Exception e){
+                            value = "";
+                        }
+                        titleRow.createCell(item).setCellValue(value);
+
+                    }
+                    item++;
+                }
+
+            }
+        }
+
+        OutputStream outputStream =null;
+
+        try{
+            fileName = URLEncoder.encode(fileName,"UTF-8");
+            //设置ContentType请求信息格式
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+            outputStream = response.getOutputStream();
+            wb.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        }catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

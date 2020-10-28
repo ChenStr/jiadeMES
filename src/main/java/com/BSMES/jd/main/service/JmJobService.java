@@ -49,4 +49,10 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
      */
     public CommonReturn getJmJobReport(ResultType dto);
 
+    /**
+     * 导出车间生产月报表
+     */
+    public CommonReturn exportExcel(ResultType dto);
+
+
 }

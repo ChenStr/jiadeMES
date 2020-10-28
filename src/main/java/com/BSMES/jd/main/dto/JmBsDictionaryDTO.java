@@ -13,29 +13,24 @@ import lombok.EqualsAndHashCode;
 public class JmBsDictionaryDTO extends BaseDTO {
 
     /**
-     * 编码
+     * 主键
+     */
+    public String id;
+
+    /**
+     * code
      */
     public String code;
 
     /**
-     * 分类代号
+     * 父子关联
      */
-    public String typeId;
-
-    /**
-     * 分类名称
-     */
-    public String typeName;
-
-    /**
-     * 项次
-     */
-    public String cid;
+    public String pid;
 
     /**
      * 名称
      */
-    public String codeName;
+    public String name;
 
     /**
      * 状态
@@ -51,5 +46,10 @@ public class JmBsDictionaryDTO extends BaseDTO {
      * 排序
      */
     public Integer sort;
+
+    /**
+     * 是否删除
+     */
+    public String isDel;
 
 }

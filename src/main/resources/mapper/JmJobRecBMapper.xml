@@ -44,6 +44,9 @@
             <if test="sid != null and sid.toString().length()>0" >
                 and job.sid like CONCAT('%',#{sid},'%')
             </if>
+            <if test="otherId != null and otherId.toString().length()>0" >
+                and job.jb_no = #{otherId}
+            </if>
             <if test="dep != null and dep.toString().length()>0" >
                 and job.dep like CONCAT('%',#{dep},'%')
             </if>
@@ -77,7 +80,7 @@
             <if test="endDd != null and endDd.toString().length()>0" >
                 and recb.op_dd &lt;= #{endDd}
             </if>
-            <if test="wkName != null and sid.toString().length()>0" >
+            <if test="wkName != null and wkName.toString().length()>0" >
                 and users.usrname like CONCAT('%',#{wkName},'%')
             </if>
             <if test="prdNo != null and prdNo.toString().length()>0" >

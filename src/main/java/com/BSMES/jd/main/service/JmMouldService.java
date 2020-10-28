@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmMouldDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 public interface JmMouldService extends BaseService<JmMouldEntity , JmMouldDTO> {
 
-    public CommonReturn getMould(JmMouldDTO dto);
+    public CommonReturn getMould(ResultType dto);
 
     public CommonReturn saveMould(JmMouldDTO dto);
 
@@ -25,6 +26,6 @@ public interface JmMouldService extends BaseService<JmMouldEntity , JmMouldDTO> 
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getMoMfPage(JmMouldDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getMoMfPage(ResultType dto);
 
 }

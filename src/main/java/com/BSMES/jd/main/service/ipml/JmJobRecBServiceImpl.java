@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +34,9 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     @Autowired
     JmJobRecBDao jmJobRecBDao;
+
+    @Autowired
+    HttpServletResponse response;
 
     @Override
     public void beforeInsert(JmJobRecBDTO dto) {
@@ -204,6 +210,42 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    /**
+     * 车间生产日报表 Excel 导出
+     * @param dto
+     * @return
+     */
+    @Override
+    public CommonReturn getSorgDayReportExcel(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecReport(dto);
+            //计算总数量
+            Report report = new Report();
+            BigDecimal sum = new BigDecimal("0");
+            for (Report jmJobRecBDTO: jmJobRecBDTOS){
+                sum = sum.add(jmJobRecBDTO.getQty());
+            }
+
+            report.setQty(sum);
+            HashMap<String,String> map = new HashMap<>();
+            map.put("dep","车间名称");
+            map.put("sid","计划单号");
+            map.put("prdNo","产品代号");
+            map.put("prdName","产品名称");
+            map.put("qty","数量");
+            String fileName = "车间生产日报表.xlsx";
+            jmJobRecBDTOS.add(report);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public CommonReturn getJobRecMonReport(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -223,6 +265,29 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     }
 
     @Override
+    public CommonReturn getUserMonReportExcel(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecMonReport(dto);
+            HashMap<String,String> map = new HashMap<>();
+            map.put("dep","车间名称");
+            map.put("wkNo","人员代号");
+            map.put("wkName","人员名称");
+            map.put("prdNo","产品代号");
+            map.put("prdName","产品名称");
+            map.put("qty","数量");
+            String fileName = "人员生产月生产报表.xlsx";
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public CommonReturn getJobRecRsNoMonReport(ResultType dto) {
         CommonReturn result = new CommonReturn();
         if (dto.getPage()==null){
@@ -238,6 +303,11 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
         result.setAll(20000,pageInfo,"操作成功");
         return result;
+    }
+
+    @Override
+    public CommonReturn getDevMonReportExcel(ResultType dto) {
+        return null;
     }
 
 

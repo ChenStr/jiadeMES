@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmBsDictionaryDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+<!--    <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmBsDictionaryDTO">-->
+<!--        UPDATE jm_bs_dictionary-->
+<!--        <trim prefix="set" suffixOverrides=",">-->
+<!--            <if test="typeName!=null">type_name=#{typeName},</if>-->
+<!--            <if test="cid!=null">cid=#{cid},</if>-->
+<!--            <if test="codeName!=null">code_name=#{codeName},</if>-->
+<!--            <if test="state!=null">state=#{state},</if>-->
+<!--            <if test="rem!=null">rem=#{rem},</if>-->
+<!--            <if test="sort!=null">sort=#{sort},</if>-->
+<!--        </trim>-->
+<!--        WHERE type_id=#{typeId} and code=#{code}-->
+<!--    </update>-->
+
+</mapper>

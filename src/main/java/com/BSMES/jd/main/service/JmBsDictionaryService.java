@@ -17,6 +17,13 @@ public interface JmBsDictionaryService extends BaseService<JmBsDictionaryEntity,
 
     public CommonReturn editDictionary(JmBsDictionaryDTO dto);
 
+    /**
+     * 虚假的删除
+     * @param dto
+     * @return
+     */
+    public CommonReturn delfalseDictionary(JmBsDictionaryDTO dto);
+
     public CommonReturn delDictionary(List<String> codes);
 
     /**

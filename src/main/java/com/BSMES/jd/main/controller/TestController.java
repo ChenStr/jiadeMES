@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,13 +22,12 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    JmMoMfService service;
-
+    JmJobService service;
 
     @GetMapping()
     public CommonReturn test(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        result = service.getMoNo(dto);
+        result = service.exportExcel(dto);
         return result;
     }
 

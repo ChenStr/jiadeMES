@@ -40,13 +40,30 @@ public interface JmJobRecBService extends BaseService<JmJobRecBEntity , JmJobRec
     public CommonReturn getJobRecReportPage(ResultType dto);
 
     /**
+     * 导出车间生产日报表
+     */
+    public CommonReturn getSorgDayReportExcel(ResultType dto);
+
+    /**
      * 人员生产月生产报表
      */
     public CommonReturn getJobRecMonReport(ResultType dto);
 
     /**
+     * 人员生产月生产报表
+     */
+    public CommonReturn getUserMonReportExcel(ResultType dto);
+
+    /**
      * 设备生产月报表
      */
     public CommonReturn getJobRecRsNoMonReport(ResultType dto);
+
+    /**
+     * 设备生产月报表 Excel 导出
+     * @param dto
+     * @return
+     */
+    public CommonReturn getDevMonReportExcel(ResultType dto);
 
 }

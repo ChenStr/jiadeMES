@@ -1,12 +1,14 @@
 package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
 /**
  * 车间生产日报表
  */
+@Data
 public class Report extends BaseDTO {
 
     /**

@@ -4,6 +4,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.InsuserDTO;
 import com.BSMES.jd.main.dto.JmMouldDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,12 @@ public class JmMouldController {
     JmMouldService jmMouldService;
 
     @GetMapping()
-    public CommonReturn getMould(JmMouldDTO dto, Boolean isPage){
+    public CommonReturn getMould(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmMouldService.getMould(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmMouldService.getMoMfPage(dto,queryWrapper);
+            result = jmMouldService.getMoMfPage(dto);
         }
         return result;
     }
