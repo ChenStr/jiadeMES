@@ -113,4 +113,16 @@ public class JmJobRecBController {
         return result;
     }
 
+    /**
+     * 设备生产月报表 Excel 导出
+     * @param dto
+     * @return
+     */
+    @GetMapping("/devmonexcel")
+    public CommonReturn getDevMonExcel(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobRecBService.getDevMonReportExcel(dto);
+        return result;
+    }
+
 }

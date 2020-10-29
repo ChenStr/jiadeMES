@@ -40,7 +40,7 @@ public interface JmJobRecBService extends BaseService<JmJobRecBEntity , JmJobRec
     public CommonReturn getJobRecReportPage(ResultType dto);
 
     /**
-     * 导出车间生产日报表
+     * 导出车间生产日报表 Excel 导出
      */
     public CommonReturn getSorgDayReportExcel(ResultType dto);
 
@@ -50,7 +50,7 @@ public interface JmJobRecBService extends BaseService<JmJobRecBEntity , JmJobRec
     public CommonReturn getJobRecMonReport(ResultType dto);
 
     /**
-     * 人员生产月生产报表
+     * 人员生产月生产报表Excel 导出
      */
     public CommonReturn getUserMonReportExcel(ResultType dto);
 

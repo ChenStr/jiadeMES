@@ -120,6 +120,9 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
             dto.setDescOrder("prd_no");
         }
 
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("prd_no",dto.getSid());
+        }
         if (MyUtils.StringIsNull(dto.getPrdNo())){
             queryWrapper.like("prd_no",dto.getPrdNo());
         }

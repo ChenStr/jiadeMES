@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmChkstdTfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.BSMES.jd.main.service.JmChkstdTfService;
+import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -90,9 +91,13 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
                 jmChkstdTfService.remove(jmChkstdTfEntityQueryWrapper);
             }
             //将新的数据新增进去
+            for(JmChkstdTfDTO jmChkstdTfDTO : dto.getJmChkstdTfDTOS()){
+                jmChkstdTfDTO.setChkstdNo(sid);
+            }
             jmChkstdTfService.saveChkstdTfs(dto.getJmChkstdTfDTOS());
-            result.setAll(20000,null,"");
+            result.setAll(20000,null,"操作成功");
         }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
             e.printStackTrace();
         }
         return result;
@@ -140,18 +145,22 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     @Override
     public CommonReturn getChkstdMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
+        List<JmChkstd> jmChkstds = new ArrayList<>();
         IPage<JmChkstd> jmChkstdMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
+        IPage<JmChkstdMfEntity> jmChkstdMfEntityIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmChkstdMfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
-            List<JmChkstd> jmChkstdMfDTOS1 = jmChkstdMfDTOS.getRecords();
-            for (JmChkstd dto1 : jmChkstdMfDTOS1){
+            for (JmChkstdMfEntity dto1 : jmChkstdMfEntityIPage.getRecords()){
+                JmChkstd jmChkstd = new JmChkstd();
                 QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
-                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",dto1.getJmChkstdMfDTO().getChkstdNo());
+                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",dto1.getChkstdNo());
                 List<JmChkstdTfDTO> jmChkstdTfDTOS = jmChkstdTfService.select(jmChkstdTfEntityQueryWrapper);
-                dto1.setJmChkstdTfDTOS(jmChkstdTfDTOS);
+                jmChkstd.setJmChkstdTfDTOS(jmChkstdTfDTOS);
+                jmChkstd.setJmChkstdMfDTO(ConvertUtils.convert(dto1,currentDtoClass()));
+                jmChkstds.add(jmChkstd);
             }
-            jmChkstdMfDTOS.setRecords(jmChkstdMfDTOS1);
+            jmChkstdMfDTOS.setRecords(jmChkstds);
             result.setAll(20000,jmChkstdMfDTOS,"查找成功");
         }
         return result;

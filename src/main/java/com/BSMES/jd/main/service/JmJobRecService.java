@@ -5,6 +5,7 @@ import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmJobRecDTO;
 import com.BSMES.jd.main.dto.JobRec;
 import com.BSMES.jd.main.dto.JobRecSave;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDTO> {
 
-    public CommonReturn getJobRec(JmJobRecDTO dto);
+    public CommonReturn getJobRec(ResultType dto);
 
     public CommonReturn getJobRecs(JobRec jobRec);
 
@@ -29,7 +30,7 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getJobRecPage(JmJobRecDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getJobRecPage(ResultType dto);
 
 
     public CommonReturn getJobRecsPage(JobRec jobRec);

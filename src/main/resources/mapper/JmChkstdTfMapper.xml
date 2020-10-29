@@ -8,7 +8,6 @@
     <insert id="insertJmChkstdTfs" parameterType="com.BSMES.jd.main.dto.JmChkstdTfDTO">
         insert into jm_chkstd_tf (chkstd_no,cid,chk_no,chk_para,para_min,para_max,para_unit,tl_no,chk_rem,chk_file,rem,ts_no,chk_id) values
         <foreach collection="list" item="jmChkstdTf" index="index" separator=",">
---         cast(#{jmChkstdTf.paraMax,jdbcType=DECIMAL} as decimal(22,8))
             (#{jmChkstdTf.chkstdNo}, #{jmChkstdTf.cid}, #{jmChkstdTf.chkNo}, #{jmChkstdTf.chkPara},
             cast(#{jmChkstdTf.paraMin,jdbcType=DECIMAL} as decimal(22,8)),cast(#{jmChkstdTf.paraMax,jdbcType=DECIMAL} as decimal(22,8)),
             #{jmChkstdTf.paraUnit},#{jmChkstdTf.tlNo},#{jmChkstdTf.chkRem},

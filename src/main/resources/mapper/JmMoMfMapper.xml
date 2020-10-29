@@ -7,7 +7,7 @@
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <select id="getMoMfMore" resultMap="countryMoMfMoreMap" parameterType="com.BSMES.jd.main.dto.ResultType">
         select
-        mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,mo.qty_ast as mo_qty_ast,mo.ast_dd as mo_ast_dd,mo.sorg_name as mo_sorg_name,mo.qty_alled as mo_qty_alled,
+        mo.sid as mo_sid,mo.sbuid as mo_sbuid,mo.hpdate as mo_hpdate,mo.prd_no as mo_prd_no,mo.qty as mo_qty,mo.qty_fin as mo_qty_fin,mo.beg_dd as mo_beg_dd,mo.end_dd as mo_end_dd,mo.sta_dd as mo_sta_dd,mo.fin_dd as mo_fin_dd,mo.wh as mo_wh,mo.dep as mo_dep,mo.close_id as mo_close_id,mo.so_no as mo_so_no,mo.bom_no as mo_bom_no,mo.bom_no_zc as mo_bom_no_zc,mo.mo_no_erp as mo_mo_no_erp,mo.est_dd as mo_est_dd,mo.smake as mo_smake,mo.moditime as mo_moditime,mo.chk_man as mo_chk_man,mo.state as mo_state,mo.creftimes as mo_creftimes,mo.unit as mo_unit,mo.unit_erp as mo_unit_erp,mo.state_pre as mo_state_pre,mo.paraname as mo_paraname,mo.rem as mo_rem,mo.rw_id as mo_rw_id,mo.control as mo_control,mo.bil_type as mo_bil_type,mo.cus_no as mo_cus_no,mo.sorg as mo_sorg,mo.cus_name as mo_cus_name,mo.prd_name as mo_prd_name,mo.est_itm as mo_est_itm,mo.mk_itm as mo_mk_itm,mo.bomid as mo_bomid,mo.routingid as mo_routingid,mo.qty_ast as mo_qty_ast,mo.ast_dd as mo_ast_dd,mo.sorg_name as mo_sorg_name,mo.qty_alled as mo_qty_alled,mo.ast_release as mo_ast_release,
 --         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,
         prdtut.ubm as prdtut_ubm , prdtut.umc as prdtut_umc
         FROM jm_mo_mf as mo
@@ -92,6 +92,7 @@
         <result column="mo_ast_dd" property="jmMoMfDTO.astDd"/>
         <result column="mo_sorg_name" property="jmMoMfDTO.sorgName"/>
         <result column="mo_qty_alled" property="jmMoMfDTO.qtyAlled"/>
+        <result column="mo_ast_release" property="jmMoMfDTO.astRelease"/>
         <association property="jmPrdtutDTO" javaType="com.BSMES.jd.main.dto.JmPrdtutDTO">
             <id column="prdtut_ubm" property="ubm"/>
             <result column="prdtut_umc" property="umc"/>

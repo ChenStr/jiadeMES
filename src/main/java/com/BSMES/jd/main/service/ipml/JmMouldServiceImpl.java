@@ -131,7 +131,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.like("mdNo",dto.getSid());
+            queryWrapper.like("md_no",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("dep",dto.getSorg());

@@ -253,7 +253,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
             queryWrapper.le("hpdate",dto.getEndDd());
         }
         if (MyUtils.StringIsNull(dto.getDevNo())){
-            queryWrapper.eq("dev_no",dto.getDevNo());
+            queryWrapper.like("dev_no",dto.getDevNo());
         }
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());

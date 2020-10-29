@@ -63,13 +63,13 @@ public class JobRec extends BaseDTO {
     /**
      * 开始时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date begDd;
 
     /**
      * 结束时间
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date endDd;
 
     /**
@@ -164,7 +164,7 @@ public class JobRec extends BaseDTO {
 
     public BigDecimal opRem;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date opDd;
 
     /**

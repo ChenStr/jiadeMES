@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,6 +102,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                         jmXj2TfDTO.setChkPara(jmChkstdTfDTOS.get(i).getChkPara());
                         jmXj2TfDTO.setParaMin(jmChkstdTfDTOS.get(i).getParaMin());
                         jmXj2TfDTO.setParaMax(jmChkstdTfDTOS.get(i).getParaMax());
+                        jmXj2TfDTO.setChkValue(new BigDecimal(jmChkstdTfDTOS.get(i).getChkPara()));
                         jmXjMfs.add(jmXjMf);
                     }
                     jmXjMf2.setJmXjMfDTO(jmXjMfDTO);

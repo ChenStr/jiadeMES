@@ -54,10 +54,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     }
 
     @Override
-    public CommonReturn getJobRec(JmJobRecDTO dto) {
+    public CommonReturn getJobRec(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmJobRecDTO> jobRec = this.select(data);
+        List<JmJobRecDTO> jobRec = this.select(this.getQueryWrapper(dto));
         if(jobRec.isEmpty()){
             result.setAll(20000,jobRec,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -261,9 +260,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     }
 
     @Override
-    public CommonReturn getJobRecPage(JmJobRecDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getJobRecPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmJobRecDTO> jmJobRecDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmJobRecDTO> jmJobRecDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmJobRecDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
@@ -307,5 +306,32 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         PageInfo jobPages = new PageInfo<JobRec>(jobRecs);
         result.setAll(20000,jobPages,"操作成功");
         return result;
+    }
+
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("op_dd");
+        }
+
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("opsid",dto.getSid());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("op_dd",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("op_dd",dto.getEndDd());
+        }
+
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+
+        return queryWrapper;
     }
 }

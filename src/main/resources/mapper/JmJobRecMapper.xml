@@ -23,8 +23,11 @@
             <if test="prdName != null and prdName.length()>0 ">
                 and job.prd_name like #{prdName}
             </if>
-            <if test="opDd != null and opDd.toString().length()>0 ">
-                and rec.op_dd between #{opDd} and #{opDd}+1
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and rec.op_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and rec.op_dd &lt;= #{endDd}
             </if>
             <if test="state!=null and state.length()>0 ">
                 and job.state = #{state}
@@ -34,6 +37,9 @@
             </if>
             <if test="rsNo!=null and rsNo.length()>0 ">
                 and rec.rs_no = #{rsNo}
+            </if>
+            <if test="opsid!=null and opsid.length()>0 ">
+                and rec.opsid = #{opsid}
             </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">

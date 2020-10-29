@@ -17,13 +17,12 @@ public class JmJobRecController {
     JmJobRecService jmJobRecService;
 
     @GetMapping("")
-    public CommonReturn getJobRec(JmJobRecDTO dto, Boolean isPage){
+    public CommonReturn getJobRec(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmJobRecService.getJobRec(dto);
         }else{
-            QueryWrapper queryWrapper = new QueryWrapper();
-            result = jmJobRecService.getJobRecPage(dto,queryWrapper);
+            result = jmJobRecService.getJobRecPage(dto);
         }
         return result;
     }

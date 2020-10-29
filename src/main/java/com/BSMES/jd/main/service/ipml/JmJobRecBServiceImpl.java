@@ -307,7 +307,24 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     @Override
     public CommonReturn getDevMonReportExcel(ResultType dto) {
-        return null;
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecRsNoMonReport(dto);
+            HashMap<String,String> map = new HashMap<>();
+            map.put("devNo","设备代号");
+            map.put("devName","设备名称");
+            map.put("prdNo","产品代号");
+            map.put("prdName","产品名称");
+            map.put("qty","数量");
+            String fileName = "设备生产月报表.xlsx";
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

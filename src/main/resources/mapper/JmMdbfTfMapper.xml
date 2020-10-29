@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMdbfTfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveMdbf" parameterType="com.BSMES.jd.main.dto.JmMdbfTfDTO">
+        insert into jm_mdbf_tf (sid,cid,md_no,wh,wh_loc,rem,hpdate,ed_locked,typeid) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sid}, #{item.cid}, #{item.mdNo}, #{item.wh},#{item.whLoc},
+            #{item.rem},#{item.hpdate},#{item.edLocked},#{item.typeid})
+        </foreach>
+    </insert>
+
+    <update id="editMdbf" parameterType="com.BSMES.jd.main.dto.JmMdbfTfDTO">
+        UPDATE jm_bom_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="mdNo!=null">md_no=#{mdNo},</if>
+            <if test="wh!=null">wh=#{wh},</if>
+            <if test="whLoc!=null">wh_loc=#{whLoc},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+            <if test="edLocked!=null">ed_locked=#{edLocked},</if>
+            <if test="typeid!=null">typeid=#{typeid},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
+</mapper>
