@@ -191,8 +191,14 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         if (MyUtils.StringIsNull(dto.getDevNo())){
             queryWrapper.like("dev_no",dto.getDevNo());
         }
+        if (MyUtils.StringIsNull(dto.getDevName())){
+            queryWrapper.like("dev_name",dto.getDevName());
+        }
         if (MyUtils.StringIsNull(dto.getWkNo())){
             queryWrapper.eq("sal_no",dto.getWkNo());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("devid",dto.getType());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("dep",dto.getSorg());

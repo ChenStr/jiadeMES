@@ -101,11 +101,13 @@ public class JmJobDTO extends BaseDTO implements Serializable {
     /**
      * 实际开工
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date staDd;
 
     /**
      * 实际完工
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date finDd;
 
     /**
@@ -178,12 +180,16 @@ public class JmJobDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyRw;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date sDd;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date eDd;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date ssDd;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date eeDd;
 
     /**
@@ -212,6 +218,7 @@ public class JmJobDTO extends BaseDTO implements Serializable {
 
     public String isRsv;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date rsvDd;
 
     /**
@@ -239,6 +246,7 @@ public class JmJobDTO extends BaseDTO implements Serializable {
     /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createDate;
 
     /**

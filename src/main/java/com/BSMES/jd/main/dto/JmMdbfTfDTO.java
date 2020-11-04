@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -39,8 +40,14 @@ public class JmMdbfTfDTO extends BaseDTO {
     public String whLoc;
 
     /**
+     * 备注
+     */
+    public String rem;
+
+    /**
      * 单据日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
@@ -52,5 +59,10 @@ public class JmMdbfTfDTO extends BaseDTO {
      * 工装类型
      */
     public Integer typeid;
+
+    /**
+     * 模具名称
+     */
+    public String mdName;
 
 }

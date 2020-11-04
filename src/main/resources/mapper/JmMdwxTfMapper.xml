@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- JmJob表的真身 -->
+<!-- JmJob表的真身   cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8)) -->
 <mapper namespace="com.BSMES.jd.main.dao.JmMdwxTfDao">
 
+    <insert id="saveJmMdwxTfs" parameterType="com.BSMES.jd.main.dto.JmMdwxTfDTO">
+        insert into jm_mdwx_tf (sid,cid,jb_no,prd_no,prd_name,find_dd,wk_no,mt_id,rem,wk_name,cur_para) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sid}, #{item.cid}, #{item.jbNo}, #{item.prdNo},#{item.prdName},#{item.findDd},
+            #{item.wkNo},#{item.mtId},#{item.rem},#{item.wkName},#{item.curPara})
+        </foreach>
+    </insert>
 
+    <update id="editJmMdwxTf" parameterType="com.BSMES.jd.main.dto.JmMdwxTfDTO">
+        UPDATE jm_mdwx_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="jbNo!=null">jb_no=#{jbNo},</if>
+            <if test="prdNo!=null">prd_no=#{prdNo},</if>
+            <if test="prdName!=null">prd_name=#{prdName},</if>
+            <if test="findDd!=null">find_dd=#{findDd},</if>
+            <if test="wkNo!=null">wk_no=#{wkNo},</if>
+            <if test="mtId!=null">mt_id=#{mtId},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="wkName!=null">wk_name=#{wkName},</if>
+            <if test="curPara!=null">cur_para=#{curPara},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
 
 </mapper>

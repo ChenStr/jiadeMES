@@ -26,6 +26,14 @@ public interface JmMdwxService extends BaseService<JmMdwxEntity, JmMdwxDTO> {
 
 
     /**
+     * 编辑
+     * @param dto
+     * @return
+     */
+    public CommonReturn editJmMdwx(JmMdwxDTO dto);
+
+
+    /**
      * 删除检验单信息
      */
     public CommonReturn delJmMdwx(List<String> sid);

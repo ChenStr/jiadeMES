@@ -6,10 +6,10 @@
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <insert id="saveMdbf" parameterType="com.BSMES.jd.main.dto.JmMdbfTfDTO">
-        insert into jm_mdbf_tf (sid,cid,md_no,wh,wh_loc,rem,hpdate,ed_locked,typeid) values
+        insert into jm_mdbf_tf (sid,cid,md_no,wh,wh_loc,rem,hpdate,ed_locked,typeid,md_name) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.sid}, #{item.cid}, #{item.mdNo}, #{item.wh},#{item.whLoc},
-            #{item.rem},#{item.hpdate},#{item.edLocked},#{item.typeid})
+            #{item.rem},#{item.hpdate},#{item.edLocked},#{item.typeid},#{item.mdName})
         </foreach>
     </insert>
 
@@ -23,6 +23,7 @@
             <if test="hpdate!=null">hpdate=#{hpdate},</if>
             <if test="edLocked!=null">ed_locked=#{edLocked},</if>
             <if test="typeid!=null">typeid=#{typeid},</if>
+            <if test="mdName!=null">md_name=#{mdName},</if>
         </trim>
         WHERE sid=#{sid} and cid=#{cid}
     </update>

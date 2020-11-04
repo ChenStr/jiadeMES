@@ -28,7 +28,7 @@ public class JmMdwxEntity {
     public String sbuid;
 
     /**
-     * 下模时间
+     * 创建时间
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
@@ -94,5 +94,57 @@ public class JmMdwxEntity {
      * 工装类型
      */
     public Integer typeid;
+
+    /**
+     * 下模时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date lowerDd;
+
+    /**
+     * 维修内容
+     */
+    public String wxRem;
+
+    /**
+     * 报修类型
+     */
+    public String mdType;
+
+    /**
+     * 更新时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date moditime;
+
+    /**
+     * 审核人
+     */
+    public String chkMan;
+
+    /**
+     * 库位名称
+     */
+    public String whlocName;
+
+    /**
+     * 库位代号
+     */
+    public String whloc;
+
+    /**
+     * 审核人名称
+     */
+    public String chkmanName;
+
+    /**
+     * 维修工名称
+     */
+    public String wkName;
+
+    /**
+     * 制单人员名称
+     */
+    public String smakeName;
 
 }

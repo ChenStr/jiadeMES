@@ -239,6 +239,8 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.like("sid",dto.getSid());
+        }else if(MyUtils.StringIsNull(dto.getType()) && dto.getSid()==null){
+            queryWrapper.eq("sid",dto.getType());
         }
         if (MyUtils.StringIsNull(dto.getDevid())){
             queryWrapper.like("devid",dto.getDevid());
@@ -254,6 +256,8 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         }
         if (MyUtils.StringIsNull(dto.getDevNo())){
             queryWrapper.like("dev_no",dto.getDevNo());
+        }else if (MyUtils.StringIsNull(dto.getOtherType()) && dto.getDevNo()==null){
+            queryWrapper.eq("dev_no",dto.getOtherType());
         }
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());

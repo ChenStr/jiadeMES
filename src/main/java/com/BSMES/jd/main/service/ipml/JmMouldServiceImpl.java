@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,12 +20,15 @@ import java.util.Map;
 
 @Service
 public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEntity , JmMouldDTO> implements JmMouldService {
+
+    @Autowired
+    JmMouldDao jmMouldDao;
+
     @Override
     public void beforeInsert(JmMouldDTO dto) {
         dto.setHpdate(new Date());
         dto.setTypeid(1);
     }
-
     @Override
     public void beforEedit(JmMouldDTO dto) {
 
@@ -76,10 +80,12 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
             JmMouldDTO job = this.selectOne(mouldQueryWrapper);
             //设置用户不能操作的属性
             try{
-                this.edit(dto);
+//                this.edit(dto);
+                jmMouldDao.editMould(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
+                e.printStackTrace();
             }
         }else{
             result.setAll(10001,null,"参数错误");
@@ -132,6 +138,8 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.like("md_no",dto.getSid());
+        }else if(MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.eq("md_no",dto.getOtherId());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("dep",dto.getSorg());

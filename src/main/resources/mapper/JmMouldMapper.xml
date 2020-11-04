@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmMouldDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <update id="editMould" parameterType="com.BSMES.jd.main.dto.JmMouldDTO">
+        UPDATE jm_mould
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">name=#{name},</if>
+            <if test="mdQty!=null">md_qty=#{mdQty},</if>
+            <if test="mdGrp!=null">md_grp=#{mdGrp},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="wh!=null">wh=#{wh},</if>
+            <if test="whLoc!=null">wh_loc=#{whLoc},</if>
+            <if test="qtyMax!=null">qty_max=#{qtyMax},</if>
+            <if test="qtyMk!=null">qty_mk=#{qtyMk},</if>
+            <if test="timeMax!=null">time_max=#{timeMax},</if>
+            <if test="timeMk!=null">time_mk=#{timeMk},</if>
+            <if test="dep!=null">dep=#{dep},</if>
+            <if test="pressName!=null">press_name=#{pressName},</if>
+            <if test="wxName!=null">wx_name=#{wxName},</if>
+            <if test="hpdate!=null">hpdate=#{hpdate},</if>
+            <if test="smake!=null">smake=#{smake},</if>
+            <if test="creDd!=null">cre_dd=#{creDd},</if>
+            <if test="confirName!=null">confir_name=#{confirName},</if>
+            <if test="userunit!=null">userunit=#{userunit},</if>
+            <if test="pressNo!=null">press_no=#{pressNo},</if>
+            <if test="confirNo!=null">confir_no=#{confirNo},</if>
+            <if test="wxNo!=null">wx_no=#{wxNo},</if>
+        </trim>
+        WHERE md_no=#{mdNo} and typeid=#{typeid}
+    </update>
+</mapper>

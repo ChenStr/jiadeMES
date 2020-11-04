@@ -22,12 +22,12 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    JmJobService service;
+    JmJobRecService service;
 
     @GetMapping()
     public CommonReturn test(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        result = service.exportExcel(dto);
+        result = service.taskeditJobRec();
         return result;
     }
 

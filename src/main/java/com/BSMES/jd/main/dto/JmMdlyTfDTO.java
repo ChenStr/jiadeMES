@@ -2,6 +2,7 @@ package com.BSMES.jd.main.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -51,6 +52,7 @@ public class JmMdlyTfDTO {
     /**
      * 单据日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
     /**
@@ -61,7 +63,7 @@ public class JmMdlyTfDTO {
     /**
      * 工装类型
      */
-    public Integer typeId;
+    public Integer typeid;
 
     /**
      * 领用人
@@ -71,6 +73,7 @@ public class JmMdlyTfDTO {
     /**
      * 领出日期
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date mdlyDd;
 
     /**

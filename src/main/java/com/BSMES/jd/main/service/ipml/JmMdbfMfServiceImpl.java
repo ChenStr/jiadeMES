@@ -4,17 +4,18 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdbfMfDao;
 import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.entity.JmBsDictionaryEntity;
 import com.BSMES.jd.main.entity.JmMdbfMfEntity;
 import com.BSMES.jd.main.entity.JmMdbfTfEntity;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmMdbfMfService;
-import com.BSMES.jd.main.service.JmMdbfTfService;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,12 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
 
     @Autowired
     JmMdbfTfService jmMdbfTfService;
+
+    @Autowired
+    JmMouldService jmMouldService;
+
+    @Autowired
+    JmBsDictionaryService jmBsDictionaryService;
 
     @Override
     public void beforeInsert(JmMdbfMfDTO dto) {
@@ -48,6 +55,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @Transactional
     @Override
     public CommonReturn saveMdbf(JmMdbf dto) {
         CommonReturn result = new CommonReturn();
@@ -55,35 +63,48 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         String sid = null;
 
         //首先判断是添加还是修改
-//        if (dto.getJmChkstdMfDTO()!=null && dto.getJmChkstdMfDTO().getChkstdNo()!=null){
-//            flag=false;
-//            sid = dto.getJmChkstdMfDTO().getChkstdNo();
-//            this.edit(dto.getJmChkstdMfDTO());
-//        }else{
-//            sid = this.getKey("JmChkstd","chkstd_no",inssysvarService,dto.getJmChkstdMfDTO());
-//            dto.getJmChkstdMfDTO().setChkstdNo(sid);
-//            this.insert(dto.getJmChkstdMfDTO());
-//        }
-//
-//        try{
-//
-//            //如果是编辑的话先进行删除
-//            if (flag==false){
-//                //删除所有的原始数据
-//                QueryWrapper<JmChkstdTfEntity> jmChkstdTfEntityQueryWrapper = new QueryWrapper<>();
-//                jmChkstdTfEntityQueryWrapper.eq("chkstd_no",sid);
-//                jmChkstdTfService.remove(jmChkstdTfEntityQueryWrapper);
-//            }
-//            //将新的数据新增进去
-//            for(JmChkstdTfDTO jmChkstdTfDTO : dto.getJmChkstdTfDTOS()){
-//                jmChkstdTfDTO.setChkstdNo(sid);
-//            }
-//            jmChkstdTfService.saveChkstdTfs(dto.getJmChkstdTfDTOS());
-//            result.setAll(20000,null,"操作成功");
-//        }catch (Exception e){
-//            result.setAll(40000,null,"操作失败");
-//            e.printStackTrace();
-//        }
+        if (dto.getJmMdbfMfDTO()!=null && dto.getJmMdbfMfDTO().getSid()!=null){
+            flag=false;
+            sid = dto.getJmMdbfMfDTO().getSid();
+            this.edit(dto.getJmMdbfMfDTO());
+        }else{
+            sid = this.getKey("Mdbf","sid",inssysvarService,dto.getJmMdbfMfDTO());
+            dto.getJmMdbfMfDTO().setSid(sid);
+            this.insert(dto.getJmMdbfMfDTO());
+        }
+
+        try{
+
+            //如果是编辑的话先进行删除
+            if (flag==false){
+                //删除所有的原始数据
+                QueryWrapper<JmMdbfTfEntity> jmMdbfTfEntityQueryWrapper = new QueryWrapper<>();
+                jmMdbfTfEntityQueryWrapper.eq("sid",sid);
+                jmMdbfTfService.remove(jmMdbfTfEntityQueryWrapper);
+            }
+            //将新的数据新增进去
+            if(dto.getJmMdbfTfDTOS()!=null && dto.getJmMdbfTfDTOS().size()>0){
+                for(JmMdbfTfDTO jmMdbfTfDTO : dto.getJmMdbfTfDTOS()){
+                    jmMdbfTfDTO.setSid(sid);
+                    //最后将模具的状态进行修改
+                    //首先找到字典表的状态
+                    QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+                    jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030029");
+                    JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
+                    //再对模具的状态进行修改
+                    JmMouldDTO jmMouldDTO = new JmMouldDTO();
+                    jmMouldDTO.setMdNo(jmMdbfTfDTO.getMdNo());
+                    jmMouldDTO.setTypeid(1);
+                    jmMouldDTO.setState(jmBsDictionaryDTO.getCode());
+                    jmMouldService.edit(jmMouldDTO);
+                }
+                jmMdbfTfService.saveMdbfTfs(dto.getJmMdbfTfDTOS());
+            }
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -151,7 +172,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
     }
 
     @Override
-    public CommonReturn getMdbkMfPage(ResultType dto) {
+    public CommonReturn getMdbfMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         IPage<JmMdbfMfDTO> jmMdbfMfDTOIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmMdbfMfDTOIPage==null){

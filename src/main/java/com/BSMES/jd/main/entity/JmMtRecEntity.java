@@ -145,4 +145,8 @@ public class JmMtRecEntity {
      */
     public String rltRem;
 
+    /**
+     * 设备名称
+     */
+    public String devName;
 }

@@ -2,6 +2,7 @@ package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -37,6 +38,7 @@ public class JmDevMtidDTO extends BaseDTO {
 
     public String smake;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date hpdate;
 
 }

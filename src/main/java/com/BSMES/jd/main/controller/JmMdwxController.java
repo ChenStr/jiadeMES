@@ -37,6 +37,13 @@ public class JmMdwxController {
         return result;
     }
 
+    @PutMapping()
+    public CommonReturn editJmMoMf(@RequestBody JmMdwxDTO dto){
+        CommonReturn result = new CommonReturn();
+        result = jmMdwxService.editJmMdwx(dto);
+        return result;
+    }
+
     @DeleteMapping()
     public CommonReturn delJmMoMf( String[] ids ){
         CommonReturn result = new CommonReturn();

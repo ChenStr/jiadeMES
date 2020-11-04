@@ -8,20 +8,20 @@
     <select id="getJobRec" parameterType="com.BSMES.jd.main.dto.JobRec" resultType="com.BSMES.jd.main.dto.JobRec">
         SELECT job.sid,job.cid,rec.opsid,job.dep,job.dev_name,job.md_name,job.prd_name,job.qty,job.beg_dd,job.end_dd,rec.qty as weight,rec.rm_name1,rec.rm_name2,rec.rm_name3,
         rec.rm_name4,rec.qty_rm1,rec.qty_rm2,rec.qty_rm3,rec.qty_rm4,rec.rm_bn1,rec.rm_bn2,rec.rm_bn3,rec.rm_bn4,job.state,rec.state as state_ok,rec.qty_wt,
-        rec.state_pre,rec.qty_cur,rec.qty_lost,rec.op_rem,rec.op_dd,rec.jb_no,rec.rs_no as rs_no FROM jm_job_rec as rec
+        rec.state_pre,rec.qty_cur,rec.qty_lost,rec.op_rem,rec.op_dd,rec.jb_no,rec.rs_no as rs_no,rec.firs_md as firs_md,rec.state_ok as stateOk FROM jm_job_rec as rec
         join jm_job as job on rec.jb_no = job.jb_no
         <where>
             <if test="dep != null and dep.length()>0 ">
                 and job.dep = #{dep}
             </if>
             <if test="devName != null and devName.length()>0 ">
-                and job.dev_name like #{devName}
+                and job.dev_name like CONCAT('%',#{devName},'%')
             </if>
             <if test="mdName != null and mdName.length()>0 ">
-                and job.md_name like #{mdName}
+                and job.md_name like CONCAT('%',#{mdName},'%')
             </if>
             <if test="prdName != null and prdName.length()>0 ">
-                and job.prd_name like #{prdName}
+                and job.prd_name like CONCAT('%',#{prdName},'%')
             </if>
             <if test="begDd != null and begDd.toString().length()>0" >
                 and rec.op_dd &gt;= #{begDd}
@@ -33,13 +33,16 @@
                 and job.state = #{state}
             </if>
             <if test="jbNo!=null and jbNo.length()>0 ">
-                and rec.jb_no = #{jbNo}
+                and rec.jb_no like CONCAT('%',#{jbNo},'%')
             </if>
             <if test="rsNo!=null and rsNo.length()>0 ">
                 and rec.rs_no = #{rsNo}
             </if>
             <if test="opsid!=null and opsid.length()>0 ">
-                and rec.opsid = #{opsid}
+                and rec.opsid like CONCAT('%',#{opsid},'%')
+            </if>
+            <if test="sid!=null and sid.length()>0 ">
+                and job.sid like CONCAT('%',#{sid},'%')
             </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">
@@ -49,5 +52,38 @@
             ORDER BY ${ascOrder} ASC
         </if>
 	</select>
+
+    <update id="editJobRecs" parameterType="com.BSMES.jd.main.dto.JmJobRecDTO">
+        UPDATE jm_job_rec
+        <trim prefix="set" suffixOverrides=",">
+            <if test="opDd!=null">op_dd=#{opDd},</if>
+            <if test="usr!=null">usr=#{usr},</if>
+            <if test="prdNo!=null">prd_no=#{prdNo},</if>
+            <if test="zcNo!=null">zc_no=#{zcNo},</if>
+            <if test="opId!=null">op_id=#{opId},</if>
+            <if test="qtyCur!=null">qty_cur=#{qtyCur},</if>
+            <if test="opTime!=null">op_time=#{opTime},</if>
+            <if test="rsNo!=null">rs_no=#{rsNo},</if>
+            <if test="jbNo!=null">jb_no=#{jbNo},</if>
+            <if test="opRem!=null">op_rem=#{opRem},</if>
+            <if test="qty!=null">qty=#{qty},</if>
+            <if test="qtyLost!=null">qty_lost=#{qtyLost},</if>
+            <if test="endDd!=null">end_dd=#{endDd},</if>
+            <if test="staDd!=null">sta_dd=#{staDd},</if>
+            <if test="wkNo!=null">wk_no=#{wkNo},</if>
+            <if test="mdNo!=null">md_no=#{mdNo},</if>
+            <if test="statePre!=null">state_pre=#{statePre},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="moNo!=null">mo_no=#{moNo},</if>
+            <if test="tmNo!=null">tm_no=#{tmNo},</if>
+            <if test="wrNo!=null">wr_no=#{wrNo},</if>
+            <if test="genId!=null">gen_id=#{genId},</if>
+        </trim>
+        <where>
+            <foreach collection="list" item="language" separator="or">
+                opsid=#{language.opsid}
+            </foreach>
+        </where>
+    </update>
 
 </mapper>

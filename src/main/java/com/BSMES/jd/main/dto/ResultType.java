@@ -84,6 +84,8 @@ public class ResultType extends BaseDTO {
      */
     public Integer state;
 
+    public List<Integer> otherState;
+
     /**
      * 类型
      */

@@ -60,6 +60,9 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     @Autowired
     JmJobRecBService jmJobRecBService;
 
+    @Autowired
+    JmBsDictionaryService jmBsDictionaryService;
+
 
     @Override
     public void beforeInsert(JmJobDTO dto) {
@@ -225,6 +228,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                 dtos.get(i).setCreateDate(new Date());
                 dtos.get(i).setState("546");
             }
+
         }
         try{
             //先进行删除后进行添加
@@ -237,6 +241,13 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             JmMoMfDTO jmMoMfDTO = jmMoMfService.selectOne(jmMoMfEntityQueryWrapper);
             if (jmMoMfDTO!=null && jmMoMfDTO.getSid()!=null){
                 jmMoMfDTO.setQtyAlled(sum);
+                //修改调度单的状态
+                if (jmMoMfDTO.getQty().compareTo(sum) < 1){
+                    QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+                    jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030013");
+                    JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
+                    jmMoMfDTO.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
+                }
                 jmMoMfService.editMoMf(jmMoMfDTO);
             }
             jmJobDao.insertJmJobs(dtos);

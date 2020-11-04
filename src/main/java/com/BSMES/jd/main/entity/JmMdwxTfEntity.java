@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -45,6 +46,7 @@ public class JmMdwxTfEntity {
     /**
      * 发现时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date findDd;
 
     /**
@@ -66,6 +68,11 @@ public class JmMdwxTfEntity {
      * 填报者
      */
     public String wkName;
+
+    /**
+     * 检验结果
+     */
+    public String curPara;
 
 
 }

@@ -140,4 +140,9 @@ public class JmMtRecDTO extends BaseDTO {
      */
     public String rltRem;
 
+    /**
+     * 设备名称
+     */
+    public String devName;
+
 }

@@ -53,6 +53,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
         }
         return result;
     }
@@ -84,7 +85,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
     }
 
     @Override
-    public CommonReturn getMdbkTfPage(ResultType dto) {
+    public CommonReturn getMdbfTfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         IPage<JmMdbfTfDTO> jmMdbfTfDTOIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmMdbfTfDTOIPage==null){
@@ -107,7 +108,10 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
             queryWrapper.eq("sid",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getMouldNo())){
-            queryWrapper.eq("md_no",dto.getMouldNo());
+            queryWrapper.like("md_no",dto.getMouldNo());
+        }
+        if (MyUtils.StringIsNull(dto.getMouldName())){
+            queryWrapper.like("md_name",dto.getMouldName());
         }
         if (MyUtils.StringIsNull(dto.getType())){
             queryWrapper.eq("typeid",dto.getType());

@@ -23,6 +23,12 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
 
     public CommonReturn editJobRec(JmJobRecDTO dto);
 
+    /**
+     * 定时任务 修改随工单状态
+     * @return
+     */
+    public CommonReturn taskeditJobRec();
+
     public CommonReturn delJobRec(List<String> opsids);
 
     /**

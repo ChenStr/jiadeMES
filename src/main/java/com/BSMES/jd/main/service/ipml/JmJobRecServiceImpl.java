@@ -4,10 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobRecDao;
 import com.BSMES.jd.main.dto.*;
-import com.BSMES.jd.main.entity.JmJobEntity;
-import com.BSMES.jd.main.entity.JmJobRecBEntity;
-import com.BSMES.jd.main.entity.JmJobRecEntity;
-import com.BSMES.jd.main.entity.JmPrdtEntity;
+import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,12 +12,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecEntity , JmJobRecDTO> implements JmJobRecService {
@@ -38,6 +36,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Autowired
     InssysvarService inssysvarService;
+
+    @Autowired
+    JmBsDictionaryService jmBsDictionaryService;
 
 
     @Autowired
@@ -236,6 +237,39 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @Scheduled(cron="0 30 7 * * ?")
+    @Override
+    public CommonReturn taskeditJobRec() {
+        CommonReturn result = new CommonReturn();
+        //获取昨天与今天的时间
+        //今天
+        String tms = " 07:30:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("YY-MM-dd");
+        String today = sdf.format(new Date());
+        today = today + tms;
+        //昨天
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(calendar.DATE,-1);
+        String yesterday = sdf.format(calendar.getTime());
+        yesterday = yesterday + tms;
+
+        QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
+        jmJobRecEntityQueryWrapper.ge("op_dd",today).le("op_dd",yesterday);
+        List<JmJobRecDTO> jmJobRecDTOS = this.select(jmJobRecEntityQueryWrapper);
+        //查询随工单的完成编号
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030015");
+        JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
+        jmJobRecDTOS.stream().forEach(T->T.setState(jmBsDictionaryDTO.getCode()));
+
+        for (JmJobRecDTO jmJobRecDTO : jmJobRecDTOS){
+            this.edit(jmJobRecDTO);
+        }
+
+        return result;
+    }
+
     @Override
     public CommonReturn delJobRec(List<String> opsids) {
         CommonReturn result = new CommonReturn();
@@ -318,6 +352,13 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.eq("opsid",dto.getSid());
         }
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.eq("jb_no",dto.getOtherId());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("mo_no",dto.getType());
+        }
+
         if (dto.getBegDd()!=null){
             queryWrapper.ge("op_dd",dto.getBegDd());
         }

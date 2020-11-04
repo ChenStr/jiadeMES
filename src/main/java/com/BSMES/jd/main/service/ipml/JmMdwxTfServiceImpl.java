@@ -77,26 +77,26 @@ public class JmMdwxTfServiceImpl extends BaseServiceImpl<JmMdwxTfDao, JmMdwxTfEn
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
-//        }
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("hpdate");
+        }
 
-//        if (MyUtils.StringIsNull(dto.getSid())){
-//            queryWrapper.like("orgcode",dto.getSid());
-//        }
-//        if (MyUtils.StringIsNull(dto.getDevName())){
-//            queryWrapper.like("orgname",dto.getDevName());
-//        }
-//        if (MyUtils.StringIsNull(dto.getType())){
-//            queryWrapper.eq("cattr",dto.getType());
-//        }
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getMouldNo())){
+            queryWrapper.eq("md_no",dto.getMouldNo());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.eq("state",dto.getState());
+        }
 
-//        if (dto.getAscOrder()!=null){
-//            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
-//        }
-//        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
-//            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
-//        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
 
 
         return queryWrapper;

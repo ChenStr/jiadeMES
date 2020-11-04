@@ -34,6 +34,6 @@ public interface JmMdbfMfService extends BaseService<JmMdbfMfEntity, JmMdbfMfDTO
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getMdbkMfPage(ResultType dto);
+    public CommonReturn getMdbfMfPage(ResultType dto);
 
 }

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdlyMfDao;
+import com.BSMES.jd.main.dao.JmMouldDao;
 import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.entity.JmBomTfEntity;
@@ -11,6 +12,8 @@ import com.BSMES.jd.main.entity.JmMdlyTfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmMdlyMfService;
 import com.BSMES.jd.main.service.JmMdlyTfService;
+import com.BSMES.jd.main.service.JmMouldService;
+import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,10 +34,13 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
     @Autowired
     JmMdlyTfService jmMdlyTfService;
 
+    @Autowired
+    JmMouldService jmMouldService;
+
 
     @Override
     public void beforeInsert(JmMdlyMfDTO dto) {
-
+        dto.setHpdate(new Date());
     }
 
     @Override
@@ -93,6 +100,11 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
                 if (jmMdlyTfDTO!=null && jmMdlyTfDTO.getSid()!=null){
                     jmMdlyTfService.saveMdlyTfs(dto.getJmMdlyTfDTOS());
                 }
+                JmMouldDTO jmMouldDTO = new JmMouldDTO();
+                jmMouldDTO.setMdNo(jmMdlyTfDTO.getMdNo());
+                jmMouldDTO.setTypeid(1);
+                jmMouldDTO.setState(dto.getJmMdlyMfDTO().getState().toString());
+                jmMouldService.editMould(jmMouldDTO);
             }
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
@@ -143,16 +155,20 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
     public CommonReturn getMdlyMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         IPage<JmMdly> jmMdlyIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
+        IPage<JmMdlyMfEntity> jmMdlyMfEntityIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmMdlyIPage==null){
             result.setAll(10001,null,"参数错误");
         }else{
-            List<JmMdly> jmMdlies = jmMdlyIPage.getRecords();
+            List<JmMdly> jmMdlies = new ArrayList<>();
+            List<JmMdlyMfEntity> jmMdlyMfEntities = jmMdlyMfEntityIPage.getRecords();
             //将子表数据填入
-            for (JmMdly dto1 : jmMdlies){
+            for (JmMdlyMfEntity dto1 : jmMdlyMfEntities){
+                JmMdly jmMdly = new JmMdly();
                 QueryWrapper<JmMdlyTfEntity> jmMdlyTfEntityQueryWrapper = new QueryWrapper<>();
-                jmMdlyTfEntityQueryWrapper.eq("sid",dto1.getJmMdlyMfDTO().getSid());
+                jmMdlyTfEntityQueryWrapper.eq("sid",dto1.getSid());
                 List<JmMdlyTfDTO> jmMdlyTfDTOS = jmMdlyTfService.select(jmMdlyTfEntityQueryWrapper);
-                dto1.setJmMdlyTfDTOS(jmMdlyTfDTOS);
+                jmMdly.setJmMdlyMfDTO(ConvertUtils.convert(dto1,currentDtoClass()));
+                jmMdly.setJmMdlyTfDTOS(jmMdlyTfDTOS);
             }
             jmMdlyIPage.setRecords(jmMdlies);
             result.setAll(20000,jmMdlyIPage,"查找成功");

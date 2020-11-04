@@ -45,14 +45,20 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     JmBomTfService jmBomTfService;
 
     @Autowired
+    JmBsDictionaryService jmBsDictionaryService;
+
+    @Autowired
     JmMoMfDao jmMoMfDao;
 
     @Override
     public void beforeInsert(JmMoMfDTO dto) {
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030011");
+        JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
         dto.setAstRelease(1);
         dto.setHpdate(new Date());
         dto.setModitime(new Date());
-        dto.setState(6);
+        dto.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
         dto.setSbuid("MO");
     }
 

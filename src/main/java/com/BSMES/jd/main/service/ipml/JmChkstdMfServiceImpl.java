@@ -176,12 +176,18 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.like("chkstd_no",dto.getSid());
         }
-//        if (MyUtils.StringIsNull(dto.getDevName())){
-//            queryWrapper.like("orgname",dto.getDevName());
-//        }
-//        if (MyUtils.StringIsNull(dto.getType())){
-//            queryWrapper.eq("cattr",dto.getType());
-//        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.like("sorg",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getDep())){
+            queryWrapper.like("sorg_name",dto.getDep());
+        }
+        if (MyUtils.StringIsNull(dto.getPrdNo())){
+            queryWrapper.like("prd_no",dto.getPrdNo());
+        }
+        if (MyUtils.StringIsNull(dto.getPrdName())){
+            queryWrapper.like("prd_name",dto.getPrdName());
+        }
 
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));

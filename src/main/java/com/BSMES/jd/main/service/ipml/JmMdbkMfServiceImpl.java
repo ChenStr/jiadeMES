@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.JmMdbkTfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmMdbkMfService;
 import com.BSMES.jd.main.service.JmMdbkTfService;
+import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -25,6 +26,9 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
 
     @Autowired
     JmMdbkTfService jmMdbkTfService;
+
+    @Autowired
+    JmMouldService jmMouldService;
 
     @Override
     public void beforeInsert(JmMdbkMfDTO dto) {
@@ -77,6 +81,12 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
             if(dto.getJmMdbkTfDTOS()!=null && dto.getJmMdbkTfDTOS().size()>0){
                 for (JmMdbkTfDTO jmMdbkTfDTO : dto.getJmMdbkTfDTOS()){
                     jmMdbkTfDTO.setSid(sid);
+                    //修改模具状态
+                    JmMouldDTO jmMouldDTO = new JmMouldDTO();
+                    jmMouldDTO.setMdNo(jmMdbkTfDTO.getMdNo());
+                    jmMouldDTO.setTypeid(1);
+                    jmMouldDTO.setState(dto.getJmMdbkMfDTO().getState().toString());
+                    jmMouldService.editMould(jmMouldDTO);
                 }
                 //将新的数据添加进去
                 jmMdbkTfService.saveMdbkTfs(dto.getJmMdbkTfDTOS());

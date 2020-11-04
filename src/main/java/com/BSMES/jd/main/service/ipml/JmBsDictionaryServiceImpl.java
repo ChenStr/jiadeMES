@@ -144,13 +144,10 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         }
 
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.like("id",dto.getSid());
+            queryWrapper.eq("id",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getOtherId())){
-            queryWrapper.like("pid",dto.getOtherId());
-        }
-        if (dto.getState()!=null){
-            queryWrapper.eq("state",dto.getState());
+            queryWrapper.eq("pid",dto.getOtherId());
         }
         if (dto.getState()!=null){
             queryWrapper.eq("state",dto.getState());

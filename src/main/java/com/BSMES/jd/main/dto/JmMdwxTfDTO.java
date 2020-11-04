@@ -3,6 +3,7 @@ package com.BSMES.jd.main.dto;
 import com.BSMES.jd.common.dto.BaseDTO;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -37,6 +38,7 @@ public class JmMdwxTfDTO extends BaseDTO {
     /**
      * 发现时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date findDd;
 
     /**
@@ -58,5 +60,10 @@ public class JmMdwxTfDTO extends BaseDTO {
      * 填报者
      */
     public String wkName;
+
+    /**
+     * 检验结果
+     */
+    public String curPara;
 
 }

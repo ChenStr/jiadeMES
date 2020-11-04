@@ -64,6 +64,9 @@
             <if test="devNo!=null and devNo.length()>0" >
                 and dev.dev_no = #{devNo}
             </if>
+            <if test="devid!=null and devid.length()>0" >
+                and dev.devid = #{devid}
+            </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
