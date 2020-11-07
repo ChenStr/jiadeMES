@@ -3,9 +3,11 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdbkTfDao;
-import com.BSMES.jd.main.dto.JmMdbkTfDTO;
-import com.BSMES.jd.main.dto.ResultType;
+import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.entity.JmMdbkMfEntity;
 import com.BSMES.jd.main.entity.JmMdbkTfEntity;
+import com.BSMES.jd.main.entity.JmMdlyMfEntity;
+import com.BSMES.jd.main.service.JmMdbkMfService;
 import com.BSMES.jd.main.service.JmMdbkTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,6 +15,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +23,9 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
 
     @Autowired
     JmMdbkTfDao jmMdbkTfDao;
+
+    @Autowired
+    JmMdbkMfService jmMdbkMfService;
 
     @Override
     public void beforeInsert(JmMdbkTfDTO dto) {
@@ -39,6 +45,30 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
             result.setAll(20000,jmMdbkTfDTOS,"没有查找结果，建议仔细核对查找条件");
         }else{
             result.setAll(20000,jmMdbkTfDTOS,"查找成功");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getMdbk(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        List<JmMdbkTfDTO> dtos = this.select(this.getQueryWrapper(dto));
+        List<JmMdbk> jmMdbks = new ArrayList<>();
+        if(dtos.isEmpty()){
+            result.setAll(20000,dtos,"没有查找结果，建议仔细核对查找条件");
+        }else{
+            for (JmMdbkTfDTO dto1 :dtos){
+                JmMdbk jmMdbk = new JmMdbk();
+                List<JmMdbkTfDTO> jmMdbkTfDTOS = new ArrayList<>();
+                jmMdbkTfDTOS.add(dto1);
+                QueryWrapper<JmMdbkMfEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("sid",dto1.getSid());
+                JmMdbkMfDTO jmMdbkTfDTO = jmMdbkMfService.selectOne(queryWrapper);
+                jmMdbk.setJmMdbkMfDTO(jmMdbkTfDTO);
+                jmMdbk.setJmMdbkTfDTOS(jmMdbkTfDTOS);
+                jmMdbks.add(jmMdbk);
+            }
+            result.setAll(20000,jmMdbks,"查找成功");
         }
         return result;
     }
@@ -137,18 +167,18 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
-//        }
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("hpdate");
+        }
 
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.eq("sid",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getMouldName())){
-            queryWrapper.like("md_name",dto.getMouldName());
+            queryWrapper.eq("md_name",dto.getMouldName());
         }
-        if (MyUtils.StringIsNull(dto.getMouldName())){
-            queryWrapper.like("md_no",dto.getMouldNo());
+        if (MyUtils.StringIsNull(dto.getMouldNo())){
+            queryWrapper.eq("md_no",dto.getMouldNo());
         }
         if (MyUtils.StringIsNull(dto.getType())){
             queryWrapper.eq("typeid",dto.getType());
@@ -160,12 +190,12 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
             queryWrapper.le("hpdate",dto.getEndDd());
         }
 
-//        if (dto.getAscOrder()!=null){
-//            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
-//        }
-//        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
-//            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
-//        }
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
 
 
         return queryWrapper;

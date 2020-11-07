@@ -1,0 +1,77 @@
+package com.BSMES.jd.main.entity;
+
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+/**
+ * 工装保养维修计划(主表)
+ */
+@Data
+@EqualsAndHashCode(callSuper=false)
+@TableName("jm_gzstd_mf")
+public class JmGzstdMfEntity {
+
+    /**
+     * 检测标准编码
+     */
+    @TableId
+    public String gzstdNo;
+
+    /**
+     * 检测标准名称
+     */
+    public String name;
+
+    /**
+     * 保养级别
+     */
+    public Integer mdClass;
+
+    /**
+     * 模具代号
+     */
+    public String mdNo;
+
+    /**
+     * 模具分类
+     */
+    public String mdGrp;
+
+    /**
+     * 说明
+     */
+    public String rem;
+
+    /**
+     * 单据类型
+     */
+    public String sbuid;
+
+    /**
+     * 状态
+     */
+    public Integer state;
+
+    /**
+     * 部门
+     */
+    public String dep;
+
+    /**
+     * 部门名称
+     */
+    public String depName;
+
+    /**
+     * 保养周期
+     */
+    public Integer byzqDd;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date scbyDd;
+}

@@ -2,17 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- JmJob表的真身 -->
-<mapper namespace="com.BSMES.jd.main.dao.JmJobDao">
+<mapper namespace="com.BSMES.jd.main.dao.JmMdbkTfDao">
 
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <insert id="saveJmMdbkTfs" parameterType="com.BSMES.jd.main.dto.JmMdbkTfDTO">
         insert into jm_mdbk_tf (sid,cid,md_no,wh,wh_loc,rem,hpdate,ed_locked,typeid,qty_produce,qty_mould,rem_wx,
         qty_mk,md_name) values
---         cast(#{item.qtyProduce,jdbcType=DECIMAL} as decimal(22,8)),
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.sid}, #{item.cid}, #{item.mdNo}, #{item.wh},#{item.whLoc},#{item.rem},
-            #{item.hpdate},#{item.edLocked},#{item.typeid},cast(#{item.qtyProduce,jdbcType=DECIMAL} as decimal(22,8))
-            cast(#{item.qtyMould,jdbcType=DECIMAL} as decimal(22,8)),#{item.remWx},#{item.mdName},
+            #{item.hpdate},#{item.edLocked},#{item.typeid},cast(#{item.qtyProduce,jdbcType=DECIMAL} as decimal(22,8)),
+            cast(#{item.qtyMould,jdbcType=DECIMAL} as decimal(22,8)),#{item.remWx},
             cast(#{item.qtyMk,jdbcType=DECIMAL} as decimal(22,8)),#{item.mdName})
         </foreach>
     </insert>

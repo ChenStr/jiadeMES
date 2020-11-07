@@ -3,12 +3,12 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdlyTfDao;
-import com.BSMES.jd.main.dto.JmChkstdTfDTO;
-import com.BSMES.jd.main.dto.JmMdlyTfDTO;
-import com.BSMES.jd.main.dto.ResultType;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmChkstdTfEntity;
+import com.BSMES.jd.main.entity.JmMdlyMfEntity;
 import com.BSMES.jd.main.entity.JmMdlyTfEntity;
 import com.BSMES.jd.main.service.InssysvarService;
+import com.BSMES.jd.main.service.JmMdlyMfService;
 import com.BSMES.jd.main.service.JmMdlyTfService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
 
     @Autowired
     JmMdlyTfDao jmMdlyTfDao;
+
+    @Autowired
+    JmMdlyMfService jmMdlyMfService;
 
     @Override
     public void beforeInsert(JmMdlyTfDTO dto) {
@@ -46,6 +50,30 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
             result.setAll(20000,dtos,"没有查找结果，建议仔细核对查找条件");
         }else{
             result.setAll(20000,dtos,"查找成功");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getMdly(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        List<JmMdlyTfDTO> dtos = this.select(this.getQueryWrapper(dto));
+        List<JmMdly> jmMdlies = new ArrayList<>();
+        if(dtos.isEmpty()){
+            result.setAll(20000,dtos,"没有查找结果，建议仔细核对查找条件");
+        }else{
+            for (JmMdlyTfDTO dto1 :dtos){
+                JmMdly jmMdly = new JmMdly();
+                List<JmMdlyTfDTO> jmMdlyTfDTOS = new ArrayList<>();
+                jmMdlyTfDTOS.add(dto1);
+                QueryWrapper<JmMdlyMfEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("sid",dto1.getSid());
+                JmMdlyMfDTO jmMdlyMfDTO = jmMdlyMfService.selectOne(queryWrapper);
+                jmMdly.setJmMdlyMfDTO(jmMdlyMfDTO);
+                jmMdly.setJmMdlyTfDTOS(jmMdlyTfDTOS);
+                jmMdlies.add(jmMdly);
+            }
+            result.setAll(20000,jmMdlies,"查找成功");
         }
         return result;
     }
@@ -137,23 +165,35 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-//        //默认排序
-//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
-//        }
-//
-//        //筛选
-//        if (MyUtils.StringIsNull(dto.getSid())){
-//            queryWrapper.like("orgcode",dto.getSid());
-//        }
-//
-//        //排序
-//        if (dto.getAscOrder()!=null){
-//            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
-//        }
-//        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
-//            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
-//        }
+        //默认排序
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("hpdate");
+        }
+
+        //筛选
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getMouldNo())){
+            queryWrapper.eq("md_no",dto.getMouldNo());
+        }
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("md_name",dto.getMouldName());
+        }
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+
+        //排序
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
 
 
         return queryWrapper;

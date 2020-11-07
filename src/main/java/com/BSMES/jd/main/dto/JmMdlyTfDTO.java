@@ -15,13 +15,11 @@ public class JmMdlyTfDTO {
     /**
      * 单据编码
      */
-    @TableId
     public String sid;
 
     /**
      * 项次
      */
-    @TableId
     public Integer cid;
 
     /**

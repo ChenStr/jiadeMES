@@ -179,23 +179,34 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-//        //默认排序
-//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
-//        }
-//
-//        //筛选
-//        if (MyUtils.StringIsNull(dto.getSid())){
-//            queryWrapper.like("orgcode",dto.getSid());
-//        }
-//
-//        //排序
-//        if (dto.getAscOrder()!=null){
-//            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
-//        }
-//        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
-//            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
-//        }
+        //筛选
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.like("sid",dto.getSid());
+        }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.like("sorg",dto.getSorg());
+        }
+        if (MyUtils.StringIsNull(dto.getDep())){
+            queryWrapper.like("dep",dto.getDep());
+        }
+        if (dto.getState()!=null){
+            queryWrapper.like("state",dto.getState());
+        }
+
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("hpdate",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("hpdate",dto.getEndDd());
+        }
+
+        //排序
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
 
 
         return queryWrapper;

@@ -14,6 +14,8 @@ public interface JmMdlyTfService extends BaseService<JmMdlyTfEntity, JmMdlyTfDTO
 
     public CommonReturn getMdlyTf(ResultType dto);
 
+    public CommonReturn getMdly(ResultType dto);
+
     public CommonReturn saveMdlyTf(JmMdlyTfDTO dto);
 
     public CommonReturn saveMdlyTfs(List<JmMdlyTfDTO> dtos);

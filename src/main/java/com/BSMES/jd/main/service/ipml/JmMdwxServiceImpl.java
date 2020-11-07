@@ -37,10 +37,6 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
     @Override
     public void beforeInsert(JmMdwxDTO dto) {
         dto.setHpdate(new Date());
-        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
-        jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030027");
-        JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
-        dto.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
     }
 
     @Override

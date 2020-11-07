@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmGzstdTfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="insertGzstd" parameterType="com.BSMES.jd.main.dto.JmGzstdTfDTO">
+        insert into jm_gzstd_tf (gzstd_no,cid,wx_id,chk_std,devps,chk_rem,chk_file,rem) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.gzstdNo}, #{item.cid}, #{item.wxId}, #{item.chkStd},#{item.devps},
+            #{item.chkRem},#{item.chkFile},#{item.rem})
+        </foreach>
+    </insert>
+
+    <update id="editGzstd" parameterType="com.BSMES.jd.main.dto.JmGzstdTfDTO">
+        UPDATE jm_gzstd_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="wxId!=null">wx_id=#{wxId},</if>
+            <if test="chkStd!=null">chk_std=#{chkStd},</if>
+            <if test="devps!=null">devps=#{devps},</if>
+            <if test="chkRem!=null">chk_rem=#{chkRem},</if>
+            <if test="chkFile!=null">chk_file=#{chkFile},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+        </trim>
+        WHERE gzstd_no=#{gzstdNo} and cid=#{cid}
+    </update>
+</mapper>

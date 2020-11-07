@@ -3,33 +3,34 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmMdbkTfService;
+import com.BSMES.jd.main.service.JmMdlyTfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/jmmdbktf")
-public class JmMdbkTfController {
+@RequestMapping("/jmmdlytf")
+public class JmMdlyTfController {
 
     @Autowired
-    JmMdbkTfService jmMdbkTfService;
+    JmMdlyTfService jmMdlyTfService;
 
     @GetMapping()
     public CommonReturn getVar(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
-            result = jmMdbkTfService.getMdbkTf(dto);
+            result = jmMdlyTfService.getMdlyTf(dto);
         }else{
-            result = jmMdbkTfService.getMdbkTfPage(dto);
+            result = jmMdlyTfService.getMdlyTfPage(dto);
         }
         return result;
     }
 
     @GetMapping("/plus")
-    public CommonReturn getMdbk(ResultType dto){
+    public CommonReturn getMdly(ResultType dto){
         CommonReturn result = new CommonReturn();
-        result = jmMdbkTfService.getMdbk(dto);
+        result = jmMdlyTfService.getMdly(dto);
         return result;
     }
 

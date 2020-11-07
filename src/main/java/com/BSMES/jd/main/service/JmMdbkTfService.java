@@ -13,6 +13,8 @@ public interface JmMdbkTfService extends BaseService<JmMdbkTfEntity, JmMdbkTfDTO
 
     public CommonReturn getMdbkTf(ResultType dto);
 
+    public CommonReturn getMdbk(ResultType dto);
+
     public CommonReturn saveMdbkTf(JmMdbkTfDTO dto);
 
     public CommonReturn saveMdbkTfs(List<JmMdbkTfDTO> dtos);

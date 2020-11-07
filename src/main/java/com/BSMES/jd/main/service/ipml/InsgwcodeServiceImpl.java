@@ -70,6 +70,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
+
     @Override
     public CommonReturn editInsgwcode(InsgwcodeDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +94,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
+
     @Override
     public CommonReturn delInsgwcode(List<String> gwcodes) {
         CommonReturn result = new CommonReturn();
@@ -106,6 +108,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         }
         return result;
     }
+
 
     @Override
     public CommonReturn getInsgwcodePage(ResultType dto) {
