@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmDevDao">
+
+    <select id="getlookbord" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
+        select dev.name as dev_name,job.prd_name,job.beg_dd,job.end_dd,job.qty,sum(recb.qty_ok) as s_qty from jm_dev as dev
+        left join jm_job as job on dev.dev_no=job.rs_no
+        left join jm_job_rec as rec on rec.jb_no=job.jb_no
+        left join jm_job_rec_b as recb on recb.opsid=rec.opsid
+        <where>
+            <if test="state != null">
+                and job.state = #{state}
+            </if>
+            <if test="devName != null and devName.length()>0">
+                and dev.name like CONCAT('%',#{devName},'%')
+            </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and job.beg_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and job.end_dd &lt;= #{endDd}
+            </if>
+        </where>
+        group by dev.name,job.prd_name,job.beg_dd,job.end_dd,job.qty
+        having sum(isnull(recb.qty_ok,0))>0
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+</mapper>

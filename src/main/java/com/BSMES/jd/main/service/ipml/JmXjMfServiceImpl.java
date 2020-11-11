@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -56,6 +57,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXjMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -69,6 +71,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXjMfPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -177,6 +180,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXjMfdetailed(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -189,6 +193,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXjMf(JmXjMf2 dto) {
         CommonReturn result = new CommonReturn();
@@ -214,8 +219,8 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXj2TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
                 QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
                 jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
                 jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
             }
             //将新的数据添加进去
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
@@ -243,6 +248,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXjMfs(List<JmXjMfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -275,6 +281,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editXjMf(JmXjMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -298,6 +305,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delXjMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -309,9 +317,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         jmXj3TfEntityQueryWrapper.eq("sid",sids);
         List<JmXjMfDTO> jmXjMfDTOS = this.select(xjMfQueryWrapper);
         try{
-            this.remove(xjMfQueryWrapper);
-            jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
             jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+            jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
+            this.remove(xjMfQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -319,6 +327,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXjMfPage(ResultType dto) {
 //        CommonReturn result = new CommonReturn();
@@ -343,6 +352,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXjMfPlusPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

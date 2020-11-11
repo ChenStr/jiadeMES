@@ -12,6 +12,7 @@ import com.BSMES.jd.main.entity.JmWxIdEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmWxIdService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class JmWxIdServiceImpl extends BaseServiceImpl<JmWxIdDao, JmWxIdEntity, 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJmWxId(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmWxIdServiceImpl extends BaseServiceImpl<JmWxIdDao, JmWxIdEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveJmWxId(JmWxIdDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -71,6 +74,7 @@ public class JmWxIdServiceImpl extends BaseServiceImpl<JmWxIdDao, JmWxIdEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJmWxId(JmWxIdDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +97,7 @@ public class JmWxIdServiceImpl extends BaseServiceImpl<JmWxIdDao, JmWxIdEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delJmWxId(List<String> mtIds) {
         CommonReturn result = new CommonReturn();
@@ -107,6 +112,7 @@ public class JmWxIdServiceImpl extends BaseServiceImpl<JmWxIdDao, JmWxIdEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJmWxIdPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

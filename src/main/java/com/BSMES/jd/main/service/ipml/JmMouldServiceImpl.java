@@ -9,6 +9,7 @@ import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMould(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -46,6 +48,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMould(JmMouldDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -68,6 +71,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMould(JmMouldDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +97,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMould(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -117,6 +122,7 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMoMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

@@ -12,6 +12,7 @@ import com.BSMES.jd.main.entity.JmGzstdTfEntity;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmGzstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class JmGzstdTfServiceImpl extends BaseServiceImpl<JmGzstdTfDao, JmGzstdT
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getGzstd(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmGzstdTfServiceImpl extends BaseServiceImpl<JmGzstdTfDao, JmGzstdT
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveGzstds(List<JmGzstdTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +63,7 @@ public class JmGzstdTfServiceImpl extends BaseServiceImpl<JmGzstdTfDao, JmGzstdT
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editGzstd(JmGzstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -83,6 +87,7 @@ public class JmGzstdTfServiceImpl extends BaseServiceImpl<JmGzstdTfDao, JmGzstdT
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delGzstd(List<String> gzstdNos, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -107,6 +112,7 @@ public class JmGzstdTfServiceImpl extends BaseServiceImpl<JmGzstdTfDao, JmGzstdT
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getGzstdPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

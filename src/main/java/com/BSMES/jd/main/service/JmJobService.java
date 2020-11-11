@@ -2,10 +2,7 @@ package com.BSMES.jd.main.service;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
-import com.BSMES.jd.main.dto.JmJobDTO;
-import com.BSMES.jd.main.dto.JobJoin;
-import com.BSMES.jd.main.dto.MoSave;
-import com.BSMES.jd.main.dto.ResultType;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmJobEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -53,6 +50,16 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
      * 导出车间生产月报表
      */
     public CommonReturn exportExcel(ResultType dto);
+
+    /**
+     * 车间下单量 折线图
+     */
+    public CommonReturn getsorgSum(ResultType dto);
+
+    /**
+     * 车间产量 折线图
+     */
+    public CommonReturn getsorgYield(ResultType dto);
 
 
 }

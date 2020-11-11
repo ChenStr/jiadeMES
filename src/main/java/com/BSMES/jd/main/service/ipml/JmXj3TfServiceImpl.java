@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmXj2TfEntity;
 import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -70,6 +73,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXj3Tfs(List<JmXj3TfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -83,6 +87,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -108,6 +113,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delXj3Tf(List<String> sids, List<Integer> cids, List<String> chkNo) {
         CommonReturn result = new CommonReturn();
@@ -133,6 +139,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXj3TfPage(JmXj3TfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

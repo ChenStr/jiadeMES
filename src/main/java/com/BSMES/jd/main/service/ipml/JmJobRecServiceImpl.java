@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -46,7 +47,10 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Override
     public void beforeInsert(JmJobRecDTO dto) {
-
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper2 = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper2.eq("id","DIS20201030012");
+        JmBsDictionaryDTO jmBsDictionaryDTO2 = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper2);
+        dto.setState(jmBsDictionaryDTO2.getCode());
     }
 
     @Override
@@ -54,6 +58,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRec(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -66,6 +71,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecs(JobRec jobRec) {
         CommonReturn result = new CommonReturn();
@@ -125,6 +131,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave) {
@@ -187,7 +194,8 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
-
+    @DS("master")
+    @Override
     public CommonReturn saveJobRec(JmJobRecDTO dto) {
         CommonReturn result = new CommonReturn();
         dto.setOpsid(this.getKey("JmJobRec","opsid",inssysvarService,dto));
@@ -213,6 +221,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJobRec(JmJobRecDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -237,26 +246,37 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Scheduled(cron="0 30 7 * * ?")
     @Override
     public CommonReturn taskeditJobRec() {
         CommonReturn result = new CommonReturn();
-        //获取昨天与今天的时间
-        //今天
-        String tms = " 07:30:00";
-        SimpleDateFormat sdf = new SimpleDateFormat("YY-MM-dd");
-        String today = sdf.format(new Date());
-        today = today + tms;
-        //昨天
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(new Date());
-        calendar.add(calendar.DATE,-1);
-        String yesterday = sdf.format(calendar.getTime());
-        yesterday = yesterday + tms;
+        result.setAll(20000,null,"无数据未修改");
+//        //获取昨天与今天的时间
+//        //今天
+//        String tms = " 07:30:00";
+//        SimpleDateFormat sdf = new SimpleDateFormat("YY-MM-dd");
+//        String today = sdf.format(new Date());
+//        today = today + tms;
+//        //昨天
+//        Calendar calendar = new GregorianCalendar();
+//        calendar.setTime(new Date());
+//        calendar.add(calendar.DATE,-1);
+//        String yesterday = sdf.format(calendar.getTime());
+//        yesterday = yesterday + tms;
+//        QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
+//        jmJobRecEntityQueryWrapper.ge("op_dd",today).le("op_dd",yesterday);
+//        List<JmJobRecDTO> jmJobRecDTOS = this.select(jmJobRecEntityQueryWrapper);
+
+        //查询所有未完成的随工单
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper2 = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper2.eq("id","DIS20201030012");
+        JmBsDictionaryDTO jmBsDictionaryDTO2 = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper2);
 
         QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
-        jmJobRecEntityQueryWrapper.ge("op_dd",today).le("op_dd",yesterday);
+        jmJobRecEntityQueryWrapper.eq("state",jmBsDictionaryDTO2.getCode());
         List<JmJobRecDTO> jmJobRecDTOS = this.select(jmJobRecEntityQueryWrapper);
+
         //查询随工单的完成编号
         QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
         jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030015");
@@ -265,11 +285,13 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
         for (JmJobRecDTO jmJobRecDTO : jmJobRecDTOS){
             this.edit(jmJobRecDTO);
+            result.setAll(20000,null,"操作成功");
         }
 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delJobRec(List<String> opsids) {
         CommonReturn result = new CommonReturn();
@@ -293,6 +315,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -305,6 +328,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecsPage(JobRec jobRec) {
         CommonReturn result = new CommonReturn();

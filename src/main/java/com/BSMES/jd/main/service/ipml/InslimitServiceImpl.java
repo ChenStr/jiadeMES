@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.InslimitEntity;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.InslimitService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getInslimit(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -40,6 +42,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveInslimit(InslimitDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -62,6 +65,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editInslimit(InslimitDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -86,6 +90,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delInslimit(List<String> gwusers, List<String> menuids) {
         CommonReturn result = new CommonReturn();
@@ -110,6 +115,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getInslimitPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -130,11 +136,14 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-        if (dto.getBegDd()!=null){
-            queryWrapper.ge("hpdate",dto.getBegDd());
+        if (MyUtils.StringIsNull(dto.getWkNo())){
+            queryWrapper.like("gwuser",dto.getWkNo());
         }
-        if(dto.getEndDd()!=null){
-            queryWrapper.le("hpdate",dto.getEndDd());
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.like("menuid",dto.getOtherId());
+        }
+        if (MyUtils.StringIsNull(dto.getWkName())){
+            queryWrapper.like("cgw",dto.getWkName());
         }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));

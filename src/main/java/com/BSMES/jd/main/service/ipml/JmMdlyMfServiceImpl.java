@@ -15,6 +15,7 @@ import com.BSMES.jd.main.service.JmMdlyTfService;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdlyMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -70,6 +72,7 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdlyMf(JmMdly dto) {
         CommonReturn result = new CommonReturn();
@@ -115,6 +118,7 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdlyMf(JmMdlyMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -137,6 +141,7 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdlyMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -151,6 +156,7 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdlyMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

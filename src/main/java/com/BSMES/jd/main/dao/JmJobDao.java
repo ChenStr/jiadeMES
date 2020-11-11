@@ -21,6 +21,16 @@ public interface JmJobDao extends BaseDao<JmJobEntity> {
      */
     public List<Report> getJmJobReport(ResultType dto);
 
+    /**
+     * 车间下单量 折线图
+     */
+    public List<Report> getsorgSum(ResultType dto);
+
+    /**
+     * 车间产量 折线图
+     */
+    public List<Report> getsorgYield(ResultType dto);
+
 
 
 }

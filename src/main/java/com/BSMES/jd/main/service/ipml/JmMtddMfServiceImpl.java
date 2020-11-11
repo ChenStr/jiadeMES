@@ -12,6 +12,7 @@ import com.BSMES.jd.main.service.JmDevMtidService;
 import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.main.service.JmMtddMfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -47,6 +48,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtdd(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -64,6 +66,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
      * @param dto
      * @return
      */
+    @DS("master")
     @Override
     public CommonReturn getMtddPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -133,6 +136,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
 //        return result;
 //    }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveMtdd(JmMtdd dto) {
@@ -168,6 +172,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtdd(JmMtddMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -191,6 +196,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtdd(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -199,8 +205,8 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         jmMtddMfEntityQueryWrapper.in("sid",sids);
         jmMtdd2TfEntityQueryWrapper.in("sid",sids);
         try{
-            this.remove(jmMtddMfEntityQueryWrapper);
             jmMtdd2TfService.remove(jmMtdd2TfEntityQueryWrapper);
+            this.remove(jmMtddMfEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -209,6 +215,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtddPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

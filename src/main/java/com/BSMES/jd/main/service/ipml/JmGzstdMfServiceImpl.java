@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.JmGzstdTfService;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getGzstd(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -66,6 +68,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveGzstd(JmGzstd dto) {
@@ -108,6 +111,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editGzstd(JmGzstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -136,6 +140,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delGzstd(List<String> gzstdNos) {
         CommonReturn result = new CommonReturn();
@@ -144,8 +149,8 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         QueryWrapper<JmGzstdTfEntity> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.in("gzstd_no",gzstdNos);
         try{
-            this.remove(queryWrapper);
             jmGzstdTfService.remove(queryWrapper1);
+            this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -153,14 +158,12 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getGzstdPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
         IPage<JmGzstdMfEntity> jmGzstdMfEntityIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         IPage<JmGzstd> jmGzstdIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
-//        QueryWrapper<JmGzstdMfEntity> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("dep","0702");
-//        List<JmGzstdMfEntity> list = this.list(queryWrapper);
         List<JmGzstd> jmGzstds = new ArrayList<>();
         if (jmGzstdMfEntityIPage==null){
             result.setAll(10001,null,"参数错误");

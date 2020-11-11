@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.JmMtRecBEntity;
 import com.BSMES.jd.main.entity.JmMtRecEntity;
 import com.BSMES.jd.main.service.JmMtRecBService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtRecB(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -46,6 +48,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtRecBs(List<JmMtRecBDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -59,6 +62,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         return null;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtRecB(JmMtRecBDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -80,6 +84,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtRecB(JmMtRecBDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -104,6 +109,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtRecB(List<String> wxNos, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -119,6 +125,7 @@ public class JmMtRecBServiceImpl extends BaseServiceImpl<JmMtRecBDao, JmMtRecBEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtRecBPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

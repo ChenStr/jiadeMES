@@ -14,6 +14,7 @@ import com.BSMES.jd.main.service.JmMtIdService;
 import com.BSMES.jd.main.service.JmMtstdMfService;
 import com.BSMES.jd.main.service.JmMtstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdTf(JmMtstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -58,6 +60,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtstdTf(JmMtstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -88,6 +91,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtstdTfs(List<JmMtstdTf> dtos) {
         CommonReturn result = new CommonReturn();
@@ -100,6 +104,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
         return null;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtstdTf(JmMtstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -125,6 +130,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtstdTf(List<String> mtstdNos, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -149,6 +155,7 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdTfPage(JmMtstdTfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.JmDevMtidEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevMtidService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +39,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDevMtid(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -50,6 +52,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveDevMtid(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -75,6 +78,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editDevMtid(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -100,6 +104,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delDevMtid(List<String> devids, List<String> mtIds) {
         CommonReturn result = new CommonReturn();
@@ -124,6 +129,7 @@ public class JmDevMtidServiceImpl extends BaseServiceImpl<JmDevMtidDao, JmDevMti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDevMtidPage(JmDevMtidDTO dto) {
         CommonReturn result = new CommonReturn();

@@ -8,6 +8,7 @@ import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
     }
 
 
+    @DS("master")
     @Override
     public CommonReturn getJmMdwx(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -74,6 +76,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveJmMdwx(JmMdwx dto) {
@@ -118,6 +121,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJmMdwx(JmMdwxDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -140,6 +144,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delJmMdwx(List<String> sid) {
         CommonReturn result = new CommonReturn();
@@ -148,8 +153,8 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         jmMdwxEntityQueryWrapper.in("sid",sid);
         jmMdwxTfEntityQueryWrapper.in("sid",sid);
         try{
-            this.remove(jmMdwxEntityQueryWrapper);
             jmMdwxTfService.remove(jmMdwxTfEntityQueryWrapper);
+            this.remove(jmMdwxEntityQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -157,6 +162,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJmMdwxPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

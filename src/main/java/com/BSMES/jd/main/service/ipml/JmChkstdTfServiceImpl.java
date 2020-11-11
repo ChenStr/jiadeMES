@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.JmChkstdTfEntity;
 import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.BSMES.jd.main.service.JmChkstdTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getChkstdTf(JmChkstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -51,6 +53,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveChkstdTf(JmChkstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -72,6 +75,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveChkstdTfs(List<JmChkstdTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -85,6 +89,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
         return null;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editChkstdTf(JmChkstdTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -108,6 +113,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delChkstdTf(List<String> chkstdNos,List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -123,6 +129,7 @@ public class JmChkstdTfServiceImpl extends BaseServiceImpl<JmChkstdTfDao, JmChks
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getChkstdTfPage(JmChkstdTfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

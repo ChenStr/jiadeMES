@@ -3,13 +3,12 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmDevDao;
-import com.BSMES.jd.main.dto.InsuserDTO;
-import com.BSMES.jd.main.dto.JmDevDTO;
-import com.BSMES.jd.main.dto.UserPlus;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmDevEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmDevService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +24,9 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     @Autowired
     InssysvarService inssysvarService;
 
+    @Autowired
+    JmDevDao jmDevDao;
+
     @Override
     public void beforeInsert(JmDevDTO dto) {
 
@@ -36,6 +38,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
     }
 
 
+    @DS("master")
     @Override
     public CommonReturn getDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -48,6 +51,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -72,6 +76,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editDev(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -94,6 +99,7 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delDev(List<String> devNos) {
         CommonReturn result = new CommonReturn();
@@ -108,6 +114,29 @@ public class JmDevServiceImpl extends BaseServiceImpl<JmDevDao, JmDevEntity, JmD
         return result;
     }
 
+    @DS("master")
+    @Override
+    public CommonReturn getLook(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        if (dto.getPage()==null){
+            dto.setPage(1);
+        }
+        if (dto.getPageSize()==null){
+            dto.setPageSize(10);
+        }
+        try{
+            PageHelper.startPage(dto.getPage(), dto.getPageSize());
+            List<Report> reports = jmDevDao.getlookbord(dto);
+            PageInfo reportPageInfo = new PageInfo<Report>(reports);
+            result.setAll(20000,reportPageInfo,"操作成功");
+        }catch (Exception e) {
+            result.setAll(10001, null, "操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @DS("master")
     @Override
     public CommonReturn getDevPage(JmDevDTO dto) {
         CommonReturn result = new CommonReturn();

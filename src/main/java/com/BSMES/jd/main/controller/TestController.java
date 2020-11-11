@@ -3,9 +3,12 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dao.JmJobDao;
 import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.dto.erp.ErpMfMoDTO;
 import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.entity.InsuserEntity;
+import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.service.*;
+import com.BSMES.jd.main.service.erp.ErpMfMoService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.BSMES.jd.tools.password.PasswordUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,18 +26,31 @@ import java.util.List;
 @RestController
 public class TestController {
     @Autowired
-    JmJobRecService service;
+    JmPrdtService jmPrdtService;
+
+    @Autowired
+    ErpMfMoService erpMfMoService;
+
+    @Autowired
+    JmJobRecService jmJobRecService;
+
+    @Autowired
+    JmJobService jmJobService;
+
+    @Autowired
+    JmDevService jmDevService;
+
 
     @GetMapping()
     public CommonReturn test(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        result = service.taskeditJobRec();
+        result = jmJobService.getsorgSum(dto);
         return result;
     }
 
     @PostMapping()
-    public Object posttest(@RequestBody JmMoMfDTO data){
+    public Object posttest(@RequestBody JmMoMfDTO dto){
         CommonReturn result = new CommonReturn();
-        return data;
+        return result;
     }
 }

@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.JmMtIdEntity;
 import com.BSMES.jd.main.entity.JmWhEntity;
 import com.BSMES.jd.main.service.JmMtIdService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtId(JmMtIdDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -41,6 +43,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtId(JmMtIdDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -62,6 +65,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtId(JmMtIdDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -85,6 +89,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtId(List<String> mtIds) {
         CommonReturn result = new CommonReturn();
@@ -99,6 +104,7 @@ public class JmMtIdServiceImpl extends BaseServiceImpl<JmMtIdDao , JmMtIdEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtIdPage(JmMtIdDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

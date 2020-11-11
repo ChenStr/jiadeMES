@@ -9,6 +9,7 @@ import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.InsmenuEntity;
 import com.BSMES.jd.main.service.InsmenuService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class InsmenuServiceImpl extends BaseServiceImpl<InsmenuDao , InsmenuEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getInsmenu(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -39,6 +41,7 @@ public class InsmenuServiceImpl extends BaseServiceImpl<InsmenuDao , InsmenuEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getInsmenuPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

@@ -1,27 +1,30 @@
 package com.BSMES.jd.main.service.ipml;
 
-import com.BSMES.jd.common.dto.BaseDTO;
 import com.BSMES.jd.common.dto.CommonReturn;
-import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMoMfDao;
 import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.dto.erp.ErpMfMoDTO;
+import com.BSMES.jd.main.dto.erp.ErpTfBomDTO;
+import com.BSMES.jd.main.dto.erp.ErpTfMoDTO;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
+import com.BSMES.jd.main.service.erp.ErpMfMoService;
+import com.BSMES.jd.main.service.erp.ErpTfBomService;
+import com.BSMES.jd.main.service.erp.ErpTfMoService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.BeanUtils;
 
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity , JmMoMfDTO > implements JmMoMfService {
+public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, JmMoMfDTO> implements JmMoMfService {
 
     @Autowired
     InsorgService insorgService;
@@ -48,6 +51,15 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
     JmBsDictionaryService jmBsDictionaryService;
 
     @Autowired
+    ErpMfMoService erpMfMoService;
+
+    @Autowired
+    ErpTfMoService erpTfMoService;
+
+    @Autowired
+    ErpTfBomService erpTfBomService;
+
+    @Autowired
     JmMoMfDao jmMoMfDao;
 
     @Override
@@ -67,6 +79,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMoMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -106,6 +119,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMoNo(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -119,6 +133,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -132,6 +147,55 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
             //判断 sid 是否重复
             if (moMf==null || moMf.getSid()==null){
                 this.insert(dto);
+                //在erp表中添加
+                ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
+                erpMfMoDTO.setMO_NO(dto.getSid());
+                erpMfMoDTO.setMO_DD(dto.getHpdate());
+                erpMfMoDTO.setSTA_DD(dto.getBegDd());
+                erpMfMoDTO.setEND_DD(dto.getEndDd());
+                erpMfMoDTO.setMRP_NO(dto.getPrdNo());
+                erpMfMoDTO.setQTY(dto.getQty());
+                erpMfMoDTO.setDEP(dto.getSorg());
+                erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
+                erpMfMoDTO.setUSR(dto.getSmake());
+                erpMfMoDTO.setCHK_MAN(dto.getChkMan());
+                erpMfMoDTO.setCLS_DATE(dto.getHpdate());
+                erpMfMoDTO.setSYS_DATE(dto.getHpdate());
+                //根据货品号找出货品所在的仓库
+                QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
+                prdtEntityQueryWrapper.eq("prd_no",dto.getPrdNo());
+                JmPrdtDTO jmPrdtDTO = jmPrdtService.selectOne(prdtEntityQueryWrapper);
+                erpMfMoDTO.setWH(jmPrdtDTO.getWh());
+                erpMfMoService.saveMfMo(erpMfMoDTO);
+                //添加子表
+                QueryWrapper<JmBomMfEntity> bomMfEntityQueryWrapper = new QueryWrapper<>();
+                bomMfEntityQueryWrapper.eq("prd_no",dto.getPrdNo());
+                JmBomMfDTO erpMfBomDTO = jmBomMfService.selectOne(bomMfEntityQueryWrapper);
+                QueryWrapper<JmBomTfEntity> bomTfEntityQueryWrapper = new QueryWrapper<>();
+                bomTfEntityQueryWrapper.eq("bom_no",erpMfBomDTO.getBomNo());
+                List<JmBomTfDTO> list = jmBomTfService.select(bomTfEntityQueryWrapper);
+                List<ErpTfMoDTO> dtos = new ArrayList<>();
+                for(JmBomTfDTO item : list){
+                    ErpTfMoDTO erpTfMoDTO = new ErpTfMoDTO();
+                    erpTfMoDTO.setMO_NO(dto.getSid());
+                    erpTfMoDTO.setITM(item.getItm());
+                    erpTfMoDTO.setPRD_NO(item.getPrdNo());
+                    //查询原材料名称
+                    QueryWrapper<JmPrdtEntity> jmPrdtEntityQueryWrapper = new QueryWrapper<>();
+                    jmPrdtEntityQueryWrapper.eq("prd_no",item.getPrdNo());
+                    JmPrdtDTO jmPrdtDTO1 = jmPrdtService.selectOne(prdtEntityQueryWrapper);
+
+                    erpTfMoDTO.setPRD_NAME(jmPrdtDTO1.getName());
+                    erpTfMoDTO.setWH(item.getWh());
+                    erpTfMoDTO.setUNIT(item.getUnit());
+                    BigDecimal sum = erpMfMoDTO.getQTY().multiply(item.getQty());
+                    erpTfMoDTO.setQTY_RSV(sum);
+                    erpTfMoDTO.setEST_ITM(item.getItm());
+                    erpTfMoDTO.setPRE_ITM(item.getItm());
+                    erpTfMoDTO.setQTY_STD(item.getQty());
+                    dtos.add(erpTfMoDTO);
+                }
+                erpTfMoService.saveTfMos(dtos);
                 result.setAll(20000,null,"操作成功");
             }else{
                 result.setAll(10001,null,"制令单号已经存在，不能新增!");
@@ -142,6 +206,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMoMf(JmMoMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -165,6 +230,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 }
             }else{
                 //强制终止调度单
+                dto.setState(12);
                 moMf.setState(12);
                 //将其生产计划单的状态也改为12
                 QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
@@ -177,13 +243,18 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
                 this.edit(moMf);
                 result.setAll(20000,null,"终止生产成功");
             }
-
+            ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
+            erpMfMoDTO.setMO_NO(dto.getSid());
+            erpMfMoDTO.setQTY(dto.getQty());
+            erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
+            erpMfMoService.editMfMo(erpMfMoDTO);
         }else{
             result.setAll(10001,null,"参数错误");
         }
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMoMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -196,6 +267,8 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         if (jmJobs==null || jmJobs.size()==0){
             try{
                 this.remove(moMfQueryWrapper);
+                //erp表联动删除
+                erpMfMoService.delMfMo(sids);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e) {
                 result.setAll(10001, null, "操作失败");
@@ -203,10 +276,10 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao , JmMoMfEntity 
         }else{
             result.setAll(40000,null,"该调度单下已经有计划分派了，不能删除");
         }
-
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMoMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

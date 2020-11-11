@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.erp.ErpTfMoDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径)  cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8))  -->
+    <insert id="insertTfMoS" parameterType="com.BSMES.jd.main.dto.erp.ErpTfMoDTO">
+        insert into TF_MO (MO_NO,ITM,PRD_NO,PRD_NAME,WH,UNIT,QTY_RSV,EST_ITM,PRE_ITM,QTY_STD) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.MO_NO}, #{item.ITM}, #{item.PRD_NO}, #{item.PRD_NAME},#{item.WH},#{item.UNIT},
+            cast(#{item.QTY_RSV,jdbcType=DECIMAL} as decimal(22,8)),#{item.EST_ITM},#{item.PRE_ITM},cast(#{item.QTY_STD,jdbcType=DECIMAL} as decimal(22,8)))
+        </foreach>
+    </insert>
+
+</mapper>

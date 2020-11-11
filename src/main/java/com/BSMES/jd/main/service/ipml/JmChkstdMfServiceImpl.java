@@ -12,6 +12,7 @@ import com.BSMES.jd.main.service.JmChkstdMfService;
 import com.BSMES.jd.main.service.JmChkstdTfService;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getChkstdMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -63,6 +65,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveChkstd(JmChkstd dto) {
@@ -103,6 +106,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editChkstdMf(JmChkstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -125,6 +129,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delChkstdMf(List<String> chkstdNos) {
         CommonReturn result = new CommonReturn();
@@ -133,8 +138,8 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         queryWrapper.in("chkstd_no",chkstdNos);
         jmChkstdTfEntityQueryWrapper.in("chkstd_no",chkstdNos);
         try{
-            this.remove(queryWrapper);
             jmChkstdTfService.remove(jmChkstdTfEntityQueryWrapper);
+            this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -142,6 +147,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getChkstdMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

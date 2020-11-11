@@ -2,6 +2,7 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmDevDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmDevService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,16 @@ public class JmDevController {
         CommonReturn result = new CommonReturn();
         List<String> devNos = java.util.Arrays.asList(ids);
         result = jmDevService.delDev(devNos);
+        return result;
+    }
+
+    /**
+     * 看板
+     */
+    @GetMapping("/look")
+    public CommonReturn getLookBord(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmDevService.getLook(dto);
         return result;
     }
 

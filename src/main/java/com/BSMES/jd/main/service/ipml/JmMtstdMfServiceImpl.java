@@ -8,6 +8,7 @@ import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -51,6 +52,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdMf(JmMtstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -64,6 +66,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdMfPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -88,6 +91,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveMtstdMfPlus(JmMtstd dto) {
@@ -125,6 +129,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtstdMf(JmMtstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -151,6 +156,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtstdMf(JmMtstdMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -173,6 +179,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtstdMf(List<String> mtstdNos) {
         CommonReturn result = new CommonReturn();
@@ -181,8 +188,8 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         QueryWrapper<JmMtstdTfEntity> jmMtstdTfEntityQueryWrapper = new QueryWrapper<>();
         jmMtstdTfEntityQueryWrapper.eq("mtstd_no",mtstdNos);
         try{
-            this.remove(mtstdMfQueryWrapper);
             jmMtstdTfService.remove(jmMtstdTfEntityQueryWrapper);
+            this.remove(mtstdMfQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -190,6 +197,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdMfPage(JmMtstdMfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
@@ -202,6 +210,7 @@ public class JmMtstdMfServiceImpl extends BaseServiceImpl<JmMtstdMfDao , JmMtstd
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtstdMfPlusPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

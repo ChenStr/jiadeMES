@@ -10,6 +10,7 @@ import com.BSMES.jd.main.service.JmMtRecBService;
 import com.BSMES.jd.main.service.JmMtRecService;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtRec(ResultType dto) {
 
@@ -62,6 +64,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveMtRec(JmMtRec dto) {
@@ -107,6 +110,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtRec(JmMtRecDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -130,6 +134,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtRec(List<String> wxNos) {
         CommonReturn result = new CommonReturn();
@@ -138,8 +143,8 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
         mtRecQueryWrapper.in("wx_no",wxNos);
         mtRecBEntityQueryWrapper.in("wx_no",wxNos);
         try{
-            this.remove(mtRecQueryWrapper);
             jmMtRecBService.remove(mtRecBEntityQueryWrapper);
+            this.remove(mtRecQueryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -148,6 +153,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
     }
 
 
+    @DS("master")
     @Override
     public CommonReturn getMtRecPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

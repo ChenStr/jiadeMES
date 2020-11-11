@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmMdlyMfService;
 import com.BSMES.jd.main.service.JmMdlyTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdlyTf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -54,6 +56,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdly(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -78,6 +81,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdlyTf(JmMdlyTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -99,6 +103,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdlyTfs(List<JmMdlyTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -112,6 +117,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdlyTf(JmMdlyTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -135,6 +141,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdlyTf(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -150,6 +157,7 @@ public class JmMdlyTfServiceImpl extends BaseServiceImpl<JmMdlyTfDao, JmMdlyTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdlyTfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

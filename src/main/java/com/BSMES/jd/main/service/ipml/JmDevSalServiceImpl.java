@@ -12,6 +12,7 @@ import com.BSMES.jd.main.entity.JmChkstdTfEntity;
 import com.BSMES.jd.main.entity.JmDevSalEntity;
 import com.BSMES.jd.main.service.JmDevSalService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,6 +39,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDevSal(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -51,6 +53,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveDevSal(JmDevSalDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -72,6 +75,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveDevSals(List<JmDevSalDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -90,6 +94,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editDevSal(JmDevSalDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -113,6 +118,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delDevSal(List<String> devNos,List<String> salNos) {
         CommonReturn result = new CommonReturn();
@@ -133,6 +139,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDevSalPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

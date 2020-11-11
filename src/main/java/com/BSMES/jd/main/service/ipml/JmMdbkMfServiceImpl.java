@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.JmMdbkMfService;
 import com.BSMES.jd.main.service.JmMdbkTfService;
 import com.BSMES.jd.main.service.JmMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbkMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -52,6 +54,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbk(JmMdbk dto) {
         CommonReturn result = new CommonReturn();
@@ -103,6 +106,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbkMf(JmMdbkMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -127,6 +131,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdbkMf(JmMdbkMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -148,6 +153,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdbkMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -162,6 +168,7 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbkMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

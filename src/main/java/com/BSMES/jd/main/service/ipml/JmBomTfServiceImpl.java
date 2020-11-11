@@ -14,6 +14,7 @@ import com.BSMES.jd.main.entity.JmMoMfEntity;
 import com.BSMES.jd.main.service.JmBomMfService;
 import com.BSMES.jd.main.service.JmBomTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -53,6 +55,7 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -82,6 +85,7 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveBomTfs(List<JmBomTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -95,6 +99,7 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editBomTf(JmBomTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -118,11 +123,13 @@ public class JmBomTfServiceImpl extends BaseServiceImpl<JmBomTfDao , JmBomTfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delBomTf(List<String> bomNos, List<Integer> itms) {
         return null;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getBomTfPage(JmBomTfDTO dto, QueryWrapper queryWrapper) {
         return null;

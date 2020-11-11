@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.service.InsorgService;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getSorg(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -46,6 +48,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveSorg(InsorgDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -70,6 +73,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editSorg(InsorgDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +97,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delSorg(List<String> orgcodes) {
         CommonReturn result = new CommonReturn();
@@ -107,6 +112,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getSorgPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -119,6 +125,7 @@ public class InsorgServiceImpl extends BaseServiceImpl<InsorgDao , InsorgEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public InsorgDTO getTest(String id) {
         QueryWrapper queryWrapper = new QueryWrapper();

@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmMdbfMfEntity;
 import com.BSMES.jd.main.entity.JmMdbfTfEntity;
 import com.BSMES.jd.main.service.JmMdbfTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbfTf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -45,6 +47,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbfTfs(List<JmMdbfTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -58,6 +61,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdbfTf(JmMdbfTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -70,6 +74,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdbfTf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -84,6 +89,7 @@ public class JmMdbfTfServiceImpl extends BaseServiceImpl<JmMdbfTfDao, JmMdbfTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbfTfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

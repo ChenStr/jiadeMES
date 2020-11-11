@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.JmBsDictionaryEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmBsDictionaryService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDictionary(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveDictionary(JmBsDictionaryDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -71,6 +74,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editDictionary(JmBsDictionaryDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +97,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delfalseDictionary(JmBsDictionaryDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -110,6 +115,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delDictionary(List<String> ids) {
         CommonReturn result = new CommonReturn();
@@ -124,6 +130,7 @@ public class JmBsDictionaryServiceImpl extends BaseServiceImpl<JmBsDictionaryDao
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDictionaryPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

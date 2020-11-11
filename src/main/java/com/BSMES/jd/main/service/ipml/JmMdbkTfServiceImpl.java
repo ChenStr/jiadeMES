@@ -10,6 +10,7 @@ import com.BSMES.jd.main.entity.JmMdlyMfEntity;
 import com.BSMES.jd.main.service.JmMdbkMfService;
 import com.BSMES.jd.main.service.JmMdbkTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbkTf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -49,6 +51,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbk(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -73,6 +76,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbkTf(JmMdbkTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -94,6 +98,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbkTfs(List<JmMdbkTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -107,6 +112,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdbkTf(JmMdbkTfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -129,6 +135,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdbkTf(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -152,6 +159,7 @@ public class JmMdbkTfServiceImpl extends BaseServiceImpl<JmMdbkTfDao, JmMdbkTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbkTfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

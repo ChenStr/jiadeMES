@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmDevDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmDevEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -18,6 +19,11 @@ public interface JmDevService extends BaseService<JmDevEntity, JmDevDTO> {
     public CommonReturn editDev(JmDevDTO dto);
 
     public CommonReturn delDev(List<String> wkNos);
+
+    /**
+     * 看板接口
+     */
+    public CommonReturn getLook(ResultType dto);
 
     /**
      * 获取全部的设备 分页

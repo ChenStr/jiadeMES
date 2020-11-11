@@ -11,6 +11,7 @@ import com.BSMES.jd.main.service.JmJobRecBService;
 import com.BSMES.jd.main.service.JmJobRecService;
 import com.BSMES.jd.main.service.JmJobService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -48,6 +49,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecB(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +62,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveJobRecB(JmJobRecBDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -86,6 +89,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJobRecB(JmJobRecBDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -111,6 +115,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn editJobRecBs(List<JmJobRecBDTO> dtos) {
@@ -139,6 +144,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delJobRecB(List<String> opsids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -163,6 +169,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveJobRecBs(List<JmJobRecBDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -180,6 +187,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecBPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -192,6 +200,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecReportPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -215,6 +224,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
      * @param dto
      * @return
      */
+    @DS("master")
     @Override
     public CommonReturn getSorgDayReportExcel(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -246,6 +256,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecMonReport(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -264,6 +275,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getUserMonReportExcel(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -287,6 +299,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobRecRsNoMonReport(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -305,6 +318,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getDevMonReportExcel(ResultType dto) {
         CommonReturn result = new CommonReturn();

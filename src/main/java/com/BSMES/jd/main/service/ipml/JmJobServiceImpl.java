@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
@@ -74,6 +75,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJob(JmJobDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -87,6 +89,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn joinFindJobs(JobJoin jobJoin) {
         CommonReturn result = new CommonReturn();
@@ -151,6 +154,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveJob(JmJobDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -180,6 +184,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveJobs(MoSave jobSave) {
@@ -259,6 +264,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJob(JmJobDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -283,6 +289,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delJob(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -318,6 +325,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobPage(JmJobDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
@@ -330,6 +338,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJobJoinPage(JobJoin jobJoin) {
         CommonReturn result = new CommonReturn();
@@ -358,6 +367,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJmJobReport(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -376,6 +386,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn exportExcel(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -395,6 +406,32 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
 //            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getsorgSum(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> reports = jmJobDao.getsorgSum(dto);
+            result.setAll(20000,reports,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getsorgYield(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> reports = jmJobDao.getsorgYield(dto);
+            result.setAll(20000,reports,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
             e.printStackTrace();
         }
         return result;

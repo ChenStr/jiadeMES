@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.service.InsgwcodeService;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getInsgwcode(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -46,6 +48,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveInsgwcode(InsgwcodeDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -70,7 +73,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
-
+    @DS("master")
     @Override
     public CommonReturn editInsgwcode(InsgwcodeDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -94,7 +97,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
-
+    @DS("master")
     @Override
     public CommonReturn delInsgwcode(List<String> gwcodes) {
         CommonReturn result = new CommonReturn();
@@ -109,7 +112,7 @@ public class InsgwcodeServiceImpl extends BaseServiceImpl<InsgwcodeDao, Insgwcod
         return result;
     }
 
-
+    @DS("master")
     @Override
     public CommonReturn getInsgwcodePage(ResultType dto) {
         CommonReturn result = new CommonReturn();

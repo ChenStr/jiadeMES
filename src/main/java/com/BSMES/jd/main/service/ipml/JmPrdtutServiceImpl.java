@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.entity.JmPrdtutEntity;
 import com.BSMES.jd.main.service.JmPrdtutService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getPrdtut(JmPrdtutDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -42,6 +44,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn savePrdtut(JmPrdtutDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -63,6 +66,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editPrdtut(JmPrdtutDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -85,6 +89,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delPrdtut(List<String> ubms) {
         CommonReturn result = new CommonReturn();
@@ -99,6 +104,7 @@ public class JmPrdtutServiceImpl extends BaseServiceImpl<JmPrdtutDao , JmPrdtutE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getPrdtutPage(JmPrdtutDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

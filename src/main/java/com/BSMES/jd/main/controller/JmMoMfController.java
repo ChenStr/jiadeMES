@@ -2,8 +2,13 @@ package com.BSMES.jd.main.controller;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmMoMfDTO;
+import com.BSMES.jd.main.dto.JmPrdtDTO;
 import com.BSMES.jd.main.dto.ResultType;
+import com.BSMES.jd.main.dto.erp.ErpMfMoDTO;
+import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.service.JmMoMfService;
+import com.BSMES.jd.main.service.JmPrdtService;
+import com.BSMES.jd.main.service.erp.ErpMfMoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

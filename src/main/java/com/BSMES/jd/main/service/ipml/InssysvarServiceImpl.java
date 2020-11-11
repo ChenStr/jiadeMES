@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.InssysvarDTO;
 import com.BSMES.jd.main.entity.InssysvarEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class InssysvarServiceImpl extends BaseServiceImpl<InssysvarDao , Inssysv
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getVar(InssysvarDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -39,6 +41,7 @@ public class InssysvarServiceImpl extends BaseServiceImpl<InssysvarDao , Inssysv
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveVar(InssysvarDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +63,7 @@ public class InssysvarServiceImpl extends BaseServiceImpl<InssysvarDao , Inssysv
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editVar(InssysvarDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -83,6 +87,7 @@ public class InssysvarServiceImpl extends BaseServiceImpl<InssysvarDao , Inssysv
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delVar(List<String> snames) {
         CommonReturn result = new CommonReturn();
@@ -97,6 +102,7 @@ public class InssysvarServiceImpl extends BaseServiceImpl<InssysvarDao , Inssysv
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getVarPage(InssysvarDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.JmWhLocEntity;
 import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmWhLocService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class JmWhLocServiceImpl extends BaseServiceImpl<JmWhLocDao , JmWhLocEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWhLoc(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmWhLocServiceImpl extends BaseServiceImpl<JmWhLocDao , JmWhLocEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveWhLoc(JmWhLocDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -71,6 +74,7 @@ public class JmWhLocServiceImpl extends BaseServiceImpl<JmWhLocDao , JmWhLocEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editWhLoc(JmWhLocDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -93,6 +97,7 @@ public class JmWhLocServiceImpl extends BaseServiceImpl<JmWhLocDao , JmWhLocEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delWhLoc(List<String> whLocs) {
         CommonReturn result = new CommonReturn();
@@ -107,6 +112,7 @@ public class JmWhLocServiceImpl extends BaseServiceImpl<JmWhLocDao , JmWhLocEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWhLocPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

@@ -100,4 +100,18 @@ public class JmJobController {
         return result;
     }
 
+    @GetMapping("/sorgsum")
+    public CommonReturn getsorgSum(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobService.getsorgSum(dto);
+        return result;
+    }
+
+    @GetMapping("/sorgyield")
+    public CommonReturn getsorgYield(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobService.getsorgYield(dto);
+        return result;
+    }
+
 }

@@ -109,6 +109,40 @@
         </if>
     </select>
 
+    <select id="getsorgSum" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
+        select convert(date,create_date) as hpdate,sorg,dep,sum(isnull(qty,0)) as qty from jm_job
+        <where>
+            <if test="dep != null and dep.length()>0">
+                and dep = #{dep}
+            </if>
+        </where>
+        group by convert(date,create_date),sorg,dep
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+    <select id="getsorgYield" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
+        select job.dep,convert(date,rec.op_dd) as hpdate,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        left join jm_job_rec as rec on recb.opsid=rec.opsid
+        left join jm_job as job on job.jb_no=rec.jb_no
+        <where>
+            <if test="dep != null and dep.length()>0">
+                and dep = #{dep}
+            </if>
+        </where>
+        group by job.dep,convert(date,rec.op_dd)
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
     <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmJobDTO">
         UPDATE jm_job
         <trim prefix="set" suffixOverrides=",">

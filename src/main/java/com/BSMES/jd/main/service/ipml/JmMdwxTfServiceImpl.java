@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.InsorgEntity;
 import com.BSMES.jd.main.entity.JmMdwxTfEntity;
 import com.BSMES.jd.main.service.JmMdwxTfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class JmMdwxTfServiceImpl extends BaseServiceImpl<JmMdwxTfDao, JmMdwxTfEn
     }
 
 
+    @DS("master")
     @Override
     public CommonReturn getJmMdwxTf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -47,6 +49,7 @@ public class JmMdwxTfServiceImpl extends BaseServiceImpl<JmMdwxTfDao, JmMdwxTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn insertJmMdwxTfs(List<JmMdwxTfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +63,7 @@ public class JmMdwxTfServiceImpl extends BaseServiceImpl<JmMdwxTfDao, JmMdwxTfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editJmMdwxTf(JmMdwxTfDTO dto) {
         CommonReturn result = new CommonReturn();

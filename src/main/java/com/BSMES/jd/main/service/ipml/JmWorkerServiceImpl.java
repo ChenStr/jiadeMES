@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.JmWorkerDTO;
 import com.BSMES.jd.main.entity.JmWorkerEntity;
 import com.BSMES.jd.main.service.JmWorkerService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWorker(JmWorkerDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -39,6 +41,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveWorker(JmWorkerDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +63,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editWorker(JmWorkerDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -82,6 +86,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delWorker(List<String> wkNos) {
         CommonReturn result = new CommonReturn();
@@ -96,6 +101,7 @@ public class JmWorkerServiceImpl extends BaseServiceImpl<JmWorkerDao , JmWorkerE
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWorkerPage(JmWorkerDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

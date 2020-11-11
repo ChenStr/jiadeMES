@@ -8,6 +8,7 @@ import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmPrdtEntity;
 import com.BSMES.jd.main.service.JmPrdtService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getPrdt(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -40,6 +42,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn savePrdt(JmPrdtDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -61,6 +64,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editPrdt(JmPrdtDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -83,6 +87,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delPrdt(List<String> prdNos) {
         CommonReturn result = new CommonReturn();
@@ -97,6 +102,7 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getPrdtPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

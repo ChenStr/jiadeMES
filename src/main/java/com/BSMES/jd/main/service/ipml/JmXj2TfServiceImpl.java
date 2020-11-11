@@ -13,6 +13,7 @@ import com.BSMES.jd.main.entity.JmXj2TfEntity;
 import com.BSMES.jd.main.service.JmXj2TfService;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXj2Tf(JmXj2TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -57,6 +59,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXj2Tf(JmXj2TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -79,6 +82,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXj2TfAndXj3Tf(JmXjMf dto) {
         CommonReturn result = new CommonReturn();
@@ -92,6 +96,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveXj2Tfs(List<JmXj2TfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -105,6 +110,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editXj2Tf(JmXjMf dto) {
         CommonReturn result = new CommonReturn();
@@ -132,6 +138,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn checkXj2Tf(JmXjMf dto) {
         CommonReturn result = new CommonReturn();
@@ -155,6 +162,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delXj2Tf(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -180,6 +188,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getXj2TfPage(JmXj2TfDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

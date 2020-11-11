@@ -8,6 +8,7 @@ import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmMtdd2TfEntity;
 import com.BSMES.jd.main.service.JmMtdd2TfService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtdd2(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -45,6 +47,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtdd2(JmMtdd2TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -66,6 +69,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMtdd2s(List<JmMtdd2TfDTO> dtos) {
         CommonReturn result = new CommonReturn();
@@ -79,6 +83,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMtdd2(JmMtdd2TfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -103,6 +108,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMtdd2(List<String> sids, List<Integer> cids) {
         CommonReturn result = new CommonReturn();
@@ -126,6 +132,7 @@ public class JmMtdd2TfServiceImpl extends BaseServiceImpl<JmMtdd2TfDao, JmMtdd2T
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMtdd2Page(ResultType dto) {
         CommonReturn result = new CommonReturn();

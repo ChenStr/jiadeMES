@@ -11,6 +11,7 @@ import com.BSMES.jd.main.entity.JmWorkerEntity;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.BSMES.jd.tools.password.PasswordUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,6 +55,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         }
     }
 
+    @DS("master")
     @Override
     public CommonReturn getUser(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -80,6 +82,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getUserPlus(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -108,6 +111,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn login(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -200,6 +204,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveUser(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -224,6 +229,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editUser(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -251,6 +257,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delUser(List<String> usrcodes) {
         CommonReturn result = new CommonReturn();
@@ -265,6 +272,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getUserPage(InsuserDTO dto) {
         CommonReturn result = new CommonReturn();

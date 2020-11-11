@@ -9,6 +9,7 @@ import com.BSMES.jd.main.entity.JmMdbfMfEntity;
 import com.BSMES.jd.main.entity.JmMdbfTfEntity;
 import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbfMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -55,6 +57,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @DS("master")
     @Transactional
     @Override
     public CommonReturn saveMdbf(JmMdbf dto) {
@@ -108,6 +111,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveMdbfMf(JmMdbfMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -132,6 +136,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editMdbfMf(JmMdbfMfDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -154,6 +159,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delMdbfMf(List<String> sids) {
         CommonReturn result = new CommonReturn();
@@ -162,8 +168,8 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         QueryWrapper<JmMdbfTfEntity> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.in("sid",sids);
         try{
-            this.remove(queryWrapper);
             jmMdbfTfService.remove(queryWrapper1);
+            this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
@@ -171,6 +177,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getMdbfMfPage(ResultType dto) {
         CommonReturn result = new CommonReturn();

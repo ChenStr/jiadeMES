@@ -7,6 +7,7 @@ import com.BSMES.jd.main.dto.JmWhDTO;
 import com.BSMES.jd.main.entity.JmWhEntity;
 import com.BSMES.jd.main.service.JmWhService;
 import com.BSMES.jd.tools.my.MyUtils;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
 
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWh(JmWhDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -39,6 +41,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn saveWh(JmWhDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -60,6 +63,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn editWh(JmWhDTO dto) {
         CommonReturn result = new CommonReturn();
@@ -82,6 +86,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn delWh(List<String> whs) {
         CommonReturn result = new CommonReturn();
@@ -96,6 +101,7 @@ public class JmWhServiceImpl extends BaseServiceImpl<JmWhDao , JmWhEntity , JmWh
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getWhPage(JmWhDTO dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();

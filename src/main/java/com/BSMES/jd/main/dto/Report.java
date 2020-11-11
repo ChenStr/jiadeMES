@@ -2,8 +2,10 @@ package com.BSMES.jd.main.dto;
 
 import com.BSMES.jd.common.dto.BaseDTO;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 车间生产日报表
@@ -75,5 +77,23 @@ public class Report extends BaseDTO {
      * 设备名称
      */
     public String devName;
+
+    /**
+     * 开始时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date begDd;
+
+    /**
+     * 结束时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date endDd;
+
+    /**
+     * 创建时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date hpdate;
 
 }
