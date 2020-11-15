@@ -5,12 +5,12 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
 
     <insert id="insertJobRecBs" useGeneratedKeys="true" keyProperty="opsid" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
-        insert into jm_job_rec_b (opsid, cid, op_dd,sn, dmdel , wk_no, qty, qty_ok, qty_lost, chk_rm_bn, chk_no , process , spc_no
+        insert into jm_job_rec_b (opsid,cid,op_dd,sn,dmdel,wk_no,qty,qty_ok,qty_lost,chk_rm_bn,chk_no,process,spc_no,qty_wt
         ) values
         <foreach collection="list" item="jmJobRecB" index="index" separator=",">
             (#{jmJobRecB.opsid}, #{jmJobRecB.cid}, #{jmJobRecB.opDd}, #{jmJobRecB.sn},#{jmJobRecB.dmdel},#{jmJobRecB.wkNo},cast (#{jmJobRecB.qty,jdbcType=DECIMAL} as decimal(22,8)),
             cast (#{jmJobRecB.qtyOk,jdbcType=DECIMAL} as decimal(22,8)), cast (#{jmJobRecB.qtyLost,jdbcType=DECIMAL} as decimal(22,8)),#{jmJobRecB.chkRmBn},
-            #{jmJobRecB.chkNo},#{jmJobRecB.process},#{jmJobRecB.spcNo})
+            #{jmJobRecB.chkNo},#{jmJobRecB.process},#{jmJobRecB.spcNo},cast (#{jmJobRecB.qtyWt,jdbcType=DECIMAL} as decimal(22,8)))
         </foreach>
     </insert>
 
@@ -26,6 +26,7 @@
             <if test="chkNo!=null">chk_no=#{chkNo},</if>
             <if test="process!=null">process=#{process},</if>
             <if test="spcNo!=null">spc_no=#{spcNo},</if>
+            <if test="qtyWt!=null">qty_wt=#{qtyWt},</if>
         </trim>
         WHERE opsid=#{opsid} and cid=#{cid}
     </update>
@@ -58,7 +59,6 @@
             </if>
         </where>
         group by job.dep,job.jb_no,job.prd_no,job.prd_name
---         order by job.dep,job.jb_no,job.prd_no
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
         </if>
@@ -72,7 +72,6 @@
         left join jm_job_rec as rec on recb.opsid=rec.opsid
         left join jm_job as job on job.jb_no=rec.jb_no
         left join insuser as users on users.codeno=recb.wk_no
---         where convert(date,recb.op_dd) between '2020-09-01' and '2020-09-30' and users.usrname='朱顺奎' and job.prd_no='F.D0.W02826'
         <where>
             <if test="begDd != null and begDd.toString().length()>0" >
                 and recb.op_dd &gt;= #{begDd}
@@ -97,7 +96,6 @@
             </if>
         </where>
         group by job.dep,recb.wk_no,users.usrname,job.prd_no,job.prd_name
---         order by recb.wk_no,users.usrname,job.prd_no,job.prd_name
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
         </if>
@@ -112,7 +110,6 @@
         left join jm_job_rec as rec on recb.opsid=rec.opsid
         left join jm_job as job on job.jb_no=rec.jb_no
         left join jm_dev as dev on rec.rs_no=dev.dev_no
---         where convert(date,recb.op_dd) between '2020-09-01' and '2020-09-30' and rec.rs_no='FAF-CC05'
         <where>
             <if test="begDd != null and begDd.toString().length()>0" >
                 and recb.op_dd &gt;= #{begDd}
@@ -137,7 +134,6 @@
             </if>
         </where>
         group by rec.rs_no,dev.name,job.prd_no,job.prd_name
---         order by rec.rs_no,dev.name,job.prd_no,job.prd_name
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
         </if>

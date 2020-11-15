@@ -14,6 +14,6 @@ public interface JmXj3TfDao extends BaseDao<JmXj3TfEntity> {
     void saveJmXj3Tfs(List<JmXj3TfDTO> jmXj3TfDTOS);
 
     //修改操作
-    void editJmXj3Tfs(JmXj3TfDTO jmXj3TfDTO);
+    void editJmXj3Tf(JmXj3TfDTO jmXj3TfDTO);
 
 }

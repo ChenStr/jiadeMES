@@ -67,6 +67,9 @@
             <if test="devid!=null and devid.length()>0" >
                 and dev.devid = #{devid}
             </if>
+            <if test="mouldNo!=null and mouldNo.length()>0" >
+                and jm_xj_mf.md_no = #{mouldNo}
+            </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
@@ -204,7 +207,7 @@
         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,prdt.snm as prdt_snm,prdt.knd as prdt_knd,prdt.idx1 as prdt_idx1,prdt.unit as prdt_unit,prdt.spc as prdt_spc,prdt.qty_min as prdt_qty_min,prdt.wh as prdt_wh,prdt.cst_std as prdt_cst_std,prdt.ut as prdt_ut,prdt.partid as prdt_partid,prdt.paraname as prdt_paraname,prdt.pk2_ut as prdt_pk2_ut,prdt.pk2_qty as prdt_pk2_qty,prdt.pk3_ut as prdt_pk3_ut,prdt.pk3_qty as prdt_pk3_qty,prdt.rank as prdt_rank,prdt.havesn as prdt_havesn,prdt.smcs_hzzh as prdt_smcs_hzzh,prdt.sbm as prdt_sbm,prdt.up_jj as prdt_up_jj,prdt.zx_qty as prdt_zx_qty,prdt.min_wg as prdt_min_wg,prdt.max_wg as prdt_max_wg,prdt.sorg as prdt_sorg,
         mould.md_no as mould_md_no,mould.typeid as mould_typeid,mould.name as mould_name,mould.md_qty as mould_md_qty,mould.md_grp as mould_md_grp,mould.state as mould_state,mould.wh as mould_wh,mould.wh_loc as mould_wh_loc,mould.qty_max as mould_qty_max,mould.qty_mk as mould_qty_mk,mould.time_max as mould_time_max,mould.time_mk as mould_time_mk,mould.dep as mould_dep,
         dev.dev_no as dev_dev_no,dev.name as dev_name,dev.spc as dev_spc,dev.rs_no as dev_rs_no,dev.cusname as dev_cusname,dev.main_no as dev_main_no,dev.dep as dev_dep,dev.maxtime as dev_maxtime,dev.maxqty as dev_maxqty,dev.time_mk as dev_time_mk,dev.qty_mk as dev_qty_mk,dev.state as dev_state,dev.devid as dev_devid,dev.sorg as dev_sorg,dev.picture as dev_picture,dev.location as dev_location,dev.ip as dev_ip,
-        xj2.sid as xj2_sid,xj2.cid as xj2_cid,xj2.jb_no as xj2_jb_no,xj2.op_rem as xj2_op_rem,xj2.sal_no as xj2_sal_no,xj2.op_dd as xj2_op_dd,xj2.prd_sn as xj2_prd_sn,xj2.dmdel as xj2_dmdel,xj2.delay_b as xj2_delay_b,xj2.over_e as xj2_over_e,xj2.para_max as xj2_para_max,xj2.para_min as xj2_para_min,xj2.chk_para as xj2_chk_para,xj2.chk_name as xj2_chk_name,xj2.chk_value as xj2_chk_value,xj2.state as xj2_state,xj2.qty_md as xj2_qty_md,xj2.wk_no as xj2_wk_no,xj2.sta_dd as xj2_sta_dd,
+        xj2.sid as xj2_sid,xj2.cid as xj2_cid,xj2.jb_no as xj2_jb_no,xj2.op_rem as xj2_op_rem,xj2.sal_no as xj2_sal_no,xj2.op_dd as xj2_op_dd,xj2.prd_sn as xj2_prd_sn,xj2.dmdel as xj2_dmdel,xj2.delay_b as xj2_delay_b,xj2.over_e as xj2_over_e,xj2.para_max as xj2_para_max,xj2.para_min as xj2_para_min,xj2.chk_para as xj2_chk_para,xj2.chk_name as xj2_chk_name,xj2.chk_value as xj2_chk_value,xj2.state as xj2_state,xj2.qty_md as xj2_qty_md,xj2.wk_no as xj2_wk_no,xj2.sta_dd as xj2_sta_dd,xj2.sal_name as xj2_sal_name,
         xj3.sid as xj3_sid,xj3.cid as xj3_cid,xj3.chk_no as xj3_chk_no,xj3.cur_para as xj3_cur_para,xj3.rlt as xj3_rlt,xj3.spc_type as xj3_spc_type,xj3.spc_chk as xj3_spc_chk,xj3.op_rem as xj3_op_rem,xj3.op_dd as xj3_op_dd,xj3.dmdel as xj3_dmdel,xj3.dervi_id as xj3_dervi_id,xj3.derviation as xj3_derviation,xj3.chkviation as xj3_chkviation
         FROM jm_xj_mf
         left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
@@ -404,6 +407,7 @@
             <result column="xj2_qty_md" property="jmXj2TfDTO.qtyMd"/>
             <result column="xj2_state" property="jmXj2TfDTO.state"/>
             <result column="xj2_wk_no" property="jmXj2TfDTO.wkNo"/>
+            <result column="xj2_sal_name" property="jmXj2TfDTO.salName"/>
             <collection property="jmXj3TfDTOS" ofType="com.BSMES.jd.main.dto.JmXj3TfDTO">
                 <id column="xj3_sid" property="sid"/>
                 <id column="xj3_cid" property="cid"/>
@@ -422,9 +426,34 @@
         </collection>
     </resultMap>
 
+    <select id="getJmxAttach" resultType="com.BSMES.jd.main.dto.JmxjAttach" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select  xjmf.sid,xjmf.jb_no,xjmf.prd_no,prdt.name as prd_name,mould.name,xjmf.test_bo,xjmf.first_chk,ristxjmf.sid as rist_sid,ristxjmf.first_chk as rist_chk,xjmf.smake_name,isnull(xjmf.state,0) as state,xjmf.hpdate
+        from jm_xj_mf xjmf
+        left join (select * from jm_xj_mf  ristxjmf where ristxjmf.xjid='2') ristxjmf on   xjmf.jb_no=ristxjmf.jb_no and datediff(day,ristxjmf.hpdate,xjmf.hpdate) = 0
+        left join jm_mould mould on  xjmf.md_no=mould.md_no
+        left join jm_prdt prdt on xjmf.prd_no=prdt.prd_no
+        <where>
+            xjmf.xjid='1'
+            <if test="devNo != null and devNo.length()>0" >
+                and  xjmf.rs_no = #{devNo}
+            </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and xjmf.hpdate &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and xjmf.hpdate &lt;= #{endDd}
+            </if>
+        </where>
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
     
 
-    <!--    cast(#{jmJob.qtyShip,jdbcType=DECIMAL} as decimal(22,8))-->
     <insert id="saveJmXjMfs" parameterType="com.BSMES.jd.main.dto.JmXjMfDTO">
         insert into jm_xj_mf (sid,hpdate,sbuid,smake,moditime,chk_man,state,creftimes,rs_no,mo_no,prd_no,bat_no,zc_no,xjid,wk_no,sorg,zx_code,qty_cur,qty_ok,
         qty_lost,spc_chk,spc_btn,chk_id,op_rem,fin_judge,xjms,xjjd,test_bo,md_no,first_chk,aspect_chk,inter_chk,welc_chk,jb_no,qcopper,hcopper,zcopper,plastic,

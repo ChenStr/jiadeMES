@@ -41,4 +41,12 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
     public CommonReturn getXjMfPlusPage(ResultType dto);
 
+    /**
+     * 定时任务 修改首末检的状态
+     * @return
+     */
+    public CommonReturn getXjTime();
+
+    public CommonReturn getJmxjAttach(ResultType dto);
+
 }

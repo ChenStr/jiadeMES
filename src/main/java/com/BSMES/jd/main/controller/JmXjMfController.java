@@ -29,6 +29,15 @@ public class JmXjMfController {
         return result;
     }
 
+    @GetMapping("/attach")
+    public CommonReturn getAttach(ResultType dto){
+        CommonReturn result = new CommonReturn();
+
+        result = jmXjMfService.getJmxjAttach(dto);
+
+        return result;
+    }
+
     @GetMapping("/plus")
     public CommonReturn getJmXjMfPlus(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();

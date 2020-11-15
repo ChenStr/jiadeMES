@@ -116,7 +116,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn editJobRecBs(List<JmJobRecBDTO> dtos) {
         CommonReturn result = new CommonReturn();

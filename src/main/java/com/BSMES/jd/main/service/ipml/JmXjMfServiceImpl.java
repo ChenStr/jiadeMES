@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +76,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @Override
     public CommonReturn getXjMfPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);;
+        List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);
         if (jmXjMfDTOS==null && jmXjMfDTOS.size()==0){
             JmXjMf2 jmXjMf2 = new JmXjMf2();
             //如果找不到数据的话那么就说明只有一条并且把他的模板数据带出来，如果没有那是真的没有
@@ -369,11 +370,50 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
+    @Scheduled(cron="0 30 7 * * ?")
+    @Override
+    public CommonReturn getXjTime() {
+        CommonReturn result = new CommonReturn();
+        result.setAll(20000,null,"无数据未修改");
+        //查询出所有的首末检信息
+        QueryWrapper<JmXjMfEntity> jmXjMfEntityQueryWrapper = new QueryWrapper<>();
+        int[] ints = {1,2};
+        jmXjMfEntityQueryWrapper.in("xjid",ints).eq("state",0);
+        List<JmXjMfDTO> jmXjMfDTOS = this.select(jmXjMfEntityQueryWrapper);
+        try{
+            for (JmXjMfDTO jmXjMfDTO:jmXjMfDTOS){
+                jmXjMfDTO.setState(6);
+                this.edit(jmXjMfDTO);
+            }
+            result.setAll(20000,jmXjMfDTOS,"操作成功");
+            System.out.println("巡检信息定时修改操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+            System.out.println("巡检信息定时修改操作失败");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getJmxjAttach(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<JmxjAttach> jmxjAttaches = jmXjMfDao.getJmxAttach(dto);
+            result.setAll(20000,jmxjAttaches,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
 //        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
-//            dto.setDescOrder("sort");
+//            dto.setDescOrder("hpdate");
 //        }
 
         if (dto.getOtherIds()!=null && dto.getOtherIds().size()>0){

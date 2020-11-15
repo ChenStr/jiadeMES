@@ -61,5 +61,10 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
      */
     public CommonReturn getsorgYield(ResultType dto);
 
+    /**
+     * 车间良品率
+     */
+    public CommonReturn getGood(ResultType dto);
+
 
 }

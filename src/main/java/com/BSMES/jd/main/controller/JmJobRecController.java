@@ -60,4 +60,13 @@ public class JmJobRecController {
         result = jmJobRecService.delJobRec(opsids1);
         return result;
     }
+
+    @GetMapping("/taskeditJobRec")
+    public CommonReturn taskeditJobRec(){
+        CommonReturn result = new CommonReturn();
+
+        result = jmJobRecService.taskeditJobRec();
+
+        return result;
+    }
 }

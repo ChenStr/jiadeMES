@@ -66,7 +66,7 @@ public class JmChkstdMfServiceImpl extends BaseServiceImpl<JmChkstdMfDao , JmChk
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveChkstd(JmChkstd dto) {
         CommonReturn result = new CommonReturn();

@@ -45,6 +45,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Autowired
     JmJobRecDao jmJobRecDao;
 
+    @Autowired
+    JmMouldService jmMouldService;
+
     @Override
     public void beforeInsert(JmJobRecDTO dto) {
         QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper2 = new QueryWrapper<>();
@@ -132,7 +135,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave) {
         CommonReturn result = new CommonReturn();
@@ -288,6 +291,17 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
             result.setAll(20000,null,"操作成功");
         }
 
+        //对模具的寿命进行修改
+        try{
+            for (JmJobRecDTO jmJobRecDTO : jmJobRecDTOS){
+                this.sunMould(jmJobRecDTO);
+            }
+            System.out.println("修改模具寿命成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("修改模具寿命失败");
+        }
+
         return result;
     }
 
@@ -364,6 +378,31 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         PageInfo jobPages = new PageInfo<JobRec>(jobRecs);
         result.setAll(20000,jobPages,"操作成功");
         return result;
+    }
+
+    /**
+     * 根据 jobRec 汇总模具的使用次数
+     * @param jobRec
+     */
+    private synchronized void sunMould(JmJobRecDTO jobRec){
+        QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
+        BigDecimal sum = new BigDecimal("0");
+        //查询模具信息
+        jmMouldEntityQueryWrapper.eq("md_no",jobRec.getMdNo());
+        JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
+        //统计明细数量
+        jmJobRecBEntityQueryWrapper.eq("opsid",jobRec.getOpsid());
+        List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
+        for (JmJobRecBDTO jmJobRecBDTO:jmJobRecBDTOS){
+            sum = sum.add(jmJobRecBDTO.getQtyOk());
+            sum = sum.add(jmJobRecBDTO.getQtyLost());
+        }
+        //算出模具使用次数
+        BigDecimal qty = sum.divide(jmMouldDTO.getTimeMk());
+        qty = qty.add(jmMouldDTO.getQtyMk());
+        //设置模具使用次数
+        jmMouldService.edit(jmMouldDTO);
     }
 
     private QueryWrapper getQueryWrapper(ResultType dto){

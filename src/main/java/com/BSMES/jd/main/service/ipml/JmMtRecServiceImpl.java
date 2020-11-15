@@ -65,7 +65,7 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveMtRec(JmMtRec dto) {
         CommonReturn result = new CommonReturn();

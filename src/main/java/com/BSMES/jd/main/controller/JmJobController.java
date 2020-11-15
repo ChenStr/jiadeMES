@@ -50,7 +50,7 @@ public class JmJobController {
     }
 
     @PutMapping()
-    @Transactional
+//    @Transactional
     public CommonReturn editJmJob(@RequestBody List<JmJobDTO> dtos){
         CommonReturn result = new CommonReturn();
         if (dtos!=null && dtos.size()>0){
@@ -111,6 +111,13 @@ public class JmJobController {
     public CommonReturn getsorgYield(ResultType dto){
         CommonReturn result = new CommonReturn();
         result = jmJobService.getsorgYield(dto);
+        return result;
+    }
+
+    @GetMapping("/getgood")
+    public CommonReturn getGood(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmJobService.getGood(dto);
         return result;
     }
 

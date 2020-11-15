@@ -185,7 +185,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveJobs(MoSave jobSave) {
         CommonReturn result = new CommonReturn();
@@ -415,8 +415,16 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     public CommonReturn getsorgSum(ResultType dto) {
         CommonReturn result = new CommonReturn();
         try{
+            if (dto.getPage()==null){
+                dto.setPage(1);
+            }
+            if (dto.getPageSize()==null){
+                dto.setPageSize(10);
+            }
+            PageHelper.startPage(dto.getPage(), dto.getPageSize());
             List<Report> reports = jmJobDao.getsorgSum(dto);
-            result.setAll(20000,reports,"操作成功");
+            PageInfo reportPageInfo = new PageInfo<Report>(reports);
+            result.setAll(20000,reportPageInfo,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
             e.printStackTrace();
@@ -428,7 +436,28 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
     public CommonReturn getsorgYield(ResultType dto) {
         CommonReturn result = new CommonReturn();
         try{
+            if (dto.getPage()==null){
+                dto.setPage(1);
+            }
+            if (dto.getPageSize()==null){
+                dto.setPageSize(10);
+            }
+            PageHelper.startPage(dto.getPage(), dto.getPageSize());
             List<Report> reports = jmJobDao.getsorgYield(dto);
+            PageInfo reportPageInfo = new PageInfo<>(reports);
+            result.setAll(20000,reportPageInfo,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getGood(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<Report> reports =  jmJobDao.getGood(dto);
             result.setAll(20000,reports,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");

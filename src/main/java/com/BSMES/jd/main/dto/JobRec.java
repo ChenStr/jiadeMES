@@ -80,7 +80,7 @@ public class JobRec extends BaseDTO {
     /**
      * 重量
      */
-    public BigDecimal weight;
+    public BigDecimal qtyWt;
 
     /**
      * 原料名称
@@ -201,5 +201,7 @@ public class JobRec extends BaseDTO {
      * 是否合格
      */
     public String stateOk;
+
+    public String stateRec;
 
 }

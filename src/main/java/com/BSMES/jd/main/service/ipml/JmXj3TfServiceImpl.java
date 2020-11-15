@@ -102,7 +102,7 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
             //设置用户不能操作的属性
             try{
 //                this.edit(dto);
-                jmXj3TfDao.editJmXj3Tfs(dto);
+                jmXj3TfDao.editJmXj3Tf(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

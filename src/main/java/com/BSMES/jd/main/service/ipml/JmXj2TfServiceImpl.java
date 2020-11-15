@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
     public void beforEedit(JmXj2TfDTO dto) {
 
     }
+
 
     @DS("master")
     @Override
@@ -126,7 +128,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
 //                this.edit(dto);
                 jmXj2TfDao.editJmXj2Tf(dto.getJmXj2TfDTO());
                 for (JmXj3TfDTO jmXj3TfDTO :  dto.getJmXj3TfDTOS()){
-                    jmXj3TfDao.editJmXj3Tfs(jmXj3TfDTO);
+                    jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
                 }
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
@@ -152,7 +154,7 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
             jmXj2TfDTO.setSalNo(dto.getJmXj2TfDTO().getSalNo());
             jmXj2TfDao.editJmXj2Tf(jmXj2TfDTO);
             for (JmXj3TfDTO jmXj3TfDTO : dto.getJmXj3TfDTOS()){
-                jmXj3TfDao.editJmXj3Tfs(jmXj3TfDTO);
+                jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
             }
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){

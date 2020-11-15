@@ -12,7 +12,7 @@ spring:
           maxActive: 20
         erp:
           driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-          url: jdbc:sqlserver://192.168.1.44:1433;DatabaseName=DB_JDDZ
+          url: jdbc:sqlserver://192.168.1.44:1433;DatabaseName=DB_FAF
           username: sa
           password: 1
           initialSize: 5

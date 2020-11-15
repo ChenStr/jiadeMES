@@ -77,7 +77,7 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveJmMdwx(JmMdwx dto) {
         CommonReturn result = new CommonReturn();

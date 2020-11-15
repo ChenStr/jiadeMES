@@ -1,7 +1,6 @@
 package com.BSMES.jd.main.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +30,6 @@ public class JmMtstdTfEntity {
     /**
      * 检点项目
      */
-    @NotNull
     public String mtId;
 
     /**

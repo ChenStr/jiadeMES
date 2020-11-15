@@ -31,6 +31,11 @@ public interface JmJobDao extends BaseDao<JmJobEntity> {
      */
     public List<Report> getsorgYield(ResultType dto);
 
+    /**
+     * 车间良品率
+     */
+    public List<Report> getGood(ResultType dto);
+
 
 
 }

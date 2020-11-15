@@ -69,7 +69,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveGzstd(JmGzstd dto) {
         CommonReturn result = new CommonReturn();

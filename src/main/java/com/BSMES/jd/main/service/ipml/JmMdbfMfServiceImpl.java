@@ -58,7 +58,7 @@ public class JmMdbfMfServiceImpl extends BaseServiceImpl<JmMdbfMfDao, JmMdbfMfEn
     }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveMdbf(JmMdbf dto) {
         CommonReturn result = new CommonReturn();

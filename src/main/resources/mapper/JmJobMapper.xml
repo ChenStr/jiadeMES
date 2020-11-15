@@ -115,6 +115,12 @@
             <if test="dep != null and dep.length()>0">
                 and dep = #{dep}
             </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and convert(date,create_date) &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and convert(date,create_date) &lt;= #{endDd}
+            </if>
         </where>
         group by convert(date,create_date),sorg,dep
         <if test="descOrder!=null and descOrder.length()>0 ">
@@ -133,8 +139,31 @@
             <if test="dep != null and dep.length()>0">
                 and dep = #{dep}
             </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and convert(date,rec.op_dd) &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and convert(date,rec.op_dd) &lt;= #{endDd}
+            </if>
         </where>
         group by job.dep,convert(date,rec.op_dd)
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
+    <select id="getGood" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
+        select sum(recb.qty_ok)/(sum(recb.qty_ok)+sum(recb.qty_lost/10000)) as qty,job.dep as dep from jm_job_rec rec,jm_job_rec_b recb,jm_job job
+        <where>
+            rec.opsid=recb.opsid and job.jb_no=rec.jb_no
+            <if test="dep != null and dep.length()>0">
+                and dep = #{dep}
+            </if>
+        </where>
+        group by job.dep
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
         </if>

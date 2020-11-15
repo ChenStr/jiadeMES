@@ -56,7 +56,7 @@ public class JmJobRecEntity {
     public String opRem;
 
     /**
-     * 重量
+     *
      */
     public BigDecimal qty;
 

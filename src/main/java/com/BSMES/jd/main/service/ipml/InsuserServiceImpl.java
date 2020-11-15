@@ -161,12 +161,11 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
                 return result;
             }
 
-
             result.setAll(20000,userPlus,"登录成功");
         }else if (dto.getUsrcode()!=null && dto.getPswd()!=null){
             //根据这个用户名查询用户
             QueryWrapper<InsuserEntity> insuserEntityQueryWrapper = new QueryWrapper<>();
-            insuserEntityQueryWrapper.eq("usrcode",dto.getUsrcode());
+            insuserEntityQueryWrapper.eq("usrcode",dto.getUsrcode()).or().eq("usrname",dto.getUsrcode());
             InsuserDTO insuserDTO = this.selectOne(insuserEntityQueryWrapper);
             //判断用户的账户是否存在，密码是否正确
             if (insuserDTO!=null && insuserDTO.getPswd()!=null && PasswordUtils.matches(dto.getPswd(),insuserDTO.getPswd())){

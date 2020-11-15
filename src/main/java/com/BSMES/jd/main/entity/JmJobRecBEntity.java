@@ -35,7 +35,7 @@ public class JmJobRecBEntity {
     public String wkNo;
 
     /**
-     * 重量
+     *
      */
     public BigDecimal qty;
 

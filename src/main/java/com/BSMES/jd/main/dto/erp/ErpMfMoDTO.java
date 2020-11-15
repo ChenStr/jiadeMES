@@ -20,22 +20,22 @@ public class ErpMfMoDTO extends BaseDTO {
     public String MO_NO;
 
     /**
-     * 制单日期
+     * 制单日期CLS_DATE
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date MO_DD;
+    public String MO_DD;
 
     /**
      * 预开工日
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date STA_DD;
+    public String STA_DD;
 
     /**
      * 预完工日
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date END_DD;
+    public String END_DD;
 
     /**
      * 制造成品
@@ -85,7 +85,7 @@ public class ErpMfMoDTO extends BaseDTO {
     /**
      * 终审日期
      */
-    public Date CLS_DATE;
+    public String CLS_DATE;
 
     /**
      * 配方号
@@ -96,7 +96,7 @@ public class ErpMfMoDTO extends BaseDTO {
      * 输单日期
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date SYS_DATE;
+    public String SYS_DATE;
 
     /**
      * 领料按缴库

@@ -76,7 +76,7 @@ public class JmMouldEntity {
     public BigDecimal timeMax;
 
     /**
-     * 累计加工时间
+     * 模穴数
      */
     public BigDecimal timeMk;
 

@@ -19,8 +19,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -148,19 +150,20 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
             if (moMf==null || moMf.getSid()==null){
                 this.insert(dto);
                 //在erp表中添加
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
                 ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
                 erpMfMoDTO.setMO_NO(dto.getSid());
-                erpMfMoDTO.setMO_DD(dto.getHpdate());
-                erpMfMoDTO.setSTA_DD(dto.getBegDd());
-                erpMfMoDTO.setEND_DD(dto.getEndDd());
+                erpMfMoDTO.setMO_DD(dateFormat.format(dto.getHpdate()));
+                erpMfMoDTO.setSTA_DD(dateFormat.format(dto.getHpdate()));
+                erpMfMoDTO.setEND_DD(dateFormat.format(dto.getEndDd()));
                 erpMfMoDTO.setMRP_NO(dto.getPrdNo());
                 erpMfMoDTO.setQTY(dto.getQty());
                 erpMfMoDTO.setDEP(dto.getSorg());
                 erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
                 erpMfMoDTO.setUSR(dto.getSmake());
                 erpMfMoDTO.setCHK_MAN(dto.getChkMan());
-                erpMfMoDTO.setCLS_DATE(dto.getHpdate());
-                erpMfMoDTO.setSYS_DATE(dto.getHpdate());
+                erpMfMoDTO.setCLS_DATE(dateFormat.format(dto.getHpdate()));
+                erpMfMoDTO.setSYS_DATE(dateFormat.format(dto.getHpdate()));
                 //根据货品号找出货品所在的仓库
                 QueryWrapper<JmPrdtEntity> prdtEntityQueryWrapper = new QueryWrapper<>();
                 prdtEntityQueryWrapper.eq("prd_no",dto.getPrdNo());
@@ -245,8 +248,13 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
             }
             ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
             erpMfMoDTO.setMO_NO(dto.getSid());
-            erpMfMoDTO.setQTY(dto.getQty());
-            erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
+            if (dto.getQty()!=null){
+                erpMfMoDTO.setQTY(dto.getQty());
+            }
+            if (dto.getState()!=null){
+                erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
+            }
+
             erpMfMoService.editMfMo(erpMfMoDTO);
         }else{
             result.setAll(10001,null,"参数错误");

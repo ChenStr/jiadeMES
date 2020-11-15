@@ -137,7 +137,7 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
 //    }
 
     @DS("master")
-    @Transactional
+//    @Transactional
     @Override
     public CommonReturn saveMtdd(JmMtdd dto) {
         CommonReturn result = new CommonReturn();

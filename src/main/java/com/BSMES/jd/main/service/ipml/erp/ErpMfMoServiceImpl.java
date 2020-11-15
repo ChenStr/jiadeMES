@@ -13,6 +13,7 @@ import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,33 +24,40 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
     @Autowired
     ErpTfMoService erpTfMoService;
 
+    @Autowired
+    ErpMfMoService erpMfMoService;
+
     @Override
     public void beforeInsert(ErpMfMoDTO dto) {
+        if ("".equals(dto.getCLOSE_ID())){
+            dto.setCLOSE_ID("F");
+        }
+        if ("12".equals(dto.getCLOSE_ID()) || "94".equals(dto.getCLOSE_ID())){
+            dto.setCLOSE_ID("T");
+        }else{
+            dto.setCLOSE_ID("F");
+        }
+        if ("".equals(dto.getUSR())  || StringUtils.isEmpty(dto.getUSR()) ){
+            dto.setUSR("ADMIN");
+        }
+        if ("".equals(dto.getCHK_MAN()) || StringUtils.isEmpty(dto.getCHK_MAN())){
+            dto.setCHK_MAN("ADMIN");
+        }
         String str = dto.getMRP_NO()+"->";
         dto.setUNIT("1");
         dto.setML_BY_MM("T");
         dto.setREM("MES生产计划下达");
         dto.setID_NO(str);
         dto.setCF_ID("T");
-        if ("".equals(dto.getCLOSE_ID())){
-            dto.setCLOSE_ID("F");
-        }
-        if ("12".equals(dto.getCLOSE_ID()) && "94".equals(dto.getCLOSE_ID())){
-            dto.setCLOSE_ID("T");
-        }else{
-            dto.setCLOSE_ID("F");
-        }
-        if ("".equals(dto.getUSR())){
-            dto.setUSR("ADMIN");
-        }
-        if ("".equals(dto.getCHK_MAN())){
-            dto.setCHK_MAN("ADMIN");
-        }
     }
 
     @Override
     public void beforEedit(ErpMfMoDTO dto) {
-
+        if ("12".equals(dto.getCLOSE_ID()) || "94".equals(dto.getCLOSE_ID())){
+            dto.setCLOSE_ID("T");
+        }else{
+            dto.setCLOSE_ID("F");
+        }
     }
 
     @DS("erp")
@@ -72,7 +80,7 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
             result.setAll(10001,null,"参数错误");
         }else{
             try{
-                this.insert(dto);
+                erpMfMoService.insert(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(40000,null,"操作失败");
@@ -86,13 +94,15 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
     @Override
     public CommonReturn editMfMo(ErpMfMoDTO dto) {
         CommonReturn result = new CommonReturn();
-        if (dto!=null && dto.getMO_NO()!=null){
+        if (dto==null && dto.getMO_NO()==null){
             result.setAll(10001,null,"参数错误");
         }else{
             try{
-                this.insert(dto);
+                erpMfMoService.edit(dto);
+                result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(40000,null,"操作失败");
+                e.printStackTrace();
             }
         }
         return result;
