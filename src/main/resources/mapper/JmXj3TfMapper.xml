@@ -10,7 +10,7 @@
         <foreach collection="list" item="jmXj3Tf" index="index" separator=",">
             (#{jmXj3Tf.sid}, #{jmXj3Tf.cid}, #{jmXj3Tf.chkNo}, #{jmXj3Tf.curPara},#{jmXj3Tf.rlt},#{jmXj3Tf.spcType},#{jmXj3Tf.spcChk},
             #{jmXj3Tf.opRem},#{jmXj3Tf.opDd},#{jmXj3Tf.dmdel},#{jmXj3Tf.derviId},cast(#{jmXj3Tf.derviation,jdbcType=DECIMAL} as decimal(22,8)),
-            cast(#{jmXj3Tf.chkviation,jdbcType=DECIMAL} as decimal(22,8)))
+            #{jmXj3Tf.chkviation})
         </foreach>
     </insert>
 
@@ -30,5 +30,9 @@
         </trim>
         WHERE sid=#{sid} and cid=#{cid} and chk_no=#{chkNo}
     </update>
+
+    <delete id="deleteJmXj3Tf" parameterType="java.lang.String">
+        delete jm_xj3_tf where sid = #{sid}
+    </delete>
 
 </mapper>

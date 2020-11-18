@@ -4,7 +4,7 @@
 <!-- JmJob表的真身 -->
 <mapper namespace="com.BSMES.jd.main.dao.JmMdlyTfDao">
 
-    <insert id="insertMdlys" useGeneratedKeys="true" keyProperty="opsid" parameterType="com.BSMES.jd.main.dto.JmMdlyTfDTO">
+    <insert id="insertMdlys" useGeneratedKeys="true" keyProperty="sid" parameterType="com.BSMES.jd.main.dto.JmMdlyTfDTO">
         insert into jm_mdly_tf (sid,cid,md_no,wh,wh_loc,mo_no,rem,hpdate,ed_locked,typeid,mdly_no,mdly_dd,
         md_name,jb_no) values
         <foreach collection="list" item="dto" index="index" separator=",">

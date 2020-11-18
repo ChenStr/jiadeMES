@@ -16,4 +16,7 @@ public interface JmXj3TfDao extends BaseDao<JmXj3TfEntity> {
     //修改操作
     void editJmXj3Tf(JmXj3TfDTO jmXj3TfDTO);
 
+    //删除
+    void deleteJmXj3Tf(String sid);
+
 }

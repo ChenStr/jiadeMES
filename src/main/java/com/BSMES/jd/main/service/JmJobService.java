@@ -20,6 +20,20 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
     public CommonReturn joinFindJobs(JobJoin jobJoin);
 
     /**
+     * 计划单展示 2.0
+     * @param jobJoin
+     * @return
+     */
+    public CommonReturn findJob(JobJoin jobJoin);
+
+    /**
+     * 计划单展示分页 2.0
+     * @param jobJoin
+     * @return
+     */
+    public CommonReturn findJobPage(JobJoin jobJoin);
+
+    /**
      * 暂时没有用到(公共的保存方法)
      * @param dto
      * @return
@@ -40,6 +54,8 @@ public interface JmJobService extends BaseService<JmJobEntity , JmJobDTO> {
     public CommonReturn getJobPage(JmJobDTO dto, QueryWrapper queryWrapper);
 
     public CommonReturn getJobJoinPage(JobJoin jobJoin);
+
+
 
     /**
      * 车间生产月报表

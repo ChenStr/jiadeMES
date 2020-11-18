@@ -17,13 +17,24 @@ public class JmJobController {
     @Autowired
     JmJobService jmJobService;
 
+//    @GetMapping("/plan")
+//    public CommonReturn getJmJoblook(JobJoin dto, Boolean isPage){
+//        CommonReturn result = new CommonReturn();
+//        if (isPage==null || isPage==false){
+//            result = jmJobService.joinFindJobs(dto);
+//        }else{
+//            result = jmJobService.getJobJoinPage(dto);
+//        }
+//        return result;
+//    }
+
     @GetMapping("/plan")
     public CommonReturn getJmJoblook(JobJoin dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
-            result = jmJobService.joinFindJobs(dto);
+            result = jmJobService.findJob(dto);
         }else{
-            result = jmJobService.getJobJoinPage(dto);
+            result = jmJobService.findJobPage(dto);
         }
         return result;
     }

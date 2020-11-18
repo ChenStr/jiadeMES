@@ -69,6 +69,11 @@ public class JobJoin extends BaseDTO implements Serializable {
     public BigDecimal qtyAlready;
 
     /**
+     * 未生产数量
+     */
+    public BigDecimal qtyNot;
+
+    /**
      * 发货量
      */
     public BigDecimal qtyShip;
@@ -89,6 +94,16 @@ public class JobJoin extends BaseDTO implements Serializable {
      * 原料
      */
     public List<JmPrdtDTO> prdts;
+
+    /**
+     * 原料名称
+     */
+    public String prdtName;
+
+    /**
+     * 原料规格
+     */
+    public String prdtSpc;
 
     /**
      * 状态

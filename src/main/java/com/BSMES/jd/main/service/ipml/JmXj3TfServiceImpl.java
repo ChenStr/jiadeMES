@@ -115,6 +115,20 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
 
     @DS("master")
     @Override
+    public CommonReturn deleteXj3Tf(String sid) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmXj3TfDao.deleteJmXj3Tf(sid);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(10001, null, "操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @DS("master")
+    @Override
     public CommonReturn delXj3Tf(List<String> sids, List<Integer> cids, List<String> chkNo) {
         CommonReturn result = new CommonReturn();
         //判断长度是否相等

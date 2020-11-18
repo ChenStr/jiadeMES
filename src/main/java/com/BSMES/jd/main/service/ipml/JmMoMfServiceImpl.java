@@ -220,10 +220,10 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
             moMfQueryWrapper.eq("sid",dto.getSid());
             JmMoMfDTO moMf = this.selectOne(moMfQueryWrapper);
             //查看该调度单下是否有计划分派
-            QueryWrapper jobQueryWrapper = new QueryWrapper();
-            jobQueryWrapper.eq("sid",dto.getSid());
-            List<JmJobDTO> jmJobs = jmJobService.select(jobQueryWrapper);
-            if (jmJobs==null || jmJobs.size()==0){
+//            QueryWrapper jobQueryWrapper = new QueryWrapper();
+//            jobQueryWrapper.eq("sid",dto.getSid());
+//            List<JmJobDTO> jmJobs = jmJobService.select(jobQueryWrapper);
+//            if (jmJobs==null || jmJobs.size()==0){
                 //设置用户不能操作的属性
                 try{
                     this.edit(dto);
@@ -231,21 +231,21 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
                 }catch (Exception e){
                     result.setAll(10001,null,"操作失败");
                 }
-            }else{
-                //强制终止调度单
-                dto.setState(12);
-                moMf.setState(12);
-                //将其生产计划单的状态也改为12
-                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
-                jmJobEntityQueryWrapper.eq("sid",dto.getSid());
-                List<JmJobDTO> jmJobDTOS = jmJobService.select(jmJobEntityQueryWrapper);
-                for (JmJobDTO jmJobDTO : jmJobDTOS){
-                    jmJobDTO.setState("12");
-                    jmJobService.editJob(jmJobDTO);
-                }
-                this.edit(moMf);
-                result.setAll(20000,null,"终止生产成功");
-            }
+//            }else{
+//                //强制终止调度单
+//                dto.setState(12);
+//                moMf.setState(12);
+//                //将其生产计划单的状态也改为12
+//                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+//                jmJobEntityQueryWrapper.eq("sid",dto.getSid());
+//                List<JmJobDTO> jmJobDTOS = jmJobService.select(jmJobEntityQueryWrapper);
+//                for (JmJobDTO jmJobDTO : jmJobDTOS){
+//                    jmJobDTO.setState("12");
+//                    jmJobService.editJob(jmJobDTO);
+//                }
+//                this.edit(moMf);
+//                result.setAll(20000,null,"终止生产成功");
+//            }
             ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
             erpMfMoDTO.setMO_NO(dto.getSid());
             if (dto.getQty()!=null){

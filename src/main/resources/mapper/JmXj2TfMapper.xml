@@ -43,4 +43,8 @@
         WHERE sid=#{sid} and cid=#{cid}
     </update>
 
+    <delete id="deleteJmXj2Tf" parameterType="java.lang.String">
+        delete jm_xj2_tf where sid = #{sid}
+    </delete>
+
 </mapper>

@@ -43,8 +43,7 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
     @Override
     public CommonReturn getDevSal(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmDevSalDTO> dtos = this.select(data);
+        List<JmDevSalDTO> dtos = this.select(this.getQueryWrapper(dto));
         if(dtos.isEmpty()){
             result.setAll(20000,dtos,"没有查找结果，建议仔细核对查找条件");
         }else{

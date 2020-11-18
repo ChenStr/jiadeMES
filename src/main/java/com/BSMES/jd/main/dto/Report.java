@@ -19,6 +19,11 @@ public class Report extends BaseDTO {
     public String sid;
 
     /**
+     * 计划单编号
+     */
+    public String jbNo;
+
+    /**
      * 产品代号
      */
     public String prdNo;

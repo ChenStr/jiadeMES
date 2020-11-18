@@ -164,6 +164,19 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @Override
+    public CommonReturn deleteXj2Tf(String sid) {
+        CommonReturn result = new CommonReturn();
+        try{
+            jmXj2TfDao.deleteJmXj2Tf(sid);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(10001, null, "操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @DS("master")
     @Override
     public CommonReturn delXj2Tf(List<String> sids, List<Integer> cids) {

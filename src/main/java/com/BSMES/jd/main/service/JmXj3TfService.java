@@ -19,6 +19,13 @@ public interface JmXj3TfService extends BaseService<JmXj3TfEntity , JmXj3TfDTO> 
 
     public CommonReturn editXj3Tf(JmXj3TfDTO dto);
 
+    /**
+     * 根据主表单个删除
+     * @param sid
+     * @return
+     */
+    public CommonReturn deleteXj3Tf(String sid);
+
     public CommonReturn delXj3Tf(List<String> sids , List<Integer> cids ,List<String> chkNo);
 
     /**

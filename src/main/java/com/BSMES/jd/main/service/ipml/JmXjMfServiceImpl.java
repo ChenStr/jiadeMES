@@ -118,23 +118,6 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
         }else{
             //查询子表与其他信息
-//            for (JmXjMf2 jmXjMf2 : jmXjMfDTOS){
-//                List<JmXjMf> jmXjMfs = new ArrayList<>();
-//                QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
-//                jmXj2TfEntityQueryWrapper.eq("sid",jmXjMf2.getJmXjMfDTO().getSid());
-//                List<JmXj2TfDTO> jmXj2TfDTOs = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
-//                for (JmXj2TfDTO jmXj2TfDTO : jmXj2TfDTOs){
-//                    JmXjMf jmXjMf = new JmXjMf();
-//                    jmXjMf.setJmXj2TfDTO(jmXj2TfDTO);
-//                    //查询子表的子表的信息
-//                    QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-//                    jmXj3TfEntityQueryWrapper.eq("sid",jmXj2TfDTO.getSid()).eq("cid",jmXj2TfDTO.getCid());
-//                    List<JmXj3TfDTO> jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
-//                    jmXjMf.setJmXj3TfDTOS(jmXj3TfDTOS);
-//                    jmXjMfs.add(jmXjMf);
-//                }
-//                jmXjMf2.setJmXjMfs(jmXjMfs);
-//            }
             //把所有要从数据库拿出来的东西先全部拿出来
             List<String> sids = new ArrayList<>();
             jmXjMfDTOS.stream().forEach(T->sids.add(T.getJmXjMfDTO().getSid()));
@@ -194,6 +177,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @Transactional
     @DS("master")
     @Override
     public CommonReturn saveXjMf(JmXjMf2 dto) {
@@ -222,6 +206,10 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
                 jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
                 jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
+//                jmXj3TfService.deleteById(sid);
+//                jmXj2TfService.deleteById(sid);
+//                jmXj3TfService.deleteXj3Tf(sid);
+//                jmXj2TfService.deleteXj2Tf(sid);
             }
             //将新的数据添加进去
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
@@ -331,14 +319,6 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
     @DS("master")
     @Override
     public CommonReturn getXjMfPage(ResultType dto) {
-//        CommonReturn result = new CommonReturn();
-//        IPage<JmXjMfDTO> jmXjMfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
-//        if (jmXjMfDTOS==null){
-//            result.setAll(10001,null,"参数错误");
-//        }else{
-//            result.setAll(20000,jmXjMfDTOS,"查找成功");
-//        }
-//        return result;
         CommonReturn result = new CommonReturn();
         if (dto.getPage()==null){
             dto.setPage(1);

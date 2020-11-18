@@ -2,6 +2,7 @@ package com.BSMES.jd.main.dao;
 
 import com.BSMES.jd.common.dao.BaseDao;
 import com.BSMES.jd.main.dto.JmXj2TfDTO;
+import com.BSMES.jd.main.dto.JmXj3TfDTO;
 import com.BSMES.jd.main.entity.JmXj2TfEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,5 +16,8 @@ public interface JmXj2TfDao extends BaseDao<JmXj2TfEntity> {
 
     //批量新增方法
     void saveJmXj2Tfs(List<JmXj2TfDTO> jmXj2TfDTOS);
+
+    //删除
+    void deleteJmXj2Tf(String sid);
 
 }

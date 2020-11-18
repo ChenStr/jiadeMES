@@ -32,7 +32,7 @@
     </update>
 
     <select id="getJobRecReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
-        select job.dep,job.jb_no as sid,job.prd_no as prd_no,job.prd_name as prd_name,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        select job.sid,job.dep,job.jb_no as jb_no,job.prd_no as prd_no,job.prd_name as prd_name,sum(isnull(recb.qty_ok,0)) as qty,sum(isnull(recb.qty,0)) as sqty from jm_job_rec_b as recb
         left join jm_job_rec as rec on recb.opsid=rec.opsid
         left join jm_job as job on job.jb_no=rec.jb_no
         <where>
@@ -58,7 +58,7 @@
                 and job.prd_name like CONCAT('%',#{prdName},'%')
             </if>
         </where>
-        group by job.dep,job.jb_no,job.prd_no,job.prd_name
+        group by job.sid,job.dep,job.jb_no,job.prd_no,job.prd_name
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
         </if>

@@ -239,11 +239,13 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
             report.setQty(sum);
             HashMap<String,String> map = new HashMap<>();
+            map.put("sid","调度单号");
             map.put("dep","车间名称");
-            map.put("sid","计划单号");
+            map.put("jbNo","计划单号");
             map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
             map.put("qty","数量");
+            map.put("sqty","缴库数");
             String fileName = "车间生产日报表.xlsx";
             jmJobRecBDTOS.add(report);
             MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);

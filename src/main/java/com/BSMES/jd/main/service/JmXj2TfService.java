@@ -34,6 +34,13 @@ public interface JmXj2TfService extends BaseService<JmXj2TfEntity , JmXj2TfDTO> 
      */
     public CommonReturn checkXj2Tf(JmXjMf dto);
 
+    /**
+     * 根据主表单个删除
+     * @param sid
+     * @return
+     */
+    public CommonReturn deleteXj2Tf(String sid);
+
     public CommonReturn delXj2Tf(List<String> sids , List<Integer> cids);
 
     /**

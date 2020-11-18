@@ -143,7 +143,10 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                     List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
                     if (jmJobRecBDTOS!=null && jmJobRecBDTOS.size()>0){
                         for (JmJobRecBDTO jmJobRecBDTO : jmJobRecBDTOS){
-                            sum = sum.add(jmJobRecBDTO.getQtyOk());
+                            if(jmJobRecBDTO.getQtyOk()!=null){
+                                sum = sum.add(jmJobRecBDTO.getQtyOk());
+                            }
+
                         }
                     }
                 }
@@ -151,6 +154,45 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             jobJoin1.setQtyAlready(sum);
         }
         result.setAll(20000,jobJoins,"操作成功");
+        return result;
+    }
+
+    @DS("master")
+    @Override
+    public CommonReturn findJob(JobJoin jobJoin) {
+        CommonReturn result = new CommonReturn();
+        try{
+            if(jobJoin.getDescOrder()!=null){
+                jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
+            }else if(jobJoin.getAscOrder()!=null){
+                jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
+            }
+            List<JobJoin> jobJoins = jmJobDao.findJob(jobJoin);
+            result.setAll(20000,jobJoins,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @DS("master")
+    @Override
+    public CommonReturn findJobPage(JobJoin jobJoin) {
+        CommonReturn result = new CommonReturn();
+        if (jobJoin.getDescOrder()==null && jobJoin.getAscOrder()==null){
+            jobJoin.setDescOrder("create_date");
+        }
+        if (jobJoin.getPage()==null){
+            jobJoin.setPage(1);
+        }
+        if (jobJoin.getPageSize()==null){
+            jobJoin.setPageSize(10);
+        }
+        PageHelper.startPage(jobJoin.getPage(), jobJoin.getPageSize());
+        List<JobJoin> jobJoins = (List<JobJoin>) this.findJob(jobJoin).getData();
+        PageInfo jobPages = new PageInfo<JobJoin>(jobJoins);
+        result.setAll(20000,jobPages,"操作成功");
         return result;
     }
 

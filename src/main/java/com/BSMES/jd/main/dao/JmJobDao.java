@@ -16,6 +16,8 @@ public interface JmJobDao extends BaseDao<JmJobEntity> {
 
     List<JobJoin> joinFindJob(JobJoin jobJoin);
 
+    List<JobJoin> findJob(JobJoin jobJoin);
+
     /**
      * 车间生产月报表
      */

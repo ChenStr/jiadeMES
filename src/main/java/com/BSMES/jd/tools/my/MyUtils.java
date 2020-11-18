@@ -2,17 +2,21 @@ package com.BSMES.jd.tools.my;
 
 
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -242,13 +246,28 @@ public class MyUtils {
      * @param fileName  导出后文件名
      * @param <T>
      */
-    public static <T> void exportExcel(List<T> list, HashMap<String, String> map, String fileName, HttpServletResponse response){
-        //新建一张表
-        XSSFWorkbook wb = new XSSFWorkbook();
-        Sheet sheet = wb.createSheet("Goods");
+    public static <T> void exportExcel(List<T> list, HashMap<String, String> map, String fileName, HttpServletResponse response) throws IOException {
+        //文件地址
+        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
+//        String excel = "D://FAFMES/static/modle1.xlsx";
+        File fi = new File(excel);
+
+        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));
+        XSSFSheet sheet = wb.getSheetAt(0);
+
+//        //新建一张表
+//        XSSFWorkbook wb = new XSSFWorkbook();
+//        Sheet sheet = wb.createSheet("Goods");
+
+        //定好格式
+        String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Row titleRow3 = sheet.createRow(2);
+        titleRow3.createCell(0).setCellValue("车间:"+"测试");
+        titleRow3.createCell(map.size()-3).setCellValue("时间:"+timeStr1);
+
 
         if (list!=null && list.size()>0){
-            for(int i = 0 ; i <= list.size() ; i++){
+            for(int i = 3 ; i <= list.size() ; i++){
                 //使用迭代器 遍历 HashMap
                 Iterator iter = map.keySet().iterator();
                 //列名
@@ -258,7 +277,7 @@ public class MyUtils {
                     //创建第一行，起始为0
                     String key = (String) iter.next();
                     String val = map.get(key);
-                    if (i==0){
+                    if (i==3){
                         //定义第一列的信息
                         titleRow.createCell(item).setCellValue(val);
                     }else{
@@ -266,7 +285,7 @@ public class MyUtils {
                         //定义后面几列的信息
                         String value = "";
                         try{
-                            value = MyUtils.getFieldValueByFieldName(key,list.get(i-1)).toString();
+                            value = MyUtils.getFieldValueByFieldName(key,list.get(i-4)).toString();
                         }catch (Exception e){
                             value = "";
                         }
@@ -277,6 +296,16 @@ public class MyUtils {
                 }
 
             }
+
+
+            //起始的三行需要格式化一下
+
+
+
+
+//            for(int i = 0 ; i <= list.size() ; i++){
+//
+//            }
         }
 
         OutputStream outputStream =null;

@@ -65,19 +65,19 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
             result.setAll(20000,users,"没有查找结果，建议仔细核对查找条件");
         }else{
             //将使用人信息也带出来
-            for (InsuserDTO user : users){
-                UserPlus userAndWorker = new UserPlus();
-                userAndWorker.setInsuserDTO(user);
-                //去人员表将用户的人员也找出来
-                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
-                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
-                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
-                if (jmWorkerDTO!=null && jmWorkerDTO.getWkNo()!=null){
-                    userAndWorker.setJmWorkerDTO(jmWorkerDTO);
-                }
-                userAndWorkers.add(userAndWorker);
-            }
-            result.setAll(20000,userAndWorkers,"查找成功");
+//            for (InsuserDTO user : users){
+//                UserPlus userAndWorker = new UserPlus();
+//                userAndWorker.setInsuserDTO(user);
+//                //去人员表将用户的人员也找出来
+//                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
+//                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
+//                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
+//                if (jmWorkerDTO!=null && jmWorkerDTO.getWkNo()!=null){
+//                    userAndWorker.setJmWorkerDTO(jmWorkerDTO);
+//                }
+//                userAndWorkers.add(userAndWorker);
+//            }
+            result.setAll(20000,users,"查找成功");
         }
         return result;
     }
@@ -89,24 +89,24 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
         List<UserPlus> userPluses = new ArrayList<>();
         List<InsuserDTO> users = this.select(this.getQueryWrapper(dto));
         if(users!=null && users.size()>0){
-            for (InsuserDTO user : users){
-
-                UserPlus userPlus = new UserPlus();
-
-                //查询员工信息
-                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
-                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
-                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
-
-                userPlus.setInsuserDTO(user);
-                userPlus.setJmWorkerDTO(jmWorkerDTO);
-                userPluses.add(userPlus);
-
-            }
-            result.setAll(20000,userPluses,"没有查找结果，建议仔细核对查找条件");
+//            for (InsuserDTO user : users){
+//
+//                UserPlus userPlus = new UserPlus();
+//
+//                //查询员工信息
+//                QueryWrapper<JmWorkerEntity> jmWorkerEntityQueryWrapper = new QueryWrapper<>();
+//                jmWorkerEntityQueryWrapper.eq("wk_no",user.getUsrcode());
+//                JmWorkerDTO jmWorkerDTO = jmWorkerService.selectOne(jmWorkerEntityQueryWrapper);
+//
+//                userPlus.setInsuserDTO(user);
+//                userPlus.setJmWorkerDTO(jmWorkerDTO);
+//                userPluses.add(userPlus);
+//
+//            }
+            result.setAll(20000,users,"没有查找结果，建议仔细核对查找条件");
         }else{
 
-            result.setAll(20000,userPluses,"查找成功");
+            result.setAll(20000,users,"查找成功");
         }
         return result;
     }

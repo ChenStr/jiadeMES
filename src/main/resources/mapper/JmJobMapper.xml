@@ -68,6 +68,69 @@
         </if>
 	</select>
 
+    <select id="findJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
+        SELECT  job.sid as sid,
+        job.cid as cid,job.jb_no as jb_no,job.dep as dep,job.dev_name as dev_name,job.md_name as mould_name,
+        job.prd_name as prd_name,prdtut.umc as umc,momf.qty as qty_ast,job.qty as qty_plan,job.qty_ship as qty_ship,job.beg_dd as beg_dd,
+        job.end_dd as end_dd,job.state as state,job.create_date as create_date,job.md_no as md_no,job.prd_no as prd_no,job.sorg as sorg,job.wk_no as wk_no,
+        isnull(Sumjobrec.qty_ok,0) as qty_already,(job.qty-isnull(Sumjobrec.qty_ok,0)) as qty_not,bom.name as prdt_name,bom.spc as prdt_spc,
+        job.rs_no as rs_no,dev.devid as devid FROM jm_job as job
+        JOIN jm_prdtut as prdtut on job.unit = prdtut.ubm
+        JOIN jm_mo_mf as momf on momf.sid = job.sid
+        JOIN jm_dev as dev on dev.dev_no = job.rs_no
+        left join (select jobrec.jb_no,sum(jobrecB.qty_ok) as qty_ok from jm_job_Rec jobrec,jm_job_Rec_B jobrecB where jobrec.opsid=jobrecB.opsid group by jobrec.jb_no)  Sumjobrec
+        on Sumjobrec.jb_no=job.jb_no
+        left join (select  prdt.name,prdt.spc,bommf.prd_no from jm_bom_mf bommf,jm_bom_tf bomtf,jm_prdt prdt where bomtf.itm=1 and bommf.bom_no=bomtf.bom_no and prdt.prd_no=bomtf.prd_no) bom
+        on bom.prd_no=job.prd_no
+        <where>
+            <if test="prdNo != null and prdNo.length()>0">
+                and job.prd_no like CONCAT('%',#{prdNo},'%')
+            </if>
+            <if test="sid != null and sid.length()>0">
+                and job.sid like CONCAT('%',#{sid},'%')
+            </if>
+            <if test="createDate != null and createDate.toString().length()>0">
+                and job.create_date between #{createDate} and #{createDate}+1
+            </if>
+            <if test="dep != null and dep.length()>0">
+                and job.dep like CONCAT('%',#{dep},'%')
+            </if>
+            <if test="prdName != null and prdName.length()>0">
+                and job.prd_name like CONCAT('%',#{prdName},'%')
+            </if>
+            <if test="devName != null and devName.length()>0" >
+                and job.dev_name like CONCAT('%',#{devName},'%')
+            </if>
+            <if test="mouldName != null and mouldName.length()>0" >
+                and job.md_name like CONCAT('%',#{mouldName},'%')
+            </if>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and job.beg_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and job.end_dd &lt;= #{endDd}
+            </if>
+            <if test="state!=null and state.length()>0" >
+                and job.state = #{state}
+            </if>
+            <if test="rsNo!=null and rsNo.length()>0" >
+                and job.rs_no like CONCAT('%',#{rsNo},'%')
+            </if>
+            <if test="spc!=null and spc.length()>0" >
+                and job.rs_no = #{spc}
+            </if>
+            <if test="jbNo!=null and jbNo.length()>0" >
+                and job.jb_no like CONCAT('%',#{jbNo},'%')
+            </if>
+        </where>
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+    </select>
+
     <select id="getJmJobReport" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
         select job.dep,job.prd_no,job.prd_name,sum(dqty) as dqty,sum(jqty) as jqty,sum(wqty) as wqty,sum(sqty) as sqty
         from jm_job as job
@@ -81,7 +144,6 @@
         left join jm_job_rec as rec on job.jb_no=rec.jb_no
         left join jm_job_rec_b as recb on recb.opsid=rec.opsid
         group by job.jb_no) as jb on jb.jb_no=job.jb_no
---         where recb.op_dd between '2020-09-01' and '2020-09-30' and job.prd_no='F.A1.T02003'
         <where>
             <if test="dep != null and dep.length()>0">
                 and job.dep like CONCAT('%',#{dep},'%')

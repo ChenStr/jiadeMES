@@ -95,7 +95,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
             BigDecimal sum = new BigDecimal("0");
             if (jmJobRecB!=null && jmJobRecB.size()>0){
                 for (JmJobRecBDTO temp : jmJobRecB){
-                    sum = sum.add(temp.getQtyOk());
+                    if (temp.getQtyOk()!=null){
+                        sum = sum.add(temp.getQtyOk());
+                    }
                     //获取检验批号
                     job.setChkRmBn(temp.getChkRmBn());
                 }
@@ -140,7 +142,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     public CommonReturn saveJobRecAndRecB(JobRecSave jobRecSave) {
         CommonReturn result = new CommonReturn();
         Boolean flag = false;
-        BigDecimal sum = new BigDecimal("0");
+
         JmJobRecDTO jmJobRecDTO = jobRecSave.getJmJobRecDTO();
         if (jobRecSave.getJmJobRecDTO()==null || jobRecSave.getJmJobRecDTO().getOpsid()==null || jobRecSave.getJmJobRecDTO().getOpsid().length()==0){
             jobRecSave.getJmJobRecDTO().setOpsid(this.getKey("JmJobRec","opsid",inssysvarService,jobRecSave.getJmJobRecDTO()));
@@ -153,11 +155,6 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
             }else{
                 this.edit(jobRecSave.getJmJobRecDTO());
             }
-            //查询这张计划表的数据
-            QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
-            jmJobEntityQueryWrapper.eq("jb_no",jobRecSave.getJmJobRecDTO().getJbNo());
-            //jmJobDTO.qty计划生产数量
-            JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
 
             //删除所有这张随工单的所有随工单明细表
             QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
@@ -169,27 +166,11 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
                 jmJobRecBService.saveJobRecBs(jobRecSave.getJmJobRecBDTOS());
                 result.setAll(20000,null,"操作成功");
             }
-            //查询出计划单下所有的随工单
-            QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
-            jmJobRecEntityQueryWrapper.eq("jb_no",jmJobDTO.getJbNo());
-            List<JmJobRecDTO> jmJobRecDTOS = this.select(jmJobRecEntityQueryWrapper);
-            for (JmJobRecDTO jmJobRec : jmJobRecDTOS){
-                //查询随工单的所有明细表
-                QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper1 = new QueryWrapper<>();
-                jmJobRecBEntityQueryWrapper1.eq("opsid",jmJobRec.getOpsid());
-                List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper1);
-                for (JmJobRecBDTO jmJobRecBDTO : jmJobRecBDTOS){
-                    if (jmJobRecBDTO.getQtyOk()!=null){
-                        sum = sum.add(jmJobRecBDTO.getQtyOk());
-                    }
-                }
+//            //查询出计划单下所有的随工单
+//            QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
+//            jmJobRecEntityQueryWrapper.eq("jb_no",jmJobDTO.getJbNo());
+//            List<JmJobRecDTO> jmJobRecDTOS = this.select(jmJobRecEntityQueryWrapper);
 
-            }
-            //总合格量大于等于计划数量
-            if (sum.compareTo(jmJobDTO.getQty()) > -1){
-                jmJobDTO.setState("94");
-                jmJobService.editJob(jmJobDTO);
-            }
         }catch (Exception e){
             result.setAll(10001,null,"操作失败");
             e.printStackTrace();
@@ -403,6 +384,32 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         qty = qty.add(jmMouldDTO.getQtyMk());
         //设置模具使用次数
         jmMouldService.edit(jmMouldDTO);
+    }
+
+    private void editMomfState(List<JmJobRecDTO> jmJobRecDTOS){
+        BigDecimal sum = new BigDecimal("0");
+        for (JmJobRecDTO jmJobRec : jmJobRecDTOS){
+            //查询随工单的所有明细表
+            QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper1 = new QueryWrapper<>();
+            jmJobRecBEntityQueryWrapper1.eq("opsid",jmJobRec.getOpsid());
+            List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper1);
+            for (JmJobRecBDTO jmJobRecBDTO : jmJobRecBDTOS){
+                if (jmJobRecBDTO.getQtyOk()!=null){
+                    sum = sum.add(jmJobRecBDTO.getQtyOk());
+                }
+                //查询这张计划表的数据
+                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+                jmJobEntityQueryWrapper.eq("jb_no",jmJobRec.getJbNo());
+                //jmJobDTO.qty计划生产数量
+                JmJobDTO jmJobDTO = jmJobService.selectOne(jmJobEntityQueryWrapper);
+                //总合格量大于等于计划数量
+                if (sum.compareTo(jmJobDTO.getQty()) > -1){
+                    jmJobDTO.setState("94");
+                    jmJobService.editJob(jmJobDTO);
+                }
+            }
+        }
+
     }
 
     private QueryWrapper getQueryWrapper(ResultType dto){
