@@ -31,7 +31,7 @@ public class JmMtddMfController {
     }
 
     @GetMapping("/plus")
-    public CommonReturn getMtddPlus(ResultType dto, Boolean isPage){
+    public CommonReturn getMtddPlus(ResultType dto){
         CommonReturn result = new CommonReturn();
         result = jmMtddMfService.getMtddPlus(dto);
         return result;

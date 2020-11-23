@@ -74,7 +74,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     @DS("master")
     @Override
-    public CommonReturn getXjMfPlus(ResultType dto) {
+    public synchronized CommonReturn getXjMfPlus(ResultType dto) {
         CommonReturn result = new CommonReturn();
         List<JmXjMf2> jmXjMfDTOS = jmXjMfDao.getJmXjMf2(dto);
         if (jmXjMfDTOS==null && jmXjMfDTOS.size()==0){
@@ -177,10 +177,10 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
-    @Transactional
+    @Transactional(rollbackFor=Exception.class)
     @DS("master")
     @Override
-    public CommonReturn saveXjMf(JmXjMf2 dto) {
+    public synchronized CommonReturn saveXjMf(JmXjMf2 dto) {
         CommonReturn result = new CommonReturn();
         Boolean flag = true;
         String sid = null;
@@ -211,6 +211,8 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 //                jmXj3TfService.deleteXj3Tf(sid);
 //                jmXj2TfService.deleteXj2Tf(sid);
             }
+            List<JmXj2TfDTO> jmXj2TfDTOS = new ArrayList<>();
+            List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
             //将新的数据添加进去
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
                 jmXjMf.getJmXj2TfDTO().setSid(sid);

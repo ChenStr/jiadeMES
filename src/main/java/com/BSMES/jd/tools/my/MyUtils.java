@@ -248,8 +248,8 @@ public class MyUtils {
      */
     public static <T> void exportExcel(List<T> list, HashMap<String, String> map, String fileName, HttpServletResponse response) throws IOException {
         //文件地址
-        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
-//        String excel = "D://FAFMES/static/modle1.xlsx";
+//        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
+        String excel = "D://FAFMES/static/modle1.xlsx";
         File fi = new File(excel);
 
         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));

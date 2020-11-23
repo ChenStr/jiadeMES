@@ -12,8 +12,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 数据链接池配置
  */
-//@Configuration
-//@EnableAsync
+@Configuration
+@EnableAsync
 public class ThreadPoolConfig {
 
     @Bean

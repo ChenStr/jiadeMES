@@ -341,6 +341,11 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
      * @return
      */
     private QueryWrapper getQueryWrapper(JmMoMfDTO dto){
+
+        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+            dto.setDescOrder("state");
+        }
+
         QueryWrapper queryWrapper = new QueryWrapper();
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.eq("sid",dto.getSid());

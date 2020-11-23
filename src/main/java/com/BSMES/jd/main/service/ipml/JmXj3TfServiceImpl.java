@@ -92,17 +92,12 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
     public CommonReturn editXj3Tf(JmXj3TfDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断 dto 是否为空 判断 dto 的 md_no 是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getSid()) && dto.getCid()!=null){
-            //获取原先的人员属性值
-            QueryWrapper<JmXj3TfEntity> jmXj3TfQueryWrapper = new QueryWrapper<>();
-            jmXj3TfQueryWrapper.eq("sid",dto.getSid());
-            jmXj3TfQueryWrapper.eq("cid",dto.getCid());
-            jmXj3TfQueryWrapper.eq("chk_no",dto.getChkNo());
-            JmXj3TfDTO jmXj3TfDTO = this.selectOne(jmXj3TfQueryWrapper);
+        if (dto!=null){
+
             //设置用户不能操作的属性
             try{
-//                this.edit(dto);
-                jmXj3TfDao.editJmXj3Tf(dto);
+                this.edit(dto);
+//                jmXj3TfDao.editJmXj3Tf(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");

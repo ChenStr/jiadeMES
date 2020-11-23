@@ -294,6 +294,11 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                     jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030013");
                     JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
                     jmMoMfDTO.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
+                }else{
+                    QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+                    jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030012");
+                    JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
+                    jmMoMfDTO.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
                 }
                 jmMoMfService.editMoMf(jmMoMfDTO);
             }

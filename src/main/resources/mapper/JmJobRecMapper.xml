@@ -7,7 +7,7 @@
     <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
     <select id="getJobRec" parameterType="com.BSMES.jd.main.dto.JobRec" resultType="com.BSMES.jd.main.dto.JobRec">
         SELECT job.sid,job.cid,rec.opsid,job.dep,job.dev_name,job.md_name,job.prd_name,job.qty,job.beg_dd,job.end_dd,rec.rm_name1,rec.rm_name2,rec.rm_name3,
-        rec.rm_name4,rec.qty_rm1,rec.qty_rm2,rec.qty_rm3,rec.qty_rm4,rec.rm_bn1,rec.rm_bn2,rec.rm_bn3,rec.rm_bn4,job.state,rec.state as rec_state,rec.qty_wt,
+        rec.rm_name4,rec.qty_rm1,rec.qty_rm2,rec.qty_rm3,rec.qty_rm4,rec.rm_bn1,rec.rm_bn2,rec.rm_bn3,rec.rm_bn4,job.state,rec.state as state_rec,rec.qty_wt,
         rec.state_pre,rec.qty_cur,rec.qty_lost,rec.op_rem,rec.op_dd,rec.jb_no,rec.rs_no as rs_no,rec.firs_md as firs_md,rec.state_ok as stateOk,job.md_no FROM jm_job_rec as rec
         join jm_job as job on rec.jb_no = job.jb_no
         <where>
@@ -34,6 +34,9 @@
             </if>
             <if test="state!=null and state.length()>0 ">
                 and job.state = #{state}
+            </if>
+            <if test="stateRec!=null and stateRec.length()>0 ">
+                and rec.state = #{stateRec}
             </if>
             <if test="jbNo!=null and jbNo.length()>0 ">
                 and rec.jb_no like CONCAT('%',#{jbNo},'%')

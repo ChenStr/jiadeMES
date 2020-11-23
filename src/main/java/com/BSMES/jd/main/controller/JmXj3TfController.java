@@ -18,7 +18,7 @@ public class JmXj3TfController {
     JmXj3TfService jmXj3TfService;
 
     @GetMapping()
-    public CommonReturn getMould(JmXj3TfDTO dto, Boolean isPage){
+    public CommonReturn getJmXj3Tf(JmXj3TfDTO dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmXj3TfService.getXj3Tf(dto);
@@ -30,21 +30,21 @@ public class JmXj3TfController {
     }
 
     @PostMapping()
-    public CommonReturn saveMould(@RequestBody List<JmXj3TfDTO> dtos){
+    public CommonReturn saveJmXj3Tf(@RequestBody List<JmXj3TfDTO> dtos){
         CommonReturn result = new CommonReturn();
         result = jmXj3TfService.saveXj3Tfs(dtos);
         return result;
     }
 
     @PutMapping()
-    public CommonReturn editMould(@RequestBody JmXj3TfDTO dto){
+    public CommonReturn editJmXj3Tf(@RequestBody JmXj3TfDTO dto){
         CommonReturn result = new CommonReturn();
         result = jmXj3TfService.editXj3Tf(dto);
         return result;
     }
 
     @DeleteMapping()
-    public CommonReturn delMould( String[] sids , Integer[] cids ,String[] chkNos ){
+    public CommonReturn delJmXj3Tf( String[] sids , Integer[] cids ,String[] chkNos ){
         CommonReturn result = new CommonReturn();
         List<String> sids1 = java.util.Arrays.asList(sids);
         List<Integer> cids1 = java.util.Arrays.asList(cids);

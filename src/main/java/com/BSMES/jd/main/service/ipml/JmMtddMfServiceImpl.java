@@ -83,7 +83,8 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
                 JmMtdd jmMtdd = new JmMtdd();
                 //查询子表数据
                 QueryWrapper<JmMtdd2TfEntity> jmMtdd2TfEntityQueryWrapper = new QueryWrapper<>();
-                jmMtdd2TfEntityQueryWrapper.eq("sid", mtddMfDTO.getSid());
+                jmMtdd2TfEntityQueryWrapper.eq("sid", mtddMfDTO.getSid()).orderBy(true,true,"mt_name");
+//                jmMtdd2TfEntityQueryWrapper.eq("sid", mtddMfDTO.getSid());
                 List<JmMtdd2TfDTO> jmMtdd2TfDTOS = jmMtdd2TfService.select(jmMtdd2TfEntityQueryWrapper);
                 jmMtdd.setJmMtddMfDTO(mtddMfDTO);
                 jmMtdd.setJmMtdd2TfDTOS(jmMtdd2TfDTOS);

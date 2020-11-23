@@ -10,6 +10,7 @@ import com.BSMES.jd.main.dto.JmXj3TfDTO;
 import com.BSMES.jd.main.dto.JmXjMf;
 import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.entity.JmXj2TfEntity;
+import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.service.JmXj2TfService;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.BSMES.jd.tools.my.MyUtils;
@@ -127,9 +128,14 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
             try{
 //                this.edit(dto);
                 jmXj2TfDao.editJmXj2Tf(dto.getJmXj2TfDTO());
-                for (JmXj3TfDTO jmXj3TfDTO :  dto.getJmXj3TfDTOS()){
-                    jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
-                }
+                QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
+                jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXj2TfDTO().getSid());
+                jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+                jmXj3TfDao.saveJmXj3Tfs(dto.getJmXj3TfDTOS());
+//                jmXj3TfDao.editJmXj3TfS(dto.getJmXj3TfDTOS());
+//                for (JmXj3TfDTO jmXj3TfDTO :  dto.getJmXj3TfDTOS()){
+//                    jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
+//                }
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
@@ -140,9 +146,10 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
         return result;
     }
 
+    @Transactional
     @DS("master")
     @Override
-    public CommonReturn checkXj2Tf(JmXjMf dto) {
+    public synchronized CommonReturn checkXj2Tf(JmXjMf dto) {
         CommonReturn result = new CommonReturn();
         try{
             JmXj2TfDTO jmXj2TfDTO = new JmXj2TfDTO();
@@ -153,9 +160,15 @@ public class JmXj2TfServiceImpl extends BaseServiceImpl<JmXj2TfDao , JmXj2TfEnti
             jmXj2TfDTO.setOpDd(dto.getJmXj2TfDTO().getOpDd());
             jmXj2TfDTO.setSalNo(dto.getJmXj2TfDTO().getSalNo());
             jmXj2TfDao.editJmXj2Tf(jmXj2TfDTO);
-            for (JmXj3TfDTO jmXj3TfDTO : dto.getJmXj3TfDTOS()){
-                jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
-            }
+            QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
+            jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXj2TfDTO().getSid()).eq("cid",dto.getJmXj2TfDTO().getCid());
+            jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+            jmXj3TfDao.saveJmXj3Tfs(dto.getJmXj3TfDTOS());
+//            jmXj3TfDao.editJmXj3TfS(dto.getJmXj3TfDTOS());
+            //需要修改多条数据
+//            for (JmXj3TfDTO jmXj3TfDTO : dto.getJmXj3TfDTOS()){
+//                jmXj3TfDao.editJmXj3Tf(jmXj3TfDTO);
+//            }
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(20000,null,"操作失败");

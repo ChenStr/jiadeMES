@@ -14,6 +14,26 @@
         </foreach>
     </insert>
 
+    <update id="editJmXj3TfS" parameterType="com.BSMES.jd.main.dto.JmXj3TfDTO">
+        UPDATE jm_xj3_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="curPara!=null">cur_para=#{curPara},</if>
+            <if test="rlt!=null">rlt=#{rlt},</if>
+            <if test="spcType!=null">spc_type=#{spcType},</if>
+            <if test="spcChk!=null">spc_chk=#{spcChk},</if>
+            <if test="opRem!=null">op_rem=#{opRem},</if>
+            <if test="opDd!=null">op_dd=#{opDd},</if>
+            <if test="dmdel!=null">dmdel=#{dmdel},</if>
+            <if test="derviId!=null">dervi_id=#{derviId},</if>
+            <if test="derviation!=null">derviation=#{derviation},</if>
+            <if test="chkviation!=null">chkviation=#{chkviation},</if>
+        </trim>
+        where
+        <foreach collection="list" item="jmXj3Tf" index="index" separator="or">
+            (sid=#{jmXj3Tf.sid} and cid=#{jmXj3Tf.cid} and chk_no=#{jmXj3Tf.chkNo})
+        </foreach>
+    </update>
+
     <update id="editJmXj3Tf" parameterType="com.BSMES.jd.main.dto.JmXj3TfDTO">
         UPDATE jm_xj3_tf
         <trim prefix="set" suffixOverrides=",">
@@ -32,7 +52,7 @@
     </update>
 
     <delete id="deleteJmXj3Tf" parameterType="java.lang.String">
-        delete jm_xj3_tf where sid = #{sid}
+        delete jm_xj3_tf with (TABLOCKX) where sid = #{sid}
     </delete>
 
 </mapper>

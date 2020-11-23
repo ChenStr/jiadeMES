@@ -7,17 +7,12 @@
     <!-- id 为方法名 resultType 返回结果(需要带上路径)  parameterType="com.BSMES.jd.main.dto.JmXjMf2" -->
 
     <select id="getJmXjMf2" resultMap="countryPlusResultMap" parameterType="com.BSMES.jd.main.dto.ResultType">
-        SELECT jm_xj_mf.sid as jm_xj_mf_sid,jm_xj_mf.hpdate as jm_xj_mf_hpdate,jm_xj_mf.sbuid as jm_xj_mf_sbuid,jm_xj_mf.smake as jm_xj_mf_smake,jm_xj_mf.moditime as jm_xj_mf_moditime,jm_xj_mf.chk_man as jm_xj_mf_chk_man,jm_xj_mf.state as jm_xj_mf_state,jm_xj_mf.creftimes as jm_xj_mf_creftimes,jm_xj_mf.rs_no as jm_xj_mf_rs_no,jm_xj_mf.mo_no as jm_xj_mf_mo_no,jm_xj_mf.prd_no as jm_xj_mf_prd_no,jm_xj_mf.bat_no as jm_xj_mf_bat_no,jm_xj_mf.zx_code as jm_xj_mf_zx_code,jm_xj_mf.xjid as jm_xj_mf_xjid,jm_xj_mf.wk_no as jm_xj_mf_wk_no,jm_xj_mf.sorg as jm_xj_mf_sorg,jm_xj_mf.qty_cur as jm_xj_mf_qty_cur,jm_xj_mf.qty_ok as jm_xj_mf_qty_ok,jm_xj_mf.qty_lost as jm_xj_mf_qty_lost,jm_xj_mf.spc_chk as jm_xj_mf_spc_chk,jm_xj_mf.spc_btn as jm_xj_mf_spc_btn,jm_xj_mf.chk_id as jm_xj_mf_chk_id,jm_xj_mf.op_rem as jm_xj_mf_op_rem,jm_xj_mf.fin_judge as jm_xj_mf_fin_judge,jm_xj_mf.xjms as jm_xj_mf_xjms,jm_xj_mf.xjjd as jm_xj_mf_xjjd,jm_xj_mf.test_bo as jm_xj_mf_test_bo,jm_xj_mf.first_chk as jm_xj_mf_first_chk,jm_xj_mf.aspect_chk as jm_xj_mf_aspect_chk,jm_xj_mf.inter_chk as jm_xj_mf_inter_chk,jm_xj_mf.welc_chk as jm_xj_mf_welc_chk,jm_xj_mf.jb_no as jm_xj_mf_jb_no,jm_xj_mf.qcopper as jm_xj_mf_qcopper,jm_xj_mf.hcopper as jm_xj_mf_hcopper,jm_xj_mf.zcopper as jm_xj_mf_zcopper,jm_xj_mf.plastic as jm_xj_mf_plastic,jm_xj_mf.rohs as jm_xj_mf_rohs,jm_xj_mf.techno as jm_xj_mf_techno,jm_xj_mf.chk_rem as jm_xj_mf_chk_rem,jm_xj_mf.rm_name as jm_xj_mf_rm_name,jm_xj_mf.wk_name as jm_xj_mf_wk_name,jm_xj_mf.smake_name as jm_xj_mf_smake_name,
+        SELECT jm_xj_mf.sid as jm_xj_mf_sid,jm_xj_mf.hpdate as jm_xj_mf_hpdate,jm_xj_mf.sbuid as jm_xj_mf_sbuid,jm_xj_mf.smake as jm_xj_mf_smake,jm_xj_mf.moditime as jm_xj_mf_moditime,jm_xj_mf.chk_man as jm_xj_mf_chk_man,jm_xj_mf.state as jm_xj_mf_state,jm_xj_mf.creftimes as jm_xj_mf_creftimes,jm_xj_mf.rs_no as jm_xj_mf_rs_no,jm_xj_mf.mo_no as jm_xj_mf_mo_no,jm_xj_mf.prd_no as jm_xj_mf_prd_no,jm_xj_mf.bat_no as jm_xj_mf_bat_no,jm_xj_mf.zx_code as jm_xj_mf_zx_code,jm_xj_mf.xjid as jm_xj_mf_xjid,jm_xj_mf.wk_no as jm_xj_mf_wk_no,jm_xj_mf.sorg as jm_xj_mf_sorg,jm_xj_mf.qty_cur as jm_xj_mf_qty_cur,jm_xj_mf.qty_ok as jm_xj_mf_qty_ok,jm_xj_mf.qty_lost as jm_xj_mf_qty_lost,jm_xj_mf.spc_chk as jm_xj_mf_spc_chk,jm_xj_mf.spc_btn as jm_xj_mf_spc_btn,jm_xj_mf.chk_id as jm_xj_mf_chk_id,jm_xj_mf.op_rem as jm_xj_mf_op_rem,jm_xj_mf.fin_judge as jm_xj_mf_fin_judge,jm_xj_mf.xjms as jm_xj_mf_xjms,jm_xj_mf.xjjd as jm_xj_mf_xjjd,jm_xj_mf.test_bo as jm_xj_mf_test_bo,jm_xj_mf.first_chk as jm_xj_mf_first_chk,jm_xj_mf.aspect_chk as jm_xj_mf_aspect_chk,jm_xj_mf.inter_chk as jm_xj_mf_inter_chk,jm_xj_mf.welc_chk as jm_xj_mf_welc_chk,jm_xj_mf.jb_no as jm_xj_mf_jb_no,jm_xj_mf.qcopper as jm_xj_mf_qcopper,jm_xj_mf.hcopper as jm_xj_mf_hcopper,jm_xj_mf.zcopper as jm_xj_mf_zcopper,jm_xj_mf.plastic as jm_xj_mf_plastic,jm_xj_mf.rohs as jm_xj_mf_rohs,jm_xj_mf.techno as jm_xj_mf_techno,jm_xj_mf.chk_rem as jm_xj_mf_chk_rem,jm_xj_mf.rm_name as jm_xj_mf_rm_name,jm_xj_mf.wk_name as jm_xj_mf_wk_name,jm_xj_mf.smake_name as jm_xj_mf_smake_name,jm_xj_mf.md_no as jm_xj_mf_md_no,
         sorg.c_corp as sorg_c_corp,sorg.orgcode as sorg_orgcode,sorg.orgname as sorg_orgname,sorg.orgnamexa as sorg_orgnamexa,sorg.orgnamexb as sorg_orgnamexb,sorg.ilevl as sorg_ilevl,sorg.blast as sorg_blast,sorg.corg as sorg_corg,sorg.eymd as sorg_eymd,sorg.cattr as sorg_cattr,sorg.rmb as sorg_rmb,
         prdt.prd_no as prdt_prd_no,prdt.name as prdt_name,prdt.snm as prdt_snm,prdt.knd as prdt_knd,prdt.idx1 as prdt_idx1,prdt.unit as prdt_unit,prdt.spc as prdt_spc,prdt.qty_min as prdt_qty_min,prdt.wh as prdt_wh,prdt.cst_std as prdt_cst_std,prdt.ut as prdt_ut,prdt.partid as prdt_partid,prdt.paraname as prdt_paraname,prdt.pk2_ut as prdt_pk2_ut,prdt.pk2_qty as prdt_pk2_qty,prdt.pk3_ut as prdt_pk3_ut,prdt.pk3_qty as prdt_pk3_qty,prdt.rank as prdt_rank,prdt.havesn as prdt_havesn,prdt.smcs_hzzh as prdt_smcs_hzzh,prdt.sbm as prdt_sbm,prdt.up_jj as prdt_up_jj,prdt.zx_qty as prdt_zx_qty,prdt.min_wg as prdt_min_wg,prdt.max_wg as prdt_max_wg,prdt.sorg as prdt_sorg,
         mould.md_no as mould_md_no,mould.typeid as mould_typeid,mould.name as mould_name,mould.md_qty as mould_md_qty,mould.md_grp as mould_md_grp,mould.state as mould_state,mould.wh as mould_wh,mould.wh_loc as mould_wh_loc,mould.qty_max as mould_qty_max,mould.qty_mk as mould_qty_mk,mould.time_max as mould_time_max,mould.time_mk as mould_time_mk,mould.dep as mould_dep,
         dev.dev_no as dev_dev_no,dev.name as dev_name,dev.spc as dev_spc,dev.rs_no as dev_rs_no,dev.cusname as dev_cusname,dev.main_no as dev_main_no,dev.dep as dev_dep,dev.maxtime as dev_maxtime,dev.maxqty as dev_maxqty,dev.time_mk as dev_time_mk,dev.qty_mk as dev_qty_mk,dev.state as dev_state,dev.devid as dev_devid,dev.sorg as dev_sorg,dev.picture as dev_picture,dev.location as dev_location,dev.ip as dev_ip
-        FROM jm_xj_mf
-        left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
-        left JOIN jm_prdt as prdt on prdt.prd_no = jm_xj_mf.prd_no
-        left JOIN jm_mould as mould on mould.md_no = jm_xj_mf.md_no
-        left JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
-
+        FROM (select * from jm_xj_mf with(index(idx_jb_no))
         <where>
             <if test="type!=null and type.length()>0 and otherType!=null and otherType.length()>0 ">
                 and (jm_xj_mf.xjid = #{type} or jm_xj_mf.xjid = #{otherType})
@@ -27,15 +22,6 @@
             </if>
             <if test="sid!=null and sid.length()>0" >
                 and jm_xj_mf.sid like CONCAT('%',#{sid},'%')
-            </if>
-            <if test="dep != null and dep.length()>0">
-                and sorg.orgname like CONCAT('%',#{dep},'%')
-            </if>
-            <if test="prdName != null and prdName.length()>0">
-                and prdt.name like CONCAT('%',#{prdName},'%')
-            </if>
-            <if test="mouldName != null and mouldName.length()>0" >
-                and mould.name like CONCAT('%',#{mouldName},'%')
             </if>
             <if test="begDd != null and begDd.toString().length()>0" >
                 and jm_xj_mf.hpdate &gt;= #{begDd}
@@ -49,14 +35,34 @@
             <if test="wkName!=null and wkName.toString().length()>0" >
                 and jm_xj_mf.wk_name = #{wkName}
             </if>
-            <if test="devName!=null and devName.length()>0" >
-                and dev.name like  CONCAT('%',#{devName},'%')
-            </if>
             <if test="otherId!=null and otherId.length()>0" >
-                and jm_xj_mf.jb_no like CONCAT('%',#{otherId},'%')
+                and jm_xj_mf.jb_no = #{otherId}
             </if>
             <if test="notType!=null and notType.length()>0" >
                 and jm_xj_mf.xjid &lt;&gt; #{notType}
+            </if>
+            <if test="mouldNo!=null and mouldNo.length()>0" >
+                and jm_xj_mf.md_no = #{mouldNo}
+            </if>
+        </where>
+        ) as jm_xj_mf
+        left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg
+        left JOIN jm_prdt as prdt on prdt.prd_no = jm_xj_mf.prd_no
+        left JOIN jm_mould as mould on mould.md_no = jm_xj_mf.md_no
+        left JOIN jm_dev as dev on dev.dev_no = jm_xj_mf.rs_no
+
+        <where>
+            <if test="dep != null and dep.length()>0">
+                and sorg.orgname like CONCAT('%',#{dep},'%')
+            </if>
+            <if test="prdName != null and prdName.length()>0">
+                and prdt.name like CONCAT('%',#{prdName},'%')
+            </if>
+            <if test="mouldName != null and mouldName.length()>0" >
+                and mould.name like CONCAT('%',#{mouldName},'%')
+            </if>
+            <if test="devName!=null and devName.length()>0" >
+                and dev.name like  CONCAT('%',#{devName},'%')
             </if>
             <if test="notSorg!=null and notSorg.length()>0" >
                 and sorg.orgcode &lt;&gt; #{notSorg}
@@ -66,9 +72,6 @@
             </if>
             <if test="devid!=null and devid.length()>0" >
                 and dev.devid = #{devid}
-            </if>
-            <if test="mouldNo!=null and mouldNo.length()>0" >
-                and jm_xj_mf.md_no = #{mouldNo}
             </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">
@@ -457,7 +460,7 @@
     <insert id="saveJmXjMfs" parameterType="com.BSMES.jd.main.dto.JmXjMfDTO">
         insert into jm_xj_mf (sid,hpdate,sbuid,smake,moditime,chk_man,state,creftimes,rs_no,mo_no,prd_no,bat_no,zc_no,xjid,wk_no,sorg,zx_code,qty_cur,qty_ok,
         qty_lost,spc_chk,spc_btn,chk_id,op_rem,fin_judge,xjms,xjjd,test_bo,md_no,first_chk,aspect_chk,inter_chk,welc_chk,jb_no,qcopper,hcopper,zcopper,plastic,
-        rohs,techno,chk_rem,rm_name,wk_name) values
+        rohs,techno,chk_rem,rm_name,wk_name,smake_name,prd_name) values
         <foreach collection="list" item="jmXjMfDTO" index="index" separator=",">
             (#{jmXjMfDTO.sid}, #{jmXjMfDTO.hpdate}, #{jmXjMfDTO.sbuid}, #{jmXjMfDTO.smake},#{jmXjMfDTO.moditime},#{jmXjMfDTO.chkMan},#{jmXjMfDTO.state},
             #{jmXjMfDTO.creftimes},#{jmXjMfDTO.rsNo},#{jmXjMfDTO.moNo},#{jmXjMfDTO.prdNo},#{jmXjMfDTO.batNo},#{jmXjMfDTO.zcNo},#{jmXjMfDTO.xjid},
@@ -466,7 +469,7 @@
             #{jmXjMfDTO.spcChk},#{jmXjMfDTO.spcBtn},#{jmXjMfDTO.chkId},#{jmXjMfDTO.opRem},#{jmXjMfDTO.finJudge},#{jmXjMfDTO.xjms},#{jmXjMfDTO.xjjd},
             #{jmXjMfDTO.testBo},#{jmXjMfDTO.mdNo},#{jmXjMfDTO.firstChk},#{jmXjMfDTO.aspectChk},#{jmXjMfDTO.interChk},#{jmXjMfDTO.welcChk},
             #{jmXjMfDTO.jbNo},#{jmXjMfDTO.qcopper},#{jmXjMfDTO.hcopper},#{jmXjMfDTO.zcopper},#{jmXjMfDTO.plastic},#{jmXjMfDTO.rohs},
-            #{jmXjMfDTO.techno},#{jmXjMfDTO.chkRem},#{jmXjMfDTO.rmName},#{jmXjMfDTO.wkName})
+            #{jmXjMfDTO.techno},#{jmXjMfDTO.chkRem},#{jmXjMfDTO.rmName},#{jmXjMfDTO.wkName},#{jmXjMfDTO.smakeName},#{jmXjMfDTO.prdName})
         </foreach>
     </insert>
 
