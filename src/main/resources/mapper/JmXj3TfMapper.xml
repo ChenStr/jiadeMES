@@ -52,7 +52,7 @@
     </update>
 
     <delete id="deleteJmXj3Tf" parameterType="java.lang.String">
-        delete jm_xj3_tf with (TABLOCKX) where sid = #{sid}
+        delete jm_xj3_tf where sid = #{sid}
     </delete>
 
 </mapper>

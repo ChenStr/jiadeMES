@@ -17,6 +17,13 @@ public class InslimitController {
     @Autowired
     InslimitService inslimitService;
 
+    @PostMapping("/role")
+    public CommonReturn getInslimit(@RequestBody ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = inslimitService.getInsLimit(dto);
+        return result;
+    }
+
     @GetMapping()
     public CommonReturn getVar(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();

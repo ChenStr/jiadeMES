@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.InslimitDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径)  parameterType="com.BSMES.jd.main.dto.JmXjMf2" -->
+
+    <select id="getInslimit" resultType="com.BSMES.jd.main.dto.Inslimit" parameterType="com.BSMES.jd.main.dto.ResultType">
+        select insmenu.menuid,insmenu.menuname,insmenu.menuicon,insmenu.browser_url,insmenu.sremark,inslimit.cgw,insmenu.mbtype from inslimit,insmenu
+        <where>
+            insmenu.menuid=inslimit.menuid and insmenu.mbtype='2'  and insmenu.menuattr!='9'
+            <if test="type!=null and type.length()>0 ">
+                and inslimit.gwuser=#{type}
+            </if>
+        </where>
+        <if test="descOrder!=null and descOrder.length()>0 ">
+            ORDER BY ${descOrder} DESC
+        </if>
+        <if test="ascOrder!=null and ascOrder.length()>0 ">
+            ORDER BY ${ascOrder} ASC
+        </if>
+	</select>
+</mapper>

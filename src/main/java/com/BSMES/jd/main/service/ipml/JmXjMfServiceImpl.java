@@ -204,12 +204,12 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXj2TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
                 QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
                 jmXj3TfEntityQueryWrapper.eq("sid",dto.getJmXjMfDTO().getSid());
-                jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
-                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
+//                jmXj3TfService.remove(jmXj3TfEntityQueryWrapper);
+//                jmXj2TfService.remove(jmXj2TfEntityQueryWrapper);
 //                jmXj3TfService.deleteById(sid);
 //                jmXj2TfService.deleteById(sid);
-//                jmXj3TfService.deleteXj3Tf(sid);
-//                jmXj2TfService.deleteXj2Tf(sid);
+                jmXj3TfService.deleteXj3Tf(sid);
+                jmXj2TfService.deleteXj2Tf(sid);
             }
             List<JmXj2TfDTO> jmXj2TfDTOS = new ArrayList<>();
             List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
@@ -217,7 +217,8 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
                 jmXjMf.getJmXj2TfDTO().setSid(sid);
                 if (jmXjMf.getJmXj2TfDTO()!=null && jmXjMf.getJmXj2TfDTO().getSid()!=null){
-                    jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
+//                    jmXj2TfService.saveXj2Tf(jmXjMf.getJmXj2TfDTO());
+                    jmXj2TfDTOS.add(jmXjMf.getJmXj2TfDTO());
                 }
                 if (jmXjMf.getJmXj3TfDTOS()!=null && jmXjMf.getJmXj3TfDTOS().size()>0){
                     //将数值为空的进行筛选
@@ -228,9 +229,12 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                     }
                     String sid1 = sid;
                     jmXjMf.getJmXj3TfDTOS().stream().forEach(t->t.setSid(sid1));
-                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
+//                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
+                    jmXj3TfDTOS.addAll(jmXjMf.getJmXj3TfDTOS());
                 }
             }
+            jmXj2TfService.saveXj2Tfs(jmXj2TfDTOS);
+            jmXj3TfService.saveXj3Tfs(jmXj3TfDTOS);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");

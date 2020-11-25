@@ -376,8 +376,12 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         jmJobRecBEntityQueryWrapper.eq("opsid",jobRec.getOpsid());
         List<JmJobRecBDTO> jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
         for (JmJobRecBDTO jmJobRecBDTO:jmJobRecBDTOS){
-            sum = sum.add(jmJobRecBDTO.getQtyOk());
-            sum = sum.add(jmJobRecBDTO.getQtyLost());
+            if (!"".equals(jmJobRecBDTO.getQtyOk())){
+                sum = sum.add(jmJobRecBDTO.getQtyOk());
+            }
+            if (!"".equals(jmJobRecBDTO.getQtyLost())){
+                sum = sum.add(jmJobRecBDTO.getQtyLost());
+            }
         }
         //算出模具使用次数
         BigDecimal qty = sum.divide(jmMouldDTO.getTimeMk());

@@ -13,6 +13,8 @@ public interface InslimitService extends BaseService<InslimitEntity , InslimitDT
 
     public CommonReturn getInslimit(ResultType dto);
 
+    public CommonReturn getInsLimit(ResultType dto);
+
     public CommonReturn saveInslimit(InslimitDTO dto);
 
     public CommonReturn editInslimit(InslimitDTO dto);

@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.InslimitDao;
+import com.BSMES.jd.main.dto.Inslimit;
 import com.BSMES.jd.main.dto.InslimitDTO;
 import com.BSMES.jd.main.dto.JmMouldDTO;
 import com.BSMES.jd.main.dto.ResultType;
@@ -13,12 +14,17 @@ import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitEntity , InslimitDTO> implements InslimitService {
+
+    @Autowired
+    InslimitDao inslimitDao;
+
     @Override
     public void beforeInsert(InslimitDTO dto) {
 
@@ -38,6 +44,19 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
             result.setAll(20000,moulds,"没有查找结果，建议仔细核对查找条件");
         }else{
             result.setAll(20000,moulds,"查找成功");
+        }
+        return result;
+    }
+
+    @DS("master")
+    @Override
+    public CommonReturn getInsLimit(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try {
+            List<Inslimit> inslimits = inslimitDao.getInslimit(dto);
+            result.setAll(20000,inslimits,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
         }
         return result;
     }
@@ -137,7 +156,7 @@ public class InslimitServiceImpl extends BaseServiceImpl<InslimitDao , InslimitE
         QueryWrapper queryWrapper = new QueryWrapper();
 
         if (MyUtils.StringIsNull(dto.getWkNo())){
-            queryWrapper.like("gwuser",dto.getWkNo());
+            queryWrapper.eq("gwuser",dto.getWkNo());
         }
         if (MyUtils.StringIsNull(dto.getOtherId())){
             queryWrapper.like("menuid",dto.getOtherId());
