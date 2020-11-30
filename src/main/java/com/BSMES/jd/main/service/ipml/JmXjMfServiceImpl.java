@@ -223,12 +223,11 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 if (jmXjMf.getJmXj3TfDTOS()!=null && jmXjMf.getJmXj3TfDTOS().size()>0){
                     //将数值为空的进行筛选
                     for (JmXj3TfDTO jmXj3TfDTO : jmXjMf.getJmXj3TfDTOS()){
+                        jmXj3TfDTO.setSid(sid);
                         if (jmXj3TfDTO.getChkviation()==null){
                             jmXjMf.getJmXj3TfDTOS().remove(jmXj3TfDTO);
                         }
                     }
-                    String sid1 = sid;
-                    jmXjMf.getJmXj3TfDTOS().stream().forEach(t->t.setSid(sid1));
 //                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
                     jmXj3TfDTOS.addAll(jmXjMf.getJmXj3TfDTOS());
                 }

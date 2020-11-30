@@ -6,6 +6,7 @@ import com.BSMES.jd.main.dao.JmXj2TfDao;
 import com.BSMES.jd.main.dao.JmXj3TfDao;
 import com.BSMES.jd.main.dto.JmXj2TfDTO;
 import com.BSMES.jd.main.dto.JmXj3TfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmXj2TfEntity;
 import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.BSMES.jd.main.service.JmXj3TfService;
@@ -37,10 +38,9 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
 
     @DS("master")
     @Override
-    public CommonReturn getXj3Tf(JmXj3TfDTO dto) {
+    public CommonReturn getXj3Tf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        Map<String,Object> data = MyUtils.objectToMap(dto,true);
-        List<JmXj3TfDTO> xj3Tfs = this.select(data);
+        List<JmXj3TfDTO> xj3Tfs = this.select(this.getQueryWrapper(dto));
         if(xj3Tfs.isEmpty()){
             result.setAll(20000,xj3Tfs,"没有查找结果，建议仔细核对查找条件");
         }else{
@@ -150,14 +150,26 @@ public class JmXj3TfServiceImpl extends BaseServiceImpl<JmXj3TfDao , JmXj3TfEnti
 
     @DS("master")
     @Override
-    public CommonReturn getXj3TfPage(JmXj3TfDTO dto, QueryWrapper queryWrapper) {
+    public CommonReturn getXj3TfPage(ResultType dto, QueryWrapper queryWrapper) {
         CommonReturn result = new CommonReturn();
-        IPage<JmXj3TfDTO> jmXj3TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),queryWrapper);
+        IPage<JmXj3TfDTO> jmXj3TfDTOS = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmXj3TfDTOS==null){
             result.setAll(10001,null,"参数错误");
         }else{
             result.setAll(20000,jmXj3TfDTOS,"查找成功");
         }
         return result;
+    }
+
+    private QueryWrapper getQueryWrapper(ResultType dto){
+        QueryWrapper queryWrapper = new QueryWrapper();
+
+        if (dto.getAscOrder()!=null){
+            queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
+        }
+        if (dto.getDescOrder()!=null && dto.getAscOrder()==null){
+            queryWrapper.orderByDesc(MyUtils.humpToLine((String) dto.getDescOrder()));
+        }
+        return queryWrapper;
     }
 }

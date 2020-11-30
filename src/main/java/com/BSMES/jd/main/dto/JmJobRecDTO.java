@@ -183,4 +183,6 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      * 重量
      */
     public BigDecimal qtyWt;
+
+
 }

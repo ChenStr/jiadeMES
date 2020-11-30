@@ -3,6 +3,7 @@ package com.BSMES.jd.main.controller;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.main.dto.JmXj2TfDTO;
 import com.BSMES.jd.main.dto.JmXj3TfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.service.JmXj3TfService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class JmXj3TfController {
     JmXj3TfService jmXj3TfService;
 
     @GetMapping()
-    public CommonReturn getJmXj3Tf(JmXj3TfDTO dto, Boolean isPage){
+    public CommonReturn getJmXj3Tf(ResultType dto, Boolean isPage){
         CommonReturn result = new CommonReturn();
         if (isPage==null || isPage==false){
             result = jmXj3TfService.getXj3Tf(dto);

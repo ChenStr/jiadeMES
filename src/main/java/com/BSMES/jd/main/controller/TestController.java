@@ -51,6 +51,14 @@ public class TestController {
         return result;
     }
 
+    @GetMapping("/getTime")
+    public CommonReturn getTime() {
+        CommonReturn result = new CommonReturn();
+        Date time = new Date();
+        result.setAll(20000,time,"操作成功");
+        return result;
+    }
+
     @PostMapping()
     public Object posttest(@RequestBody JmMoMfDTO dto){
         CommonReturn result = new CommonReturn();

@@ -4,17 +4,17 @@ spring:
       datasource:
         master:
           driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-          url: jdbc:sqlserver://192.168.1.50:1433;DatabaseName=Y8_MES15;sendStringParametersAsUnicode=false
+          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=Y8_MES15;sendStringParametersAsUnicode=false
           username: sa
-          password: Admin123
+          password: abc.123
           initialSize: 5
           minIdle: 5
           maxActive: 20
         erp:
           driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-          url: jdbc:sqlserver://192.168.1.44:1433;DatabaseName=DB_FAF
+          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=TWEI
           username: sa
-          password: 1
+          password: abc.123
           initialSize: 5
           minIdle: 5
           maxActive: 20

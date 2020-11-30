@@ -4,6 +4,10 @@
 <!-- JmJob表的真身 -->
 <mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
 
+    <update id="exec" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        exec INSERT_TO_MM_ML #{sn},#{smake},#{qty},#{qtyOk},#{opsid},#{cid}
+    </update>
+
     <insert id="insertJobRecBs" useGeneratedKeys="true" keyProperty="opsid" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
         insert into jm_job_rec_b (opsid,cid,op_dd,sn,dmdel,wk_no,qty,qty_ok,qty_lost,chk_rm_bn,chk_no,process,spc_no,qty_wt
         ) values

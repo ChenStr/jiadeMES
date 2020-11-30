@@ -1,6 +1,7 @@
 package com.BSMES.jd.main.dao;
 
 import com.BSMES.jd.common.dao.BaseDao;
+import com.BSMES.jd.main.dto.JmJobRecBDTO;
 import com.BSMES.jd.main.dto.JmJobRecDTO;
 import com.BSMES.jd.main.dto.JobRec;
 import com.BSMES.jd.main.entity.JmJobRecEntity;

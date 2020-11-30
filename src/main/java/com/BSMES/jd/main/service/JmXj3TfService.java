@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
 import com.BSMES.jd.main.dto.JmXj2TfDTO;
 import com.BSMES.jd.main.dto.JmXj3TfDTO;
+import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmXj3TfEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface JmXj3TfService extends BaseService<JmXj3TfEntity , JmXj3TfDTO> {
 
-    public CommonReturn getXj3Tf(JmXj3TfDTO dto);
+    public CommonReturn getXj3Tf(ResultType dto);
 
     public CommonReturn saveXj3Tf(JmXj3TfDTO dto);
 
@@ -33,6 +34,6 @@ public interface JmXj3TfService extends BaseService<JmXj3TfEntity , JmXj3TfDTO> 
      * @param dto queryWrapper 条件
      * @return
      */
-    public CommonReturn getXj3TfPage(JmXj3TfDTO dto, QueryWrapper queryWrapper);
+    public CommonReturn getXj3TfPage(ResultType dto, QueryWrapper queryWrapper);
 
 }

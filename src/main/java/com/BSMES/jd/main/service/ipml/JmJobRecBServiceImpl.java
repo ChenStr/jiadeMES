@@ -79,6 +79,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             //判断 opsid 是否重复
             if ((jmJobRecDTO!=null && jmJobRecDTO.getOpsid()!=null) && (jobRecB==null || jobRecB.getOpsid()==null)){
                 this.insert(dto);
+                jmJobRecBDao.exec(dto);
                 result.setAll(20000,null,"操作成功");
             }else{
                 result.setAll(10001,null,"单号已经存在，不能新增!");

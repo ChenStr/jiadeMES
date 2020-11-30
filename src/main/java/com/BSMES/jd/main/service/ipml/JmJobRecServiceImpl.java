@@ -54,6 +54,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         jmBsDictionaryEntityQueryWrapper2.eq("id","DIS20201030012");
         JmBsDictionaryDTO jmBsDictionaryDTO2 = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper2);
         dto.setState(jmBsDictionaryDTO2.getCode());
+        dto.setOpDd(new Date());
     }
 
     @Override

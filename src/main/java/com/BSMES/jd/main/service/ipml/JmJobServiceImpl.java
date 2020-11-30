@@ -237,18 +237,20 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         //将数据格式补充完毕
         if (dtos!=null && dtos.size()>0){
             for (int i=0 ; i < dtos.size() ; i++){
-                //判定调度单号(制令单)是否存在 sid
-                String key = this.getKey("JmJob","jb_no",inssysvarService,dtos.get(i));
-                //首先先找到编码规则
-                QueryWrapper queryWrapper = new QueryWrapper();
-                queryWrapper.eq("sname","JmJob");
-                String code = inssysvarService.selectOne(queryWrapper).getSbds();
-                //获取括号前的数据
-                String after = code.substring(code.indexOf('%')+1,code.length());
-                String before = key.substring(0,key.length() - after.length());
-                String keyafter = key.substring(key.length()-after.length(),key.length());
-                key = before + MyUtils.geFourNumber(Integer.parseInt(keyafter)+i,after.length());
-                dtos.get(i).setJbNo(key);
+                if(dtos.get(i).getJbNo()==null || dtos.get(i).getJbNo().length()<0 ){
+                    //判定调度单号(制令单)是否存在 sid
+                    String key = this.getKey("JmJob","jb_no",inssysvarService,dtos.get(i));
+                    //首先先找到编码规则
+                    QueryWrapper queryWrapper = new QueryWrapper();
+                    queryWrapper.eq("sname","JmJob");
+                    String code = inssysvarService.selectOne(queryWrapper).getSbds();
+                    //获取括号前的数据
+                    String after = code.substring(code.indexOf('%')+1,code.length());
+                    String before = key.substring(0,key.length() - after.length());
+                    String keyafter = key.substring(key.length()-after.length(),key.length());
+                    key = before + MyUtils.geFourNumber(Integer.parseInt(keyafter)+i,after.length());
+                    dtos.get(i).setJbNo(key);
+                }
                 dtos.get(i).setCreateDate(new Date());
                 //查出设备信息
                 QueryWrapper<JmDevEntity> jmDevDTOQueryWrapper = new QueryWrapper<>();
@@ -301,6 +303,10 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                     jmMoMfDTO.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
                 }
                 jmMoMfService.editMoMf(jmMoMfDTO);
+            }
+            //将 sid 补全
+            for (JmJobDTO jmJobDTO : jobSave.getJmJobDTOS()){
+                jmJobDTO.setSid(jobSave.getJmMoMfDTO().getSid());
             }
             jmJobDao.insertJmJobs(dtos);
             result.setAll(20000,null,"操作成功");
