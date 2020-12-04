@@ -184,4 +184,9 @@ public class JmJobRecEntity {
      * 重量
      */
     public BigDecimal qtyWt;
+
+    /**
+     *
+     */
+    public String prdName;
 }

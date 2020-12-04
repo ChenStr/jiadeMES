@@ -10,7 +10,7 @@
         <foreach collection="list" item="jmXj3Tf" index="index" separator=",">
             (#{jmXj3Tf.sid}, #{jmXj3Tf.cid}, #{jmXj3Tf.chkNo}, #{jmXj3Tf.curPara},#{jmXj3Tf.rlt},#{jmXj3Tf.spcType},#{jmXj3Tf.spcChk},
             #{jmXj3Tf.opRem},#{jmXj3Tf.opDd},#{jmXj3Tf.dmdel},#{jmXj3Tf.derviId},cast(#{jmXj3Tf.derviation,jdbcType=DECIMAL} as decimal(22,8)),
-            #{jmXj3Tf.chkviation})
+            cast(#{jmXj3Tf.chkviation,jdbcType=DECIMAL} as decimal(22,8)))
         </foreach>
     </insert>
 

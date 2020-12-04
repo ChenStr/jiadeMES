@@ -13,4 +13,8 @@
         </foreach>
     </insert>
 
+    <update id="exec" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
+        exec INSERT_TO_MM_ML #{sid},#{smake},#{qty},#{qtyOk},#{opsid},#{cid}
+    </update>
+
 </mapper>

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -142,5 +143,11 @@ public class JmMdwxDTO extends BaseDTO {
      * 制单人员名称
      */
     public String smakeName;
+
+    public BigDecimal qtySample;
+
+    public String begMy;
+
+    public String endMy;
 
 }

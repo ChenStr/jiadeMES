@@ -16,7 +16,7 @@ public interface JmJobRecBDao extends BaseDao<JmJobRecBEntity> {
 
     /**
      * 使用存储过程
-     * List<JmJobRecBDTO> jmJobRecBDTOS
+     * JmJobRecBDTO jmJobRecBDTO
      */
     public void exec(JmJobRecBDTO jmJobRecBDTO);
 

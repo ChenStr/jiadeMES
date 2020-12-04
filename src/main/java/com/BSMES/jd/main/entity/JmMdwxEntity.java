@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -146,5 +147,11 @@ public class JmMdwxEntity {
      * 制单人员名称
      */
     public String smakeName;
+    
+    public BigDecimal qtySample;
+
+    public String begMy;
+
+    public String endMy;
 
 }

@@ -5,8 +5,7 @@ package com.BSMES.jd.tools.my;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -15,6 +14,8 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -246,10 +247,10 @@ public class MyUtils {
      * @param fileName  导出后文件名
      * @param <T>
      */
-    public static <T> void exportExcel(List<T> list, HashMap<String, String> map, String fileName, HttpServletResponse response) throws IOException {
+    public static <T> void exportExcel(List<T> list, LinkedHashMap<String, String> map, String fileName, HttpServletResponse response,HashMap<String,Object> params) throws IOException, ParseException {
         //文件地址
-//        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
-        String excel = "D://FAFMES/static/modle1.xlsx";
+        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
+//        String excel = "D://FAFMES/static/modle1.xlsx";
         File fi = new File(excel);
 
         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));
@@ -259,11 +260,70 @@ public class MyUtils {
 //        XSSFWorkbook wb = new XSSFWorkbook();
 //        Sheet sheet = wb.createSheet("Goods");
 
+        //设置样式
+        XSSFCellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        XSSFFont cellFont = wb.createFont();
+        cellFont.setFontName("Courier New");
+        cellFont.setBold(false);
+        cellStyle.setFont(cellFont);
+
+        XSSFCellStyle cellStyle2 = wb.createCellStyle();
+        cellStyle2.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle2.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        XSSFFont cellFont2 = wb.createFont();
+        cellFont2.setFontName("Arial");
+        cellFont2.setFontHeightInPoints((short) 32);
+        cellFont2.setBold(true);
+        cellStyle2.setFont(cellFont);
+
         //定好格式
-        String timeStr1= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日");
+//        String date = time.format(new Date());
+//        if (params.get("time")!=null){
+//            date = params.get("time").toString();
+//        }
+//
+//        Date date1 = time.parse(date);
+        String date = params.get("time").toString();         //获得你要处理的时间 Date型
+//        String strDate= time.format(date); //格式化成yyyy-MM-dd格式的时间字符串
+//        Date newDate =time.parse(strDate);
+//        java.sql.Date resultDate = new java.sql.Date(newDate.getTime());
+
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String sorg = "";
+
+        if(params.get("sorg")!=null){
+            sorg = params.get("sorg").toString();
+        }
+
+        Row titleRow2 = sheet.createRow(1);
+        Cell cell2 = titleRow2.createCell(0);
+        cell2.setCellValue(params.get("title").toString());
+        cell2.setCellStyle(cellStyle2);
+
         Row titleRow3 = sheet.createRow(2);
-        titleRow3.createCell(0).setCellValue("车间:"+"测试");
-        titleRow3.createCell(map.size()-3).setCellValue("时间:"+timeStr1);
+        Cell cell0 = titleRow3.createCell(0);
+        Cell cell3 = titleRow3.createCell(map.size()-1);
+        cell0.setCellValue("车间:"+sorg);
+        cell3.setCellValue(time.format(date1));
+
+//        cell0.setCellStyle(cellStyle);
+//        cell3.setCellStyle(cellStyle);
 
 
         if (list!=null && list.size()>0){
@@ -279,17 +339,25 @@ public class MyUtils {
                     String val = map.get(key);
                     if (i==3){
                         //定义第一列的信息
-                        titleRow.createCell(item).setCellValue(val);
+                        Cell cell = titleRow.createCell(item);
+                        cell.setCellValue(val);
+                        cell.setCellStyle(cellStyle);
                     }else{
 //                        titleRow.createCell(item).setCellValue(key);
                         //定义后面几列的信息
-                        String value = "";
+                        Object value = null;
                         try{
-                            value = MyUtils.getFieldValueByFieldName(key,list.get(i-4)).toString();
+                            value = MyUtils.getFieldValueByFieldName(key,list.get(i-4));
                         }catch (Exception e){
                             value = "";
                         }
-                        titleRow.createCell(item).setCellValue(value);
+                        Cell cell = titleRow.createCell(item);
+                        try{
+                            cell.setCellValue(String.format("%.2f",value));
+                        }catch (Exception e){
+                            cell.setCellValue(value.toString());
+                        }
+                        cell.setCellStyle(cellStyle);
 
                     }
                     item++;

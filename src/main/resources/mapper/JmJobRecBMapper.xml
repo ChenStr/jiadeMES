@@ -5,7 +5,7 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmJobRecBDao">
 
     <update id="exec" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
-        exec INSERT_TO_MM_ML #{sn},#{smake},#{qty},#{qtyOk},#{opsid},#{cid}
+        exec INSERT_TO_MM_ML #{jbNo},#{smake},#{qty},#{qtyOk},#{opsid},#{cid}
     </update>
 
     <insert id="insertJobRecBs" useGeneratedKeys="true" keyProperty="opsid" parameterType="com.BSMES.jd.main.dto.JmJobRecBDTO">
@@ -36,9 +36,9 @@
     </update>
 
     <select id="getJobRecReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
-        select job.sid,job.dep,job.jb_no as jb_no,job.prd_no as prd_no,job.prd_name as prd_name,sum(isnull(recb.qty_ok,0)) as qty,sum(isnull(recb.qty,0)) as sqty from jm_job_rec_b as recb
-        left join jm_job_rec as rec on recb.opsid=rec.opsid
-        left join jm_job as job on job.jb_no=rec.jb_no
+        select job.sid,job.dep,job.prd_no,job.prd_name,sum(isnull(recb.qty_ok,0)) as qty,sum(isnull(recb.qty,0)) as sqty from jm_job_rec_b recb
+        left join jm_job_rec rec on recb.opsid=rec.opsid
+        left join jm_job job on job.jb_no=rec.jb_no
         <where>
             <if test="begDd != null and begDd.toString().length()>0" >
                 and recb.op_dd &gt;= #{begDd}

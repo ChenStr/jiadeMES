@@ -138,15 +138,15 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
                     userPlus.setJmWorkerDTO(jmWorkerDTO);
 //                }
                 //检验员需要返回
-                if ("03".equals(insuserDTO.getGwcode()) || "04".equals(insuserDTO.getGwcode())){
-                    QueryWrapper<JmDevEntity> jmDevEntityQueryWrapper = new QueryWrapper<>();
-                    jmDevEntityQueryWrapper.eq("sorg",insuserDTO.getOrgcode());
-                    List<JmDevDTO> jmDevDTOS = jmDevService.select(jmDevEntityQueryWrapper);
-                    if (jmDevDTOS!=null && jmDevDTOS.size()>0){
-                        userPlus.setJmDevDTOS(jmDevDTOS);
-                    }
-                }else{
-                    //查询中间表
+//                if ("03".equals(insuserDTO.getGwcode()) || "04".equals(insuserDTO.getGwcode())){
+//                    QueryWrapper<JmDevEntity> jmDevEntityQueryWrapper = new QueryWrapper<>();
+//                    jmDevEntityQueryWrapper.eq("sorg",insuserDTO.getOrgcode());
+//                    List<JmDevDTO> jmDevDTOS = jmDevService.select(jmDevEntityQueryWrapper);
+//                    if (jmDevDTOS!=null && jmDevDTOS.size()>0){
+//                        userPlus.setJmDevDTOS(jmDevDTOS);
+//                    }
+//                }else{
+//                    //查询中间表
                     List<String> devNos = new ArrayList<>();
                     jmDevSalDTOS.stream().forEach(T->devNos.add(T.getDevNo()));
                     if (devNos!=null && devNos.size()>0){
@@ -155,7 +155,7 @@ public class InsuserServiceImpl extends BaseServiceImpl<InsuserDao , InsuserEnti
                         List<JmDevDTO> jmDevDTOS = jmDevService.select(jmDevEntityQueryWrapper);
                         userPlus.setJmDevDTOS(jmDevDTOS);
                     }
-                }
+//                }
             }else{
                 result.setAll(40000,null,"卡号不存在");
                 return result;

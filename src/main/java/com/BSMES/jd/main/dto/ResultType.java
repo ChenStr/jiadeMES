@@ -128,4 +128,6 @@ public class ResultType extends BaseDTO {
      */
     public String wkName;
 
+    public String moNo;
+
 }

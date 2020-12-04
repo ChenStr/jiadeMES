@@ -1,6 +1,7 @@
 package com.BSMES.jd.main.dao.erp;
 
 import com.BSMES.jd.common.dao.BaseDao;
+import com.BSMES.jd.main.dto.JmJobRecBDTO;
 import com.BSMES.jd.main.dto.erp.ErpTfMoDTO;
 import com.BSMES.jd.main.entity.erp.ErpTfMoEntity;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,5 +12,11 @@ import java.util.List;
 public interface ErpTfMoDao extends BaseDao<ErpTfMoEntity> {
 
     public void insertTfMoS(List<ErpTfMoDTO> dtos);
+
+    /**
+     * 使用存储过程
+     * JmJobRecBDTO jmJobRecBDTO
+     */
+    public void exec(JmJobRecBDTO jmJobRecBDTO);
 
 }

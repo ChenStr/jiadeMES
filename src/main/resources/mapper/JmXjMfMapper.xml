@@ -44,6 +44,9 @@
             <if test="mouldNo!=null and mouldNo.length()>0" >
                 and jm_xj_mf.md_no = #{mouldNo}
             </if>
+            <if test="moNo!=null and moNo.length()>0" >
+                and jm_xj_mf.mo_no = #{moNo}
+            </if>
         </where>
         ) as jm_xj_mf
         left JOIN insorg as sorg on sorg.orgcode = jm_xj_mf.sorg

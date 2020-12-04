@@ -2,6 +2,7 @@ package com.BSMES.jd.main.service.erp;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.BaseService;
+import com.BSMES.jd.main.dto.JmJobRecBDTO;
 import com.BSMES.jd.main.dto.erp.ErpTfMoDTO;
 import com.BSMES.jd.main.entity.erp.ErpTfMoEntity;
 
@@ -17,5 +18,7 @@ public interface ErpTfMoService extends BaseService<ErpTfMoEntity, ErpTfMoDTO> {
     public CommonReturn editTfMo(ErpTfMoDTO dto);
 
     public CommonReturn delTfMo(List<String> MONOS,List<Integer> ITMS);
+
+    public CommonReturn exec(JmJobRecBDTO jmJobRecBDTO);
 
 }

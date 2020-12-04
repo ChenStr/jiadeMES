@@ -184,5 +184,10 @@ public class JmJobRecDTO extends BaseDTO implements Serializable {
      */
     public BigDecimal qtyWt;
 
+    /**
+     *
+     */
+    public String prdName;
+
 
 }

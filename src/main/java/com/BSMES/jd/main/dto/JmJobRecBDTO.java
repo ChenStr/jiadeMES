@@ -82,4 +82,8 @@ public class JmJobRecBDTO extends BaseDTO implements Serializable {
      */
     public String smake;
 
+    public String jbNo;
+
+    public String sid;
+
 }

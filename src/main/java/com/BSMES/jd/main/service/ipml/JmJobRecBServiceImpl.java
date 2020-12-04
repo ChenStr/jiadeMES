@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service.ipml;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobRecBDao;
+import com.BSMES.jd.main.dao.erp.ErpTfMoDao;
 import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmJobRecBEntity;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
@@ -10,6 +11,7 @@ import com.BSMES.jd.main.entity.JmMouldEntity;
 import com.BSMES.jd.main.service.JmJobRecBService;
 import com.BSMES.jd.main.service.JmJobRecService;
 import com.BSMES.jd.main.service.JmJobService;
+import com.BSMES.jd.main.service.erp.ErpTfMoService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -22,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRecBEntity , JmJobRecBDTO> implements JmJobRecBService {
@@ -38,6 +37,12 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     @Autowired
     HttpServletResponse response;
+
+    @Autowired
+    ErpTfMoService erpTfMoService;
+
+    @Autowired
+    ErpTfMoDao erpTfMoDao;
 
     @Override
     public void beforeInsert(JmJobRecBDTO dto) {
@@ -79,7 +84,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             //判断 opsid 是否重复
             if ((jmJobRecDTO!=null && jmJobRecDTO.getOpsid()!=null) && (jobRecB==null || jobRecB.getOpsid()==null)){
                 this.insert(dto);
-                jmJobRecBDao.exec(dto);
+//                jmJobRecBDao.exec(dto);
                 result.setAll(20000,null,"操作成功");
             }else{
                 result.setAll(10001,null,"单号已经存在，不能新增!");
@@ -181,6 +186,13 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
                 jobRecBQueryWrapper.eq("cid", dto.getCid());
                 JmJobRecBDTO jobRecB = this.selectOne(jobRecBQueryWrapper);
                 dto.setOpDd(new Date());
+                QueryWrapper<JmJobRecEntity> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("opsid",dto.getOpsid());
+                JmJobRecDTO jmJobRecDTO = jmJobRecService.selectOne(queryWrapper);
+                dto.setSid(jmJobRecDTO.getMoNo());
+                if (jmJobRecDTO.getPrdName().indexOf("针座未压")!=-1 && jmJobRecDTO.getRsNo().indexOf("ZS")!=-1){
+                    result = erpTfMoService.exec(dto);
+                }
             }
         }
         jmJobRecBDao.insertJobRecBs(dtos);
@@ -239,17 +251,26 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             }
 
             report.setQty(sum);
-            HashMap<String,String> map = new HashMap<>();
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
             map.put("sid","调度单号");
-            map.put("dep","车间名称");
-            map.put("jbNo","计划单号");
-            map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
-            map.put("qty","数量");
+            map.put("qty","生产数量");
             map.put("sqty","缴库数");
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+            if (dto.getBegDd()!=null){
+                map2.put("time",dto.getBegDd().toString());
+            }
+
+            map2.put("title","车间生产日报表");
+
             String fileName = "车间生产日报表.xlsx";
             jmJobRecBDTOS.add(report);
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,map2);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
@@ -284,7 +305,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         CommonReturn result = new CommonReturn();
         try{
             List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecMonReport(dto);
-            HashMap<String,String> map = new HashMap<>();
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
             map.put("dep","车间名称");
             map.put("wkNo","人员代号");
             map.put("wkName","人员名称");
@@ -292,7 +313,7 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             map.put("prdName","产品名称");
             map.put("qty","数量");
             String fileName = "人员生产月生产报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
@@ -327,14 +348,14 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
         CommonReturn result = new CommonReturn();
         try{
             List<Report> jmJobRecBDTOS = jmJobRecBDao.getJobRecRsNoMonReport(dto);
-            HashMap<String,String> map = new HashMap<>();
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
             map.put("devNo","设备代号");
             map.put("devName","设备名称");
             map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
             map.put("qty","数量");
             String fileName = "设备生产月报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");

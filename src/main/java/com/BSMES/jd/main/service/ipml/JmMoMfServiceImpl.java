@@ -255,7 +255,13 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
                 erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
             }
 
+            ErpTfMoDTO erpTfMoDTO = new ErpTfMoDTO();
+            erpTfMoDTO.setMO_NO(dto.getSid());
+            erpTfMoDTO.setQTY_RSV(dto.getQty());
+            erpTfMoDTO.setQTY_STD(dto.getQty());
+
             erpMfMoService.editMfMo(erpMfMoDTO);
+            erpTfMoService.editTfMo(erpTfMoDTO);
         }else{
             result.setAll(10001,null,"参数错误");
         }

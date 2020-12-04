@@ -126,9 +126,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
             if(sids!=null && sids.size()>0){
                 QueryWrapper<JmXj2TfEntity> jmXj2TfEntityQueryWrapper = new QueryWrapper<>();
-                jmXj2TfEntityQueryWrapper.in("sid",sids);
+                jmXj2TfEntityQueryWrapper.in("sid",sids).orderBy(true,true,"op_dd");
                 QueryWrapper<JmXj3TfEntity> jmXj3TfEntityQueryWrapper = new QueryWrapper<>();
-                jmXj3TfEntityQueryWrapper.in("sid",sids);
+                jmXj3TfEntityQueryWrapper.in("sid",sids).orderBy(true,true,"op_dd");
                 jmXj2TfDTOS = jmXj2TfService.select(jmXj2TfEntityQueryWrapper);
                 jmXj3TfDTOS = jmXj3TfService.select(jmXj3TfEntityQueryWrapper);
             }
@@ -212,7 +212,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXj2TfService.deleteXj2Tf(sid);
             }
             List<JmXj2TfDTO> jmXj2TfDTOS = new ArrayList<>();
-            List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
+//            List<JmXj3TfDTO> jmXj3TfDTOS = new ArrayList<>();
             //将新的数据添加进去
             for (JmXjMf jmXjMf : dto.getJmXjMfs()){
                 jmXjMf.getJmXj2TfDTO().setSid(sid);
@@ -228,12 +228,12 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                             jmXjMf.getJmXj3TfDTOS().remove(jmXj3TfDTO);
                         }
                     }
-//                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
-                    jmXj3TfDTOS.addAll(jmXjMf.getJmXj3TfDTOS());
+                    jmXj3TfService.saveXj3Tfs(jmXjMf.getJmXj3TfDTOS());
+//                    jmXj3TfDTOS.addAll(jmXjMf.getJmXj3TfDTOS());
                 }
             }
             jmXj2TfService.saveXj2Tfs(jmXj2TfDTOS);
-            jmXj3TfService.saveXj3Tfs(jmXj3TfDTOS);
+//            jmXj3TfService.saveXj3Tfs(jmXj3TfDTOS);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
@@ -415,6 +415,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         }
         if (MyUtils.StringIsNull(dto.getMouldNo())){
             queryWrapper.eq("md_no",dto.getMouldNo());
+        }
+        if (MyUtils.StringIsNull(dto.getSid())){
+            queryWrapper.eq("mo_no",dto.getSid());
         }
         if (dto.getBegDd()!=null){
             queryWrapper.ge("hpdate",dto.getBegDd());

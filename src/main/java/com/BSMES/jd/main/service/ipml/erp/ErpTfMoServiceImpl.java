@@ -3,6 +3,7 @@ package com.BSMES.jd.main.service.ipml.erp;
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.erp.ErpTfMoDao;
+import com.BSMES.jd.main.dto.JmJobRecBDTO;
 import com.BSMES.jd.main.dto.erp.ErpTfMoDTO;
 import com.BSMES.jd.main.entity.JmChkstdTfEntity;
 import com.BSMES.jd.main.entity.erp.ErpTfMoEntity;
@@ -85,6 +86,20 @@ public class ErpTfMoServiceImpl extends BaseServiceImpl<ErpTfMoDao, ErpTfMoEntit
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
+        }
+        return result;
+    }
+
+    @DS("erp")
+    @Override
+    public CommonReturn exec(JmJobRecBDTO jmJobRecBDTO) {
+        CommonReturn result = new CommonReturn();
+        try{
+            erpTfMoDao.exec(jmJobRecBDTO);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
         }
         return result;
     }

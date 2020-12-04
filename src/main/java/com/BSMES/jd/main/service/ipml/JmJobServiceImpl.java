@@ -445,7 +445,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         CommonReturn result = new CommonReturn();
         try{
             List<Report> jmJobRecBDTOS = jmJobDao.getJmJobReport(dto);
-            HashMap<String,String> map = new HashMap<>();
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
             map.put("dep","车间名称");
             map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
@@ -454,7 +454,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             map.put("wqty","计划完成数");
             map.put("sqty","当月完成计划数");
             String fileName = "车间生产月报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
