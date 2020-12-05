@@ -17,14 +17,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity , JmXjMfDTO> implements JmXjMfService {
+
+    @Autowired
+    HttpServletResponse response;
 
     @Autowired
     InssysvarService inssysvarService;
@@ -381,6 +383,7 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
         return result;
     }
 
+    @DS("master")
     @Override
     public CommonReturn getJmxjAttach(ResultType dto) {
         CommonReturn result = new CommonReturn();
@@ -389,6 +392,76 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
             result.setAll(20000,jmxjAttaches,"操作成功");
         }catch (Exception e){
             result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @DS("master")
+    @Override
+    public CommonReturn exportExcel(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<JmXjMf2> jmXjMf2s = jmXjMfDao.getJmXjMf2(dto);
+            //计算总数量
+//            Report report = new Report();
+//            BigDecimal sum = new BigDecimal("0");
+//            for (Report jmJobRecBDTO: jmJobRecBDTOS){
+//                sum = sum.add(jmJobRecBDTO.getQty());
+//            }
+//
+//            report.setQty(sum);
+            List<JmXjMfDTO> jmXjMfDTOS = new ArrayList<>();
+            for (JmXjMf2 jmXjMf2 : jmXjMf2s){
+                JmXjMfDTO jmXjMfDTO = new JmXjMfDTO();
+                jmXjMfDTO.setSpcChk(jmXjMf2.getJmXjMfDTO().getSpcChk());
+                jmXjMfDTO.setPrdNo(jmXjMf2.getJmXjMfDTO().getPrdNo());
+                jmXjMfDTO.setPrdName(jmXjMf2.getJmPrdtDTO().getName());
+                SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日");
+                Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getModitime().toString());
+//                jmXjMfDTO.setModitime();
+                jmXjMfDTO.setZcopper(time.format(date1));
+                jmXjMfDTO.setSorg(jmXjMf2.getInsorgDTO().getOrgname());
+                jmXjMfDTO.setRsNo(jmXjMf2.getJmXjMfDTO().getRsNo());
+                jmXjMfDTO.setWkName(jmXjMf2.getJmXjMfDTO().getWkName());
+                jmXjMfDTO.setQtyLost(jmXjMf2.getJmXjMfDTO().getQtyLost());
+                jmXjMfDTO.setChkMan(jmXjMf2.getJmXjMfDTO().getChkMan());
+                jmXjMfDTO.setSmakeName(jmXjMf2.getJmXjMfDTO().getSmakeName());
+                Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getHpdate().toString());
+//                jmXjMfDTO.setHpdate();
+                jmXjMfDTO.setRohs(time.format(date1));
+                jmXjMfDTOS.add(jmXjMfDTO);
+            }
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
+            map.put("spcChk","不合格原因");
+            map.put("prdName","产品名称");
+            map.put("prdNo","产品编号");
+            map.put("zcopper","发现时间");
+            map.put("sorg","车间");
+            map.put("rsNo","机台号");
+            map.put("wkName","操作者");
+            map.put("qtyLost","数量");
+            map.put("chkMan","车间主任");
+            map.put("smakeName","检验员");
+            map.put("rohs","创建日期");
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+            if (dto.getBegDd()!=null){
+                map2.put("time",dto.getBegDd().toString());
+            }
+
+            map2.put("title","不良品信息");
+
+            String fileName = "不良品信息.xlsx";
+            MyUtils.exportExcel(jmXjMfDTOS,map,fileName,response,map2);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
             e.printStackTrace();
         }
         return result;

@@ -327,7 +327,7 @@ public class MyUtils {
 
 
         if (list!=null && list.size()>0){
-            for(int i = 3 ; i <= list.size() ; i++){
+            for(int i = 3 ; i <= list.size()+3 ; i++){
                 //使用迭代器 遍历 HashMap
                 Iterator iter = map.keySet().iterator();
                 //列名

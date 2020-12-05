@@ -92,4 +92,10 @@ public class JmXjMfController {
         return result;
     }
 
+    @GetMapping("/badexcel")
+    public CommonReturn getbadReportExcel(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmXjMfService.exportExcel(dto);
+        return result;
+    }
 }

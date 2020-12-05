@@ -51,12 +51,14 @@
                 and job.sid like CONCAT('%',#{sid},'%')
             </if>
         </where>
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
 	</select>
 
     <update id="editJobRecs" parameterType="com.BSMES.jd.main.dto.JmJobRecDTO">

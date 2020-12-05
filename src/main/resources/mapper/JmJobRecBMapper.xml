@@ -63,12 +63,14 @@
             </if>
         </where>
         group by job.sid,job.dep,job.jb_no,job.prd_no,job.prd_name
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <select id="getJobRecMonReport" resultType="com.BSMES.jd.main.dto.Report" parameterType="com.BSMES.jd.main.dto.ResultType">
@@ -100,12 +102,14 @@
             </if>
         </where>
         group by job.dep,recb.wk_no,users.usrname,job.prd_no,job.prd_name
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
 
@@ -138,12 +142,14 @@
             </if>
         </where>
         group by rec.rs_no,dev.name,job.prd_no,job.prd_name
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
 

@@ -49,4 +49,10 @@ public interface JmXjMfService extends BaseService<JmXjMfEntity , JmXjMfDTO> {
 
     public CommonReturn getJmxjAttach(ResultType dto);
 
+    /**
+     * 不良品导出
+     * @return
+     */
+    public CommonReturn exportExcel(ResultType dto);
+
 }

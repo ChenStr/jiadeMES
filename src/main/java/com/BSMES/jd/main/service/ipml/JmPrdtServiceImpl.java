@@ -138,6 +138,9 @@ public class JmPrdtServiceImpl extends BaseServiceImpl<JmPrdtDao , JmPrdtEntity 
         if (MyUtils.StringIsNull(dto.getType())){
             queryWrapper.eq("knd",dto.getType());
         }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("knd",dto.getSorg());
+        }
         if ("T".equals(dto.getNotType())){
             //没有停用的货品
             queryWrapper.isNull("nouse_dd");

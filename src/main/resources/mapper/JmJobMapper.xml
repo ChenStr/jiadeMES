@@ -60,12 +60,14 @@
                 and job.jb_no like CONCAT('%',#{jbNo},'%')
             </if>
         </where>
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
 	</select>
 
     <select id="findJob" parameterType="com.BSMES.jd.main.dto.JobJoin" resultType="com.BSMES.jd.main.dto.JobJoin">
@@ -123,12 +125,14 @@
                 and job.jb_no like CONCAT('%',#{jbNo},'%')
             </if>
         </where>
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <select id="getJmJobReport" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
@@ -163,12 +167,14 @@
         </where>
         group by job.jb_no,job.dep,job.prd_no,job.prd_name,mo.qty,job.qty,jb.qty) as rec on rec.jb_no=job.jb_no
         group by job.dep,job.prd_no,job.prd_name
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <select id="getsorgSum" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
@@ -185,12 +191,14 @@
             </if>
         </where>
         group by convert(date,create_date),sorg,dep
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <select id="getsorgYield" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
@@ -209,12 +217,14 @@
             </if>
         </where>
         group by job.dep,convert(date,rec.op_dd)
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <select id="getGood" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
@@ -226,12 +236,14 @@
             </if>
         </where>
         group by job.dep
-        <if test="descOrder!=null and descOrder.length()>0 ">
-            ORDER BY ${descOrder} DESC
-        </if>
-        <if test="ascOrder!=null and ascOrder.length()>0 ">
-            ORDER BY ${ascOrder} ASC
-        </if>
+        <trim prefix="ORDER BY" suffixOverrides=",">
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
+            </if>
+            <if test="ascOrder!=null and ascOrder.length()>0 ">
+                ${ascOrder} ASC,
+            </if>
+        </trim>
     </select>
 
     <update id="updateJob" parameterType="com.BSMES.jd.main.dto.JmJobDTO">

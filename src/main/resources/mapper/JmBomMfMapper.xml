@@ -17,6 +17,9 @@
             <if test="endDd != null and endDd.toString().length()>0" >
                 and mf.hpdate &lt;= #{endDd}
             </if>
+            <if test="dep != null and dep.toString().length()>0" >
+                and mf.dep = #{dep}
+            </if>
         </where>
         <if test="descOrder!=null and descOrder.length()>0 ">
             ORDER BY ${descOrder} DESC
