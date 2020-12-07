@@ -34,7 +34,6 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
     @Autowired
     JmPrdtService jmPrdtService;
 
-
     @Autowired
     InssysvarService inssysvarService;
 
@@ -44,6 +43,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Autowired
     JmJobRecDao jmJobRecDao;
+
 
     @Autowired
     JmMouldService jmMouldService;
@@ -88,6 +88,8 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         }else if(jobRec.getDescOrder()!=null){
             jobRec.setDescOrder(MyUtils.humpToLine((String) jobRec.getDescOrder()));
         }
+        jobRec.setAscOrder(MyUtils.humpToLine(jobRec.getAscOrder().toString()));
+        jobRec.setDescOrder(MyUtils.humpToLine(jobRec.getDescOrder().toString()));
         List<JobRec> jobRecs = jmJobRecDao.getJobRec(jobRec);
         for (JobRec job : jobRecs){
             QueryWrapper<JmJobRecBEntity> jmRecBQueryWrapper = new QueryWrapper<>();

@@ -61,11 +61,11 @@
             </if>
         </where>
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
 	</select>
@@ -126,11 +126,11 @@
             </if>
         </where>
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>
@@ -168,11 +168,11 @@
         group by job.jb_no,job.dep,job.prd_no,job.prd_name,mo.qty,job.qty,jb.qty) as rec on rec.jb_no=job.jb_no
         group by job.dep,job.prd_no,job.prd_name
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>
@@ -192,11 +192,11 @@
         </where>
         group by convert(date,create_date),sorg,dep
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>
@@ -218,11 +218,11 @@
         </where>
         group by job.dep,convert(date,rec.op_dd)
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>
@@ -237,11 +237,11 @@
         </where>
         group by job.dep
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>

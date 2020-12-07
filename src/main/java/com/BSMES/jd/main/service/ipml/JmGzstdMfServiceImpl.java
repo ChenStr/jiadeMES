@@ -5,10 +5,7 @@ import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmGzstdMfDao;
 import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.*;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmGzstdMfService;
-import com.BSMES.jd.main.service.JmGzstdTfService;
-import com.BSMES.jd.main.service.JmMouldService;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.ConvertUtils;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
@@ -28,6 +25,9 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
 
     @Autowired
     JmGzstdTfService jmGzstdTfService;
+
+    @Autowired
+    JmWxIdService jmWxIdService;
 
     @Autowired
     InssysvarService inssysvarService;
@@ -56,10 +56,24 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         }else{
             for(JmGzstdMfDTO jmGzstdMfDTO:jmGzstdMfDTOS){
                 JmGzstd jmGzstd = new JmGzstd();
+                List<String> MtIds = new ArrayList<>();
+                List<JmWxIdDTO> jmMtIdDTOS = new ArrayList<>();
                 QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
                 jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMfDTO.getMdNo());
                 JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
+                QueryWrapper<JmGzstdTfEntity> jmGzstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmGzstdTfEntityQueryWrapper.eq("gzstd_no",jmGzstdMfDTO.getGzstdNo());
+                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
+                QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
+                jmGzstdTfDTOS.stream().forEach(T->MtIds.add(T.getWxId()));
+
+                if(jmMtIdDTOS!=null && jmMtIdDTOS.size()>=0){
+                    jmWxIdEntityQueryWrapper.in("mt_id",MtIds);
+                    jmMtIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                }
                 jmGzstd.setJmMouldDTO(jmMouldDTO);
+                jmGzstd.setJmWxIdDTO(jmMtIdDTOS);
+                jmGzstd.setJmGzstdTfDTOS(jmGzstdTfDTOS);
                 jmGzstd.setJmGzstdMfDTO(jmGzstdMfDTO);
                 dtos.add(jmGzstd);
             }
@@ -169,11 +183,32 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
             result.setAll(10001,null,"参数错误");
         }else{
             for(JmGzstdMfEntity jmGzstdMf : jmGzstdMfEntityIPage.getRecords()){
+//                JmGzstd jmGzstd = new JmGzstd();
+//                QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
+//                jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMf.getMdNo());
+//                JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
+//                jmGzstd.setJmMouldDTO(jmMouldDTO);
+//                jmGzstd.setJmGzstdMfDTO(ConvertUtils.convert(jmGzstdMf,currentDtoClass()));
+//                jmGzstds.add(jmGzstd);
                 JmGzstd jmGzstd = new JmGzstd();
+                List<String> MtIds = new ArrayList<>();
+                List<JmWxIdDTO> jmMtIdDTOS = new ArrayList<>();
                 QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
                 jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMf.getMdNo());
                 JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
+                QueryWrapper<JmGzstdTfEntity> jmGzstdTfEntityQueryWrapper = new QueryWrapper<>();
+                jmGzstdTfEntityQueryWrapper.eq("gzstd_no",jmGzstdMf.getGzstdNo());
+                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
+                QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
+                jmGzstdTfDTOS.stream().forEach(T->MtIds.add(T.getWxId()));
+
+                if(jmMtIdDTOS!=null && jmMtIdDTOS.size()>=0){
+                    jmWxIdEntityQueryWrapper.in("mt_id",MtIds);
+                    jmMtIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                }
                 jmGzstd.setJmMouldDTO(jmMouldDTO);
+                jmGzstd.setJmWxIdDTO(jmMtIdDTOS);
+                jmGzstd.setJmGzstdTfDTOS(jmGzstdTfDTOS);
                 jmGzstd.setJmGzstdMfDTO(ConvertUtils.convert(jmGzstdMf,currentDtoClass()));
                 jmGzstds.add(jmGzstd);
             }
@@ -198,7 +233,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
             queryWrapper.like("name",dto.getOtherId());
         }
         if (MyUtils.StringIsNull(dto.getMouldNo())){
-            queryWrapper.like("md_no",dto.getMouldNo());
+            queryWrapper.eq("md_no",dto.getMouldNo());
         }
         if (MyUtils.StringIsNull(dto.getType())){
             queryWrapper.eq("md_grp",dto.getType());

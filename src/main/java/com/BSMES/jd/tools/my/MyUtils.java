@@ -249,8 +249,8 @@ public class MyUtils {
      */
     public static <T> void exportExcel(List<T> list, LinkedHashMap<String, String> map, String fileName, HttpServletResponse response,HashMap<String,Object> params) throws IOException, ParseException {
         //文件地址
-        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
-//        String excel = "D://FAFMES/static/modle1.xlsx";
+//        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
+        String excel = "D://FAFMES/static/modle1.xlsx";
         File fi = new File(excel);
 
         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));

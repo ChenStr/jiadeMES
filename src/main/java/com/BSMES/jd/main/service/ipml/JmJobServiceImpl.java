@@ -99,6 +99,8 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }else if(jobJoin.getDescOrder()!=null){
             jobJoin.setDescOrder(MyUtils.humpToLine((String) jobJoin.getDescOrder()));
         }
+        jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
+        jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
         List<JobJoin> jobJoins = jmJobDao.joinFindJob(jobJoin);
         for (JobJoin jobJoin1 : jobJoins){
             //查询产品规格
@@ -166,6 +168,12 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                 jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
             }else if(jobJoin.getAscOrder()!=null){
                 jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
+            }
+            if (jobJoin.getAscOrder()!=null){
+                jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
+            }
+            if (jobJoin.getDescOrder()!=null){
+                jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
             }
             List<JobJoin> jobJoins = jmJobDao.findJob(jobJoin);
             result.setAll(20000,jobJoins,"操作成功");

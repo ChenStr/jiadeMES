@@ -13,4 +13,6 @@ public class JmGzstd {
 
     public JmMouldDTO jmMouldDTO;
 
+    public List<JmWxIdDTO> jmWxIdDTO;
+
 }

@@ -273,6 +273,9 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
         if (dto.getDevName()!=null){
             queryWrapper.like("dev_name",dto.getDevName());
         }
+        if (MyUtils.StringIsNull(dto.getSorg())){
+            queryWrapper.eq("sorg",dto.getSorg());
+        }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }

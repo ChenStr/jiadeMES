@@ -35,11 +35,11 @@
             </if>
         </where>
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="descOrder!=null and descOrder.length()>0 ">
-                ${descOrder} DESC,
-            </if>
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,
+            </if>
+            <if test="descOrder!=null and descOrder.length()>0 ">
+                ${descOrder} DESC,
             </if>
         </trim>
     </select>

@@ -62,7 +62,7 @@
                 and job.prd_name like CONCAT('%',#{prdName},'%')
             </if>
         </where>
-        group by job.sid,job.dep,job.jb_no,job.prd_no,job.prd_name
+        group by job.sid,job.dep,job.prd_no,job.prd_name
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="descOrder!=null and descOrder.length()>0 ">
                 ${descOrder} DESC,
