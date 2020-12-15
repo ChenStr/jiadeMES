@@ -11,6 +11,7 @@ import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,24 +57,43 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
         }else{
             for(JmGzstdMfDTO jmGzstdMfDTO:jmGzstdMfDTOS){
                 JmGzstd jmGzstd = new JmGzstd();
-                List<String> MtIds = new ArrayList<>();
-                List<JmWxIdDTO> jmMtIdDTOS = new ArrayList<>();
+                List<String> mtIds = new ArrayList<>();
                 QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
                 jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMfDTO.getMdNo());
                 JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
                 QueryWrapper<JmGzstdTfEntity> jmGzstdTfEntityQueryWrapper = new QueryWrapper<>();
                 jmGzstdTfEntityQueryWrapper.eq("gzstd_no",jmGzstdMfDTO.getGzstdNo());
-                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
-                QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
-                jmGzstdTfDTOS.stream().forEach(T->MtIds.add(T.getWxId()));
 
-                if(jmMtIdDTOS!=null && jmMtIdDTOS.size()>=0){
-                    jmWxIdEntityQueryWrapper.in("mt_id",MtIds);
-                    jmMtIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
+                if (jmGzstdTfDTOS!=null && jmGzstdTfDTOS.size()>0){
+                    for (JmGzstdTfDTO jmGzstdTfDTO : jmGzstdTfDTOS){
+                        if (jmGzstdTfDTO.getWxId()!=null && jmGzstdTfDTO.getWxId().length()>0){
+                            mtIds.add(jmGzstdTfDTO.getWxId());
+                        }
+                    }
                 }
+                List<JmWxIdDTO> jmWxIdDTOS = new ArrayList<>();
+                if (mtIds!=null && mtIds.size()>0){
+                    QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
+                    jmWxIdEntityQueryWrapper.in("mt_id",mtIds);
+                    jmWxIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                }
+                List<JmGzstdTf> jmGzstdTfs = new ArrayList<>();
+
+                for (JmGzstdTfDTO jmGzstdTfDTO : jmGzstdTfDTOS){
+                    JmGzstdTf jmGzstdTf = new JmGzstdTf();
+                    jmGzstdTf.setJmGzstdTfDTO(jmGzstdTfDTO);
+
+                    for (JmWxIdDTO jmWxIdDTO : jmWxIdDTOS){
+                        if (jmWxIdDTO.getMtId().equals(jmGzstdTfDTO.getWxId())){
+                            jmGzstdTf.setJmWxIdDTO(jmWxIdDTO);
+                        }
+                    }
+                    jmGzstdTfs.add(jmGzstdTf);
+                }
+
                 jmGzstd.setJmMouldDTO(jmMouldDTO);
-                jmGzstd.setJmWxIdDTO(jmMtIdDTOS);
-                jmGzstd.setJmGzstdTfDTOS(jmGzstdTfDTOS);
+                jmGzstd.setJmGzstdTfs(jmGzstdTfs);
                 jmGzstd.setJmGzstdMfDTO(jmGzstdMfDTO);
                 dtos.add(jmGzstd);
             }
@@ -111,11 +131,13 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
                 jmGzstdTfService.remove(jmMdbfTfEntityQueryWrapper);
             }
             //将新的数据新增进去
-            if(dto.getJmGzstdTfDTOS()!=null && dto.getJmGzstdTfDTOS().size()>0){
-                for(JmGzstdTfDTO jmGzstdTfDTO : dto.getJmGzstdTfDTOS()){
-                    jmGzstdTfDTO.setGzstdNo(sid);
+            if(dto.getJmGzstdTfs()!=null && dto.getJmGzstdTfs().size()>0){
+                List<JmGzstdTfDTO> jmGzstdTfDTOS = new ArrayList<>();
+                for(JmGzstdTf jmGzstdTfDTO : dto.getJmGzstdTfs()){
+                    jmGzstdTfDTO.getJmGzstdTfDTO().setGzstdNo(sid);
+                    jmGzstdTfDTOS.add(jmGzstdTfDTO.getJmGzstdTfDTO());
                 }
-                jmGzstdTfService.saveGzstds(dto.getJmGzstdTfDTOS());
+                jmGzstdTfService.saveGzstds(jmGzstdTfDTOS);
             }
             result.setAll(20000,null,"操作成功");
         }catch (Exception e){
@@ -147,6 +169,7 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
+                e.printStackTrace();
             }
         }else{
             result.setAll(10001,null,"参数错误");
@@ -183,32 +206,47 @@ public class JmGzstdMfServiceImpl extends BaseServiceImpl<JmGzstdMfDao, JmGzstdM
             result.setAll(10001,null,"参数错误");
         }else{
             for(JmGzstdMfEntity jmGzstdMf : jmGzstdMfEntityIPage.getRecords()){
-//                JmGzstd jmGzstd = new JmGzstd();
-//                QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
-//                jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMf.getMdNo());
-//                JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
-//                jmGzstd.setJmMouldDTO(jmMouldDTO);
-//                jmGzstd.setJmGzstdMfDTO(ConvertUtils.convert(jmGzstdMf,currentDtoClass()));
-//                jmGzstds.add(jmGzstd);
                 JmGzstd jmGzstd = new JmGzstd();
-                List<String> MtIds = new ArrayList<>();
-                List<JmWxIdDTO> jmMtIdDTOS = new ArrayList<>();
+                List<String> mtIds = new ArrayList<>();
                 QueryWrapper<JmMouldEntity> jmMouldEntityQueryWrapper = new QueryWrapper<>();
                 jmMouldEntityQueryWrapper.eq("md_no",jmGzstdMf.getMdNo());
                 JmMouldDTO jmMouldDTO = jmMouldService.selectOne(jmMouldEntityQueryWrapper);
                 QueryWrapper<JmGzstdTfEntity> jmGzstdTfEntityQueryWrapper = new QueryWrapper<>();
                 jmGzstdTfEntityQueryWrapper.eq("gzstd_no",jmGzstdMf.getGzstdNo());
-                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
-                QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
-                jmGzstdTfDTOS.stream().forEach(T->MtIds.add(T.getWxId()));
 
-                if(jmMtIdDTOS!=null && jmMtIdDTOS.size()>=0){
-                    jmWxIdEntityQueryWrapper.in("mt_id",MtIds);
-                    jmMtIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                List<JmGzstdTfDTO> jmGzstdTfDTOS = jmGzstdTfService.select(jmGzstdTfEntityQueryWrapper);
+                if (jmGzstdTfDTOS!=null && jmGzstdTfDTOS.size()>0){
+                    for (JmGzstdTfDTO jmGzstdTfDTO : jmGzstdTfDTOS){
+                        if (jmGzstdTfDTO.getWxId()!=null && jmGzstdTfDTO.getWxId().length()>0){
+                            mtIds.add(jmGzstdTfDTO.getWxId());
+                        }
+                    }
                 }
+                List<JmWxIdDTO> jmWxIdDTOS = new ArrayList<>();
+                if (mtIds!=null && mtIds.size()>0){
+                    QueryWrapper<JmWxIdEntity> jmWxIdEntityQueryWrapper = new QueryWrapper<>();
+                    jmWxIdEntityQueryWrapper.in("mt_id",mtIds);
+                    jmWxIdDTOS = jmWxIdService.select(jmWxIdEntityQueryWrapper);
+                }
+                List<JmGzstdTf> jmGzstdTfs = new ArrayList<>();
+
+                for (JmGzstdTfDTO jmGzstdTfDTO : jmGzstdTfDTOS){
+                    JmGzstdTf jmGzstdTf = new JmGzstdTf();
+                    jmGzstdTf.setJmGzstdTfDTO(jmGzstdTfDTO);
+
+                    for (JmWxIdDTO jmWxIdDTO : jmWxIdDTOS){
+                        if (jmWxIdDTO.getMtId().equals(jmGzstdTfDTO.getWxId())){
+                            jmGzstdTf.setJmWxIdDTO(jmWxIdDTO);
+                        }
+                    }
+                    jmGzstdTfs.add(jmGzstdTf);
+                }
+
+
+
+
                 jmGzstd.setJmMouldDTO(jmMouldDTO);
-                jmGzstd.setJmWxIdDTO(jmMtIdDTOS);
-                jmGzstd.setJmGzstdTfDTOS(jmGzstdTfDTOS);
+                jmGzstd.setJmGzstdTfs(jmGzstdTfs);
                 jmGzstd.setJmGzstdMfDTO(ConvertUtils.convert(jmGzstdMf,currentDtoClass()));
                 jmGzstds.add(jmGzstd);
             }

@@ -9,10 +9,8 @@ public class JmGzstd {
 
     public JmGzstdMfDTO jmGzstdMfDTO;
 
-    public List<JmGzstdTfDTO> jmGzstdTfDTOS;
+    public List<JmGzstdTf> jmGzstdTfs;
 
     public JmMouldDTO jmMouldDTO;
-
-    public List<JmWxIdDTO> jmWxIdDTO;
 
 }

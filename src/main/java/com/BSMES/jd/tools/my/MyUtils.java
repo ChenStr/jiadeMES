@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -269,6 +270,8 @@ public class MyUtils {
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
+
+
         XSSFFont cellFont = wb.createFont();
         cellFont.setFontName("Courier New");
         cellFont.setBold(false);
@@ -352,11 +355,24 @@ public class MyUtils {
                             value = "";
                         }
                         Cell cell = titleRow.createCell(item);
-                        try{
-                            cell.setCellValue(String.format("%.2f",value));
-                        }catch (Exception e){
-                            cell.setCellValue(value.toString());
+                        if (value!=null){
+                            try {
+                                double bigval = new BigDecimal(value.toString()).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+                                cell.setCellValue(bigval);
+//                                BigDecimal bigval2 = new BigDecimal(value.toString()).setScale(2, BigDecimal.ROUND_UP).stripTrailingZeros();
+//                                cell.setCellValue(bigval2.toPlainString());
+                            }catch (Exception e){
+                                cell.setCellValue(value.toString());
+//                                e.printStackTrace();
+                            }
                         }
+
+//                        try{
+////                            cell.setCellValue(String.format("%.2f",value));
+//
+//                        }catch (Exception e){
+//                            e.printStackTrace();
+//                        }
                         cell.setCellStyle(cellStyle);
 
                     }

@@ -54,7 +54,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         jmBsDictionaryEntityQueryWrapper2.eq("id","DIS20201030012");
         JmBsDictionaryDTO jmBsDictionaryDTO2 = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper2);
         dto.setState(jmBsDictionaryDTO2.getCode());
-        dto.setOpDd(new Date());
+        if (dto.getOpDd()==null){
+            dto.setOpDd(new Date());
+        }
     }
 
     @Override
@@ -85,11 +87,10 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         //驼峰转换
         if (jobRec.getAscOrder()!=null){
             jobRec.setAscOrder(MyUtils.humpToLine((String) jobRec.getAscOrder()));
-        }else if(jobRec.getDescOrder()!=null){
+        }
+        if(jobRec.getDescOrder()!=null){
             jobRec.setDescOrder(MyUtils.humpToLine((String) jobRec.getDescOrder()));
         }
-        jobRec.setAscOrder(MyUtils.humpToLine(jobRec.getAscOrder().toString()));
-        jobRec.setDescOrder(MyUtils.humpToLine(jobRec.getDescOrder().toString()));
         List<JobRec> jobRecs = jmJobRecDao.getJobRec(jobRec);
         for (JobRec job : jobRecs){
             QueryWrapper<JmJobRecBEntity> jmRecBQueryWrapper = new QueryWrapper<>();

@@ -96,7 +96,8 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         //驼峰转换
         if (jobJoin.getAscOrder()!=null){
             jobJoin.setAscOrder(MyUtils.humpToLine((String) jobJoin.getAscOrder()));
-        }else if(jobJoin.getDescOrder()!=null){
+        }
+        if(jobJoin.getDescOrder()!=null){
             jobJoin.setDescOrder(MyUtils.humpToLine((String) jobJoin.getDescOrder()));
         }
         jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
@@ -166,14 +167,9 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         try{
             if(jobJoin.getDescOrder()!=null){
                 jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
-            }else if(jobJoin.getAscOrder()!=null){
-                jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
             }
-            if (jobJoin.getAscOrder()!=null){
+            if(jobJoin.getAscOrder()!=null){
                 jobJoin.setAscOrder(MyUtils.humpToLine(jobJoin.getAscOrder().toString()));
-            }
-            if (jobJoin.getDescOrder()!=null){
-                jobJoin.setDescOrder(MyUtils.humpToLine(jobJoin.getDescOrder().toString()));
             }
             List<JobJoin> jobJoins = jmJobDao.findJob(jobJoin);
             result.setAll(20000,jobJoins,"操作成功");

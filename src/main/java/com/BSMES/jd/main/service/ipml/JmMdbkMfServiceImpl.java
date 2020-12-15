@@ -4,12 +4,8 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmMdbkMfDao;
 import com.BSMES.jd.main.dto.*;
-import com.BSMES.jd.main.entity.JmMdbkMfEntity;
-import com.BSMES.jd.main.entity.JmMdbkTfEntity;
-import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmMdbkMfService;
-import com.BSMES.jd.main.service.JmMdbkTfService;
-import com.BSMES.jd.main.service.JmMouldService;
+import com.BSMES.jd.main.entity.*;
+import com.BSMES.jd.main.service.*;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -17,6 +13,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +28,15 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
 
     @Autowired
     JmMouldService jmMouldService;
+
+    @Autowired
+    JmMdlyTfService jmMdlyTfService;
+
+    @Autowired
+    JmJobRecService jmJobRecService;
+
+    @Autowired
+    JmJobRecBService jmJobRecBService;
 
     @Override
     public void beforeInsert(JmMdbkMfDTO dto) {
@@ -164,6 +171,54 @@ public class JmMdbkMfServiceImpl extends BaseServiceImpl<JmMdbkMfDao, JmMdbkMfEn
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getDay(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        //判断模具号是否为空
+        if (dto!=null && dto.getMouldNo()!=null){
+            //根据模具来查找出库日期
+            BigDecimal sum = new BigDecimal("0");
+            QueryWrapper<JmMdlyTfEntity> jmMdlyTfEntityQueryWrapper = new QueryWrapper<>();
+            jmMdlyTfEntityQueryWrapper.eq("md_no",dto.getMouldNo()).orderByDesc("mdly_dd");
+            List<JmMdlyTfDTO> jmMdlyTfDTOS = jmMdlyTfService.select(jmMdlyTfEntityQueryWrapper);
+            JmMdlyTfDTO jmMdlyTfDTO = new JmMdlyTfDTO();
+            if (jmMdlyTfDTOS!=null && jmMdlyTfDTOS.size()>0){
+                jmMdlyTfDTO = jmMdlyTfDTOS.get(0);
+            }
+            //查询其所有的随工单
+            QueryWrapper<JmJobRecEntity> jmJobRecEntityQueryWrapper = new QueryWrapper<>();
+            jmJobRecEntityQueryWrapper.eq("md_no",dto.getMouldNo()).ge("op_dd",jmMdlyTfDTO.getMdlyDd());
+            List<JmJobRecDTO> jmJobRecDTOS = jmJobRecService.select(jmJobRecEntityQueryWrapper);
+            List<JmJobRecBDTO> jmJobRecBDTOS = new ArrayList<>();
+            List<String> sids = new ArrayList<>();
+            if (jmJobRecDTOS!=null && jmJobRecDTOS.size()>0){
+                for (JmJobRecDTO jmJobRecDTO:jmJobRecDTOS){
+                    sids.add(jmJobRecDTO.getOpsid());
+                }
+            }
+            if (sids.size()>0){
+                QueryWrapper<JmJobRecBEntity> jmJobRecBEntityQueryWrapper = new QueryWrapper<>();
+                jmJobRecBEntityQueryWrapper.in("opsid",sids);
+                jmJobRecBDTOS = jmJobRecBService.select(jmJobRecBEntityQueryWrapper);
+            }
+            if (jmJobRecBDTOS.size()>0){
+                for (JmJobRecBDTO jmJobRecBDTO:jmJobRecBDTOS){
+                    if(jmJobRecBDTO.getQtyOk()!=null){
+                        sum = sum.add(jmJobRecBDTO.getQtyOk());
+                    }
+                }
+                result.setAll(20000,sum,"操作成功");
+            }else{
+                result.setAll(20000,sum,"操作失败");
+            }
+
+
+        }else{
+            result.setAll(40000,null,"参数错误");
         }
         return result;
     }

@@ -27,7 +27,9 @@ public class JmMouldServiceImpl extends BaseServiceImpl<JmMouldDao , JmMouldEnti
 
     @Override
     public void beforeInsert(JmMouldDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
         dto.setTypeid(1);
     }
     @Override

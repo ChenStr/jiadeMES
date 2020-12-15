@@ -41,7 +41,9 @@ public class JmMdlyMfServiceImpl extends BaseServiceImpl<JmMdlyMfDao, JmMdlyMfEn
 
     @Override
     public void beforeInsert(JmMdlyMfDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override

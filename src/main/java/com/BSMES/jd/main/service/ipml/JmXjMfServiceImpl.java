@@ -51,7 +51,9 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
 
     @Override
     public void beforeInsert(JmXjMfDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
         dto.setSbuid("XJ");
     }
 
@@ -418,27 +420,31 @@ public class JmXjMfServiceImpl extends BaseServiceImpl<JmXjMfDao , JmXjMfEntity 
                 jmXjMfDTO.setPrdNo(jmXjMf2.getJmXjMfDTO().getPrdNo());
                 jmXjMfDTO.setPrdName(jmXjMf2.getJmPrdtDTO().getName());
                 SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日");
-                Date date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getModitime().toString());
+                Date date1 = null;
 //                jmXjMfDTO.setModitime();
-                jmXjMfDTO.setZcopper(time.format(date1));
+                if (jmXjMf2.getJmXjMfDTO().getModitime()!=null){
+                    date1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getModitime().toString());
+                    jmXjMfDTO.setZcopper(time.format(date1));
+                    jmXjMfDTO.setRohs(time.format(date1));
+                }
+
                 jmXjMfDTO.setSorg(jmXjMf2.getInsorgDTO().getOrgname());
                 jmXjMfDTO.setRsNo(jmXjMf2.getJmXjMfDTO().getRsNo());
                 jmXjMfDTO.setWkName(jmXjMf2.getJmXjMfDTO().getWkName());
                 jmXjMfDTO.setQtyLost(jmXjMf2.getJmXjMfDTO().getQtyLost());
                 jmXjMfDTO.setChkMan(jmXjMf2.getJmXjMfDTO().getChkMan());
                 jmXjMfDTO.setSmakeName(jmXjMf2.getJmXjMfDTO().getSmakeName());
-                Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getHpdate().toString());
+//                Date date2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(jmXjMf2.getJmXjMfDTO().getHpdate().toString());
 //                jmXjMfDTO.setHpdate();
-                jmXjMfDTO.setRohs(time.format(date1));
                 jmXjMfDTOS.add(jmXjMfDTO);
             }
             LinkedHashMap<String,String> map = new LinkedHashMap<>();
-            map.put("spcChk","不合格原因");
-            map.put("prdName","产品名称");
             map.put("prdNo","产品编号");
-            map.put("zcopper","发现时间");
-            map.put("sorg","车间");
+            map.put("prdName","产品名称");
             map.put("rsNo","机台号");
+            map.put("sorg","车间");
+            map.put("zcopper","发现时间");
+            map.put("spcChk","不合格原因");
             map.put("wkName","操作者");
             map.put("qtyLost","数量");
             map.put("chkMan","车间主任");

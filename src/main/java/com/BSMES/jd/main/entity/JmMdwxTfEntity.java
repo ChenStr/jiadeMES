@@ -74,5 +74,9 @@ public class JmMdwxTfEntity {
      */
     public String curPara;
 
+    public String byNo;
+
+    public String byName;
+
 
 }

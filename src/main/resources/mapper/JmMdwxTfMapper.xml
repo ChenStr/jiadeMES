@@ -5,10 +5,10 @@
 <mapper namespace="com.BSMES.jd.main.dao.JmMdwxTfDao">
 
     <insert id="saveJmMdwxTfs" parameterType="com.BSMES.jd.main.dto.JmMdwxTfDTO">
-        insert into jm_mdwx_tf (sid,cid,jb_no,prd_no,prd_name,find_dd,wk_no,mt_id,rem,wk_name,cur_para) values
+        insert into jm_mdwx_tf (sid,cid,jb_no,prd_no,prd_name,find_dd,wk_no,mt_id,rem,wk_name,cur_para,by_no,by_name) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.sid}, #{item.cid}, #{item.jbNo}, #{item.prdNo},#{item.prdName},#{item.findDd},
-            #{item.wkNo},#{item.mtId},#{item.rem},#{item.wkName},#{item.curPara})
+            #{item.wkNo},#{item.mtId},#{item.rem},#{item.wkName},#{item.curPara},#{item.byNo},#{item.byName})
         </foreach>
     </insert>
 

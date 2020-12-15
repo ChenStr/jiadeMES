@@ -28,6 +28,13 @@ public interface JmMdbkMfService extends BaseService<JmMdbkMfEntity , JmMdbkMfDT
     public CommonReturn delMdbkMf(List<String> sids);
 
     /**
+     * 根据你输入的模具号来查询使用次数
+     * @param dto
+     * @return
+     */
+    public CommonReturn getDay(ResultType dto);
+
+    /**
      * 获取全部的部门 分页
      * @param dto queryWrapper 条件
      * @return

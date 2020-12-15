@@ -70,8 +70,12 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
         jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030011");
         JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
         dto.setAstRelease(1);
-        dto.setHpdate(new Date());
-        dto.setModitime(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
+        if (dto.getModitime()==null){
+            dto.setModitime(new Date());
+        }
         dto.setState(Integer.valueOf(jmBsDictionaryDTO.getCode()));
         dto.setSbuid("MO");
     }
@@ -85,8 +89,13 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
     @Override
     public CommonReturn getMoMf(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        dto.setAscOrder(MyUtils.humpToLine(dto.getAscOrder().toString()));
-        dto.setDescOrder(MyUtils.humpToLine(dto.getDescOrder().toString()));
+        if(dto.getAscOrder()!=null){
+            dto.setAscOrder(MyUtils.humpToLine(dto.getAscOrder().toString()));
+        }
+        if (dto.getDescOrder()!=null){
+            dto.setDescOrder(MyUtils.humpToLine(dto.getDescOrder().toString()));
+        }
+
         List<JmMoMfMore> moMfs = jmMoMfDao.getMoMfMore(dto);
         if(moMfs.isEmpty()){
 
@@ -128,8 +137,12 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
     public CommonReturn getMoNo(ResultType dto) {
         CommonReturn result = new CommonReturn();
         try{
-            dto.setAscOrder(MyUtils.humpToLine(dto.getAscOrder().toString()));
-            dto.setDescOrder(MyUtils.humpToLine(dto.getDescOrder().toString()));
+            if(dto.getAscOrder()!=null){
+                dto.setAscOrder(MyUtils.humpToLine(dto.getAscOrder().toString()));
+            }
+            if (dto.getDescOrder()!=null){
+                dto.setDescOrder(MyUtils.humpToLine(dto.getDescOrder().toString()));
+            }
             List<MoNoSave> moNoSaves = jmMoMfDao.getMoNo(dto);
             result.setAll(20000,moNoSaves,"操作成功");
         }catch (Exception e){

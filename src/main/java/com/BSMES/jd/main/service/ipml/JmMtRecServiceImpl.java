@@ -31,7 +31,9 @@ public class JmMtRecServiceImpl extends BaseServiceImpl<JmMtRecDao, JmMtRecEntit
 
     @Override
     public void beforeInsert(JmMtRecDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override

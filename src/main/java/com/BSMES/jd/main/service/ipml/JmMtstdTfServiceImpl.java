@@ -38,7 +38,9 @@ public class JmMtstdTfServiceImpl extends BaseServiceImpl<JmMtstdTfDao , JmMtstd
 
     @Override
     public void beforeInsert(JmMtstdTfDTO dto) {
-        dto.setCreateDate(new Date());
+        if (dto.getCreateDate()==null){
+            dto.setCreateDate(new Date());
+        }
     }
 
     @Override

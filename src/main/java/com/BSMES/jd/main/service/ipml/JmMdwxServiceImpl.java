@@ -37,7 +37,9 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
 
     @Override
     public void beforeInsert(JmMdwxDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override
@@ -195,7 +197,6 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
 
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
-
         if(dto.getAscOrder()==null && dto.getDescOrder()==null){
             dto.setDescOrder("hpdate");
         }
@@ -203,8 +204,8 @@ public class JmMdwxServiceImpl extends BaseServiceImpl<JmMdwxDao, JmMdwxEntity, 
         if (MyUtils.StringIsNull(dto.getSid())){
             queryWrapper.eq("sid",dto.getSid());
         }
-        if (MyUtils.StringIsNull(dto.getType())){
-            queryWrapper.eq("sbuid",dto.getType());
+        if (MyUtils.StringIsNull(dto.getOtherId())){
+            queryWrapper.eq("md_type",dto.getOtherId());
         }
         if (MyUtils.StringIsNull(dto.getSorg())){
             queryWrapper.eq("dep",dto.getSorg());

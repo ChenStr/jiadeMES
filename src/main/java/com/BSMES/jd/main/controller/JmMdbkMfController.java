@@ -50,4 +50,12 @@ public class JmMdbkMfController {
         return result;
     }
 
+    @GetMapping("/day")
+    public CommonReturn getMdNoDay(ResultType dto){
+        CommonReturn result = new CommonReturn();
+        result = jmMdbkMfService.getDay(dto);
+        return result;
+
+    }
+
 }

@@ -31,7 +31,9 @@ public class JmDevSalServiceImpl extends BaseServiceImpl<JmDevSalDao , JmDevSalE
 
     @Override
     public void beforeInsert(JmDevSalDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override

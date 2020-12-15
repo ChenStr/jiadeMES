@@ -40,7 +40,9 @@ public class JmMtddMfServiceImpl extends BaseServiceImpl<JmMtddMfDao , JmMtddMfE
 
     @Override
     public void beforeInsert(JmMtddMfDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override

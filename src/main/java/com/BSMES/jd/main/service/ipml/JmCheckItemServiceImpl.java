@@ -2,14 +2,12 @@ package com.BSMES.jd.main.service.ipml;
 
 import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
-import com.BSMES.jd.main.dao.JmChkSpcDao;
-import com.BSMES.jd.main.dto.InsgwcodeDTO;
-import com.BSMES.jd.main.dto.JmChkSpcDTO;
+import com.BSMES.jd.main.dao.JmCheckItemDao;
+import com.BSMES.jd.main.dto.JmCheckItemDTO;
 import com.BSMES.jd.main.dto.ResultType;
-import com.BSMES.jd.main.entity.InsgwcodeEntity;
-import com.BSMES.jd.main.entity.JmChkSpcEntity;
+import com.BSMES.jd.main.entity.JmCheckItemEntity;
 import com.BSMES.jd.main.service.InssysvarService;
-import com.BSMES.jd.main.service.JmChkSpcService;
+import com.BSMES.jd.main.service.JmCheckItemService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,48 +18,48 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class JmChkSpcServiceImpl extends BaseServiceImpl<JmChkSpcDao, JmChkSpcEntity, JmChkSpcDTO> implements JmChkSpcService {
+public class JmCheckItemServiceImpl extends BaseServiceImpl<JmCheckItemDao, JmCheckItemEntity, JmCheckItemDTO> implements JmCheckItemService {
 
     @Autowired
     InssysvarService inssysvarService;
 
     @Override
-    public void beforeInsert(JmChkSpcDTO dto) {
-        if (dto.getHpdate()==null){
-            dto.setHpdate(new Date());
+    public void beforeInsert(JmCheckItemDTO dto) {
+        if (dto.getCreateTime()==null){
+            dto.setCreateTime(new Date());
         }
     }
 
     @Override
-    public void beforEedit(JmChkSpcDTO dto) {
+    public void beforEedit(JmCheckItemDTO dto) {
 
     }
 
     @Override
-    public CommonReturn getJmChkSpc(ResultType dto) {
+    public CommonReturn getCheck(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        List<JmChkSpcDTO> jmChkSpcDTOS = this.select(this.getQueryWrapper(dto));
-        if(jmChkSpcDTOS.isEmpty()){
-            result.setAll(20000,jmChkSpcDTOS,"没有查找结果，建议仔细核对查找条件");
+        List<JmCheckItemDTO> jmCheckItemDTOS = this.select(this.getQueryWrapper(dto));
+        if(jmCheckItemDTOS.isEmpty()){
+            result.setAll(20000,jmCheckItemDTOS,"没有查找结果，建议仔细核对查找条件");
         }else{
-            result.setAll(20000,jmChkSpcDTOS,"查找成功");
+            result.setAll(20000,jmCheckItemDTOS,"查找成功");
         }
         return result;
     }
 
     @Override
-    public CommonReturn saveJmChkSpc(JmChkSpcDTO dto) {
+    public CommonReturn saveCheck(JmCheckItemDTO dto) {
         CommonReturn result = new CommonReturn();
-        if (dto.getSpcChk()==null){
-            dto.setSpcChk(getKey("User","spc_chk",inssysvarService,dto));
+        if (dto.getSid()==null){
+            dto.setSid(getKey("User","sid",inssysvarService,dto));
         }
         //判断dto是否为空 判断dto的usrcode是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getSpcChk())){
-            QueryWrapper<JmChkSpcEntity> jmChkSpcEntityQueryWrapper = new QueryWrapper<>();
-            jmChkSpcEntityQueryWrapper.eq("spc_chk",dto.getSpcChk());
-            JmChkSpcDTO jmChkSpcDTO = this.selectOne(jmChkSpcEntityQueryWrapper);
+        if (dto!=null && MyUtils.StringIsNull(dto.getSid())){
+            QueryWrapper<JmCheckItemEntity> jmCheckItemEntityQueryWrapper = new QueryWrapper<>();
+            jmCheckItemEntityQueryWrapper.eq("sid",dto.getSid());
+            JmCheckItemDTO jmCheckItemDTO = this.selectOne(jmCheckItemEntityQueryWrapper);
             //判断 usrcode 是否重复
-            if (jmChkSpcDTO==null || jmChkSpcDTO.getSpcChk()==null){
+            if (jmCheckItemDTO==null || jmCheckItemDTO.getSid()==null){
                 this.insert(dto);
                 result.setAll(20000,null,"操作成功");
             }else{
@@ -74,14 +72,14 @@ public class JmChkSpcServiceImpl extends BaseServiceImpl<JmChkSpcDao, JmChkSpcEn
     }
 
     @Override
-    public CommonReturn editJmChkSpc(JmChkSpcDTO dto) {
+    public CommonReturn editCheck(JmCheckItemDTO dto) {
         CommonReturn result = new CommonReturn();
         //判断 usrcode 是否有值
-        if (dto!=null && MyUtils.StringIsNull(dto.getSpcChk())){
+        if (dto!=null && MyUtils.StringIsNull(dto.getSid())){
             //获取原先的用户属性值
-            QueryWrapper<JmChkSpcEntity> jmChkSpcEntityQueryWrapper = new QueryWrapper<>();
-            jmChkSpcEntityQueryWrapper.eq("spc_chk",dto.getSpcChk());
-            JmChkSpcDTO var = this.selectOne(jmChkSpcEntityQueryWrapper);
+            QueryWrapper<JmCheckItemEntity> jmCheckItemEntityQueryWrapper = new QueryWrapper<>();
+            jmCheckItemEntityQueryWrapper.eq("sid",dto.getSid());
+            JmCheckItemDTO var = this.selectOne(jmCheckItemEntityQueryWrapper);
             //设置用户不能操作的属性
             try{
                 this.edit(dto);
@@ -96,10 +94,10 @@ public class JmChkSpcServiceImpl extends BaseServiceImpl<JmChkSpcDao, JmChkSpcEn
     }
 
     @Override
-    public CommonReturn delJmChkSpc(List<String> spcChks) {
+    public CommonReturn delCheck(List<String> sids) {
         CommonReturn result = new CommonReturn();
-        QueryWrapper<JmChkSpcEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("spc_chk",spcChks);
+        QueryWrapper<JmCheckItemEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("sid",sids);
         try{
             this.remove(queryWrapper);
             result.setAll(20000,null,"操作成功");
@@ -110,9 +108,9 @@ public class JmChkSpcServiceImpl extends BaseServiceImpl<JmChkSpcDao, JmChkSpcEn
     }
 
     @Override
-    public CommonReturn getJmChkSpcPage(ResultType dto) {
+    public CommonReturn getCheckPage(ResultType dto) {
         CommonReturn result = new CommonReturn();
-        IPage<JmChkSpcDTO> jmChkSpcDTOIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
+        IPage<JmCheckItemDTO> jmChkSpcDTOIPage = this.selectPage(dto.getPage(),dto.getPageSize(),this.getQueryWrapper(dto));
         if (jmChkSpcDTOIPage==null){
             result.setAll(10001,null,"参数错误");
         }else{
@@ -124,31 +122,29 @@ public class JmChkSpcServiceImpl extends BaseServiceImpl<JmChkSpcDao, JmChkSpcEn
     private QueryWrapper getQueryWrapper(ResultType dto){
         QueryWrapper queryWrapper = new QueryWrapper();
 
-        if (dto.getBegDd()!=null){
-            queryWrapper.ge("hpdate",dto.getBegDd());
-        }
-        if(dto.getEndDd()!=null){
-            queryWrapper.le("hpdate",dto.getEndDd());
-        }
+//        if(dto.getAscOrder()==null && dto.getDescOrder()==null){
+//            dto.setDescOrder("sort");
+//        }
+
         if (MyUtils.StringIsNull(dto.getSid())){
-            queryWrapper.eq("spc_chk",dto.getSid());
-        }
-        if (MyUtils.StringIsNull(dto.getSorg())){
-            queryWrapper.eq("zc_no",dto.getSorg());
-        }
-        if (MyUtils.StringIsNull(dto.getWkName())){
-            queryWrapper.eq("smake",dto.getWkName());
-        }
-        if (MyUtils.StringIsNull(dto.getType())){
-            queryWrapper.eq("spc_type",dto.getType());
-        }
-        if (MyUtils.StringIsNull(dto.getPrdNo())){
-            queryWrapper.eq("prd_no",dto.getPrdNo());
+            queryWrapper.eq("sid",dto.getSid());
         }
         if (MyUtils.StringIsNull(dto.getOtherId())){
-            queryWrapper.like("name",dto.getOtherId());
+            queryWrapper.eq("name",dto.getOtherId());
+        }
+        if (MyUtils.StringIsNull(dto.getType())){
+            queryWrapper.eq("check_type",dto.getType());
+        }
+        if (MyUtils.StringIsNull(dto.getOtherType())){
+            queryWrapper.eq("mode",dto.getOtherType());
         }
 
+        if (dto.getBegDd()!=null){
+            queryWrapper.ge("create_time",dto.getBegDd());
+        }
+        if(dto.getEndDd()!=null){
+            queryWrapper.le("create_time",dto.getEndDd());
+        }
         if (dto.getAscOrder()!=null){
             queryWrapper.orderByAsc(MyUtils.humpToLine((String) dto.getAscOrder()));
         }

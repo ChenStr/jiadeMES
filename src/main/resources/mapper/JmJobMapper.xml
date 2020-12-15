@@ -202,7 +202,9 @@
     </select>
 
     <select id="getsorgYield" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
-        select job.dep,convert(date,rec.op_dd) as hpdate,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
+        select job.dep,case when datepart(hh,rec.op_dd) &lt; 7 then convert(date,rec.op_dd-1)
+        when datepart(hh,rec.op_dd)=7 and datepart(mi,rec.op_dd) &lt; 30 then convert(date,rec.op_dd-1)
+        else convert(date,rec.op_dd) end as hpdate,sum(isnull(recb.qty_ok,0)) as qty from jm_job_rec_b as recb
         left join jm_job_rec as rec on recb.opsid=rec.opsid
         left join jm_job as job on job.jb_no=rec.jb_no
         <where>
@@ -216,7 +218,9 @@
                 and convert(date,rec.op_dd) &lt;= #{endDd}
             </if>
         </where>
-        group by job.dep,convert(date,rec.op_dd)
+        group by job.dep,case when datepart(hh,rec.op_dd) &lt; 7 then convert(date,rec.op_dd-1)
+        when datepart(hh,rec.op_dd)=7 and datepart(mi,rec.op_dd) &lt; 30 then convert(date,rec.op_dd-1)
+        else convert(date,rec.op_dd) end
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="ascOrder!=null and ascOrder.length()>0 ">
                 ${ascOrder} ASC,

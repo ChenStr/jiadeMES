@@ -66,4 +66,8 @@ public class JmMdwxTfDTO extends BaseDTO {
      */
     public String curPara;
 
+    public String byNo;
+
+    public String byName;
+
 }

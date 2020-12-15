@@ -37,7 +37,9 @@ public class JmBomMfServiceImpl extends BaseServiceImpl<JmBomMfDao , JmBomMfEnti
 
     @Override
     public void beforeInsert(JmBomMfDTO dto) {
-        dto.setHpdate(new Date());
+        if (dto.getHpdate()==null){
+            dto.setHpdate(new Date());
+        }
     }
 
     @Override
