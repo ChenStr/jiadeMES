@@ -151,6 +151,24 @@ public class MyUtils {
     }
 
     /**
+     * 根据对象的属性名来设置对应的值(不用考虑对象的类型)
+     * @param fieldName 对象的属性名(String)
+     * @param object 对象
+     * @param value  对应的值
+     * @return
+     */
+    public static void setFieldValueByFieldName(String fieldName,Object object,Object value){
+        try {
+            Field field = object.getClass().getField(fieldName);
+            field.setAccessible(true);
+            //设置对象的访问权限，保证对private的属性的访问
+            field.set(object,value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 获取指定字符串的后缀名
      * @param fileName
      * @param bite
@@ -250,8 +268,8 @@ public class MyUtils {
      */
     public static <T> void exportExcel(List<T> list, LinkedHashMap<String, String> map, String fileName, HttpServletResponse response,HashMap<String,Object> params) throws IOException, ParseException {
         //文件地址
-//        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
-        String excel = "D://FAFMES/static/modle1.xlsx";
+        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
+//        String excel = "D://FAFMES/static/modle1.xlsx";
         File fi = new File(excel);
 
         XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));

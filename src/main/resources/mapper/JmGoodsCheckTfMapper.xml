@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- JmJob表的真身 -->
+<mapper namespace="com.BSMES.jd.main.dao.JmGoodsCheckTfDao">
+
+    <!-- id 为方法名 resultType 返回结果(需要带上路径) -->
+    <insert id="saveGoodTfS" parameterType="com.BSMES.jd.main.dto.JmGoodsCheckTfDTO">
+        insert into jm_goods_check_tf (sid,cid,item_sid,item_name,skill,testing_data,test_to_decide,create_time,creator,update_time,updator,rem) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.sid}, #{item.cid},  #{item.itemSid},#{item.itemName},#{item.skill},#{item.testingData},
+            #{item.testToDecide},#{item.createTime},#{item.creator},#{item.updateTime},#{item.updator},#{item.rem})
+        </foreach>
+    </insert>
+
+    <update id="editGoodTfS" parameterType="com.BSMES.jd.main.dto.JmGoodsCheckTfDTO">
+        UPDATE jm_goods_check_tf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="itemSid!=null">item_sid=#{itemSid},</if>
+            <if test="itemName!=null">item_name=#{itemName},</if>
+            <if test="skill!=null">skill=#{skill},</if>
+            <if test="testingData!=null">testing_data=#{testingData},</if>
+            <if test="testToDecide!=null">test_to_decide=#{testToDecide},</if>
+            <if test="rem!=null">rem=#{rem},</if>
+            <if test="updateTime!=null">update_time=#{updateTime},</if>
+            <if test="updator!=null">updator=#{updator},</if>
+        </trim>
+        WHERE sid=#{sid} and cid=#{cid}
+    </update>
+
+</mapper>

@@ -9,6 +9,9 @@ import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDTO> {
@@ -40,4 +43,11 @@ public interface JmJobRecService extends BaseService<JmJobRecEntity , JmJobRecDT
 
 
     public CommonReturn getJobRecsPage(JobRec jobRec);
+
+    /**
+     * 车间生产月报表导出
+     * @param dto
+     * @return
+     */
+    public CommonReturn getDepMoth(ResultType dto) throws IOException, ParseException;
 }

@@ -46,7 +46,9 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     @Override
     public void beforeInsert(JmJobRecBDTO dto) {
-
+        if(dto.getOpDd()==null){
+            dto.setOpDd(new Date());
+        }
     }
 
     @Override

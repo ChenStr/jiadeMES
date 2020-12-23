@@ -17,13 +17,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecEntity , JmJobRecDTO> implements JmJobRecService {
 
+    @Autowired
+    HttpServletResponse response;
 
     @Autowired
     JmJobService jmJobService;
@@ -362,6 +368,111 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         }
         PageInfo jobPages = new PageInfo<JobRec>(jobRecs);
         result.setAll(20000,jobPages,"操作成功");
+        return result;
+    }
+
+    @DS("master")
+    @Override
+    public CommonReturn getDepMoth(ResultType dto) throws IOException, ParseException {
+        CommonReturn result = new CommonReturn();
+        Map<String,DepMother> depMothers = new LinkedHashMap<>();
+        //拿出所有的数据
+        List<Report> reports = jmJobRecDao.getDepMoth(dto);
+        for(Report report : reports){
+            //获取时间天
+            Calendar ca = Calendar.getInstance();
+            ca.setTime(report.getHpdate());
+            int day = ca.get(Calendar.DATE);
+            //判断 产品是否已经被存放了 有 true 无 false
+            boolean flag =depMothers.containsKey(report.getPrdNo());
+
+            if (flag){
+                //拿出数据
+                DepMother depMother = depMothers.get(report.getPrdNo());
+                BigDecimal sum = depMother.getSum();
+                //修改数据
+                String file = "day".concat(Integer.toString(day));
+                MyUtils.setFieldValueByFieldName(file,depMother,report.getQty());
+                if (report.getQty()!=null){
+                    sum = sum.add(report.getQty());
+                }
+                depMother.setSum(sum);
+                //将数据存入
+                depMothers.put(report.getPrdNo(),depMother);
+            }
+            //如果没有
+            else{
+                BigDecimal sum = new BigDecimal("0");
+                DepMother depMother = new DepMother();
+                depMother.setPrdNo(report.getPrdNo());
+                depMother.setPrdName(report.getPrdName());
+                //设置要修改的字段
+                String file = "day".concat(Integer.toString(day));
+                MyUtils.setFieldValueByFieldName(file,depMother,report.getQty());
+                if (report.getQty()!=null){
+                    sum = sum.add(report.getQty());
+                }
+                depMother.setSum(sum);
+                //将数据存入
+                depMothers.put(report.getPrdNo(),depMother);
+            }
+        }
+        //定义导出数据
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("prdName","产品名称");
+        map.put("qty","订单量");
+        map.put("planQty","计划量");
+        map.put("day1","1");
+        map.put("day2","2");
+        map.put("day3","3");
+        map.put("day4","4");
+        map.put("day5","5");
+        map.put("day6","6");
+        map.put("day7","7");
+        map.put("day8","8");
+        map.put("day9","9");
+        map.put("day10","10");
+        map.put("day11","11");
+        map.put("day12","12");
+        map.put("day13","13");
+        map.put("day14","14");
+        map.put("day15","15");
+        map.put("day16","16");
+        map.put("day17","17");
+        map.put("day19","19");
+        map.put("day20","20");
+        map.put("day21","21");
+        map.put("day22","22");
+        map.put("day23","23");
+        map.put("day24","24");
+        map.put("day25","25");
+        map.put("day26","26");
+        map.put("day27","27");
+        map.put("day28","28");
+        map.put("day29","29");
+        map.put("day30","30");
+        map.put("day31","31");
+        map.put("sum","合计");
+        List<DepMother> depMotherList = depMothers.values().stream().collect(Collectors.toList());
+
+        HashMap<String,Object> map2 = new HashMap<>();
+
+        if (dto.getDep()!=null){
+            map2.put("sorg",dto.getDep());
+        }
+        if (dto.getHpdate()!=null){
+            map2.put("time",dto.getHpdate().toString());
+        }else{
+            map2.put("time",new Date().toString());
+        }
+
+        map2.put("title","车间生产月报表");
+
+        String fileName = "车间生产月报表.xlsx";
+
+        MyUtils.exportExcel(depMotherList,map,fileName,response,map2);
+
+        result.setAll(20000,depMothers,"没有查找结果，建议仔细核对查找条件");
         return result;
     }
 

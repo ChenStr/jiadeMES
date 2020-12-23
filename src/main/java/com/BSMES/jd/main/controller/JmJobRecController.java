@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -66,6 +68,15 @@ public class JmJobRecController {
         CommonReturn result = new CommonReturn();
 
         result = jmJobRecService.taskeditJobRec();
+
+        return result;
+    }
+
+    @GetMapping("/depMother")
+    public CommonReturn depMother(ResultType dto) throws IOException, ParseException {
+        CommonReturn result = new CommonReturn();
+
+        result = jmJobRecService.getDepMoth(dto);
 
         return result;
     }

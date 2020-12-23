@@ -109,6 +109,12 @@ public class ResultType extends BaseDTO {
     public Date endDd;
 
     /**
+     * 结束时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Date hpdate;
+
+    /**
      * 不等于类型
      */
     public String notType;

@@ -59,9 +59,11 @@ public class JmCheckPlanMfServiceImpl extends BaseServiceImpl<JmCheckPlanMfDao, 
             List<String> sids = new ArrayList<>();
             jmCheckPlanMfDTOS.stream().forEach(T->sids.add(T.getSid()));
             List<JmCheckPlanTfDTO> jmCheckPlanTfDTOS = new ArrayList<>();
-            QueryWrapper<JmCheckPlanTfEntity> jmCheckPlanTfEntityQueryWrapper = new QueryWrapper<>();
-            jmCheckPlanTfEntityQueryWrapper.in("sid",sids);
-            jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
+            if(sids.size()>0) {
+                QueryWrapper<JmCheckPlanTfEntity> jmCheckPlanTfEntityQueryWrapper = new QueryWrapper<>();
+                jmCheckPlanTfEntityQueryWrapper.in("sid", sids);
+                jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
+            }
             if (jmCheckPlanTfDTOS.size()>0){
                 JmCheckPlan jmCheckPlan = new JmCheckPlan();
                 for (JmCheckPlanMfDTO jmCheckPlanMfDTO : jmCheckPlanMfDTOS){
@@ -149,8 +151,11 @@ public class JmCheckPlanMfServiceImpl extends BaseServiceImpl<JmCheckPlanMfDao, 
         CommonReturn result = new CommonReturn();
         QueryWrapper<JmCheckPlanMfEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("sid",sids);
+        QueryWrapper<JmCheckPlanTfEntity> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.in("sid",sids);
         try{
             this.remove(queryWrapper);
+            jmCheckPlanTfService.remove(queryWrapper1);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001,null,"操作失败");
@@ -171,16 +176,18 @@ public class JmCheckPlanMfServiceImpl extends BaseServiceImpl<JmCheckPlanMfDao, 
 
             jmCheckPlanMfEntityIPage.getRecords().stream().forEach(T->sids.add(T.getSid()));
             List<JmCheckPlanTfDTO> jmCheckPlanTfDTOS = new ArrayList<>();
-            QueryWrapper<JmCheckPlanTfEntity> jmCheckPlanTfEntityQueryWrapper = new QueryWrapper<>();
-            jmCheckPlanTfEntityQueryWrapper.in("sid",sids);
-            jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
+            if(sids.size()>0) {
+                QueryWrapper<JmCheckPlanTfEntity> jmCheckPlanTfEntityQueryWrapper = new QueryWrapper<>();
+                jmCheckPlanTfEntityQueryWrapper.in("sid", sids);
+                jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
+            }
             if (jmCheckPlanTfDTOS.size()>0){
                 JmCheckPlan jmCheckPlan = new JmCheckPlan();
                 for (JmCheckPlanMfEntity jmCheckPlanMf : jmCheckPlanMfEntityIPage.getRecords()){
                     jmCheckPlan.setJmCheckPlanMfDTO(ConvertUtils.convert(jmCheckPlanMf,currentDtoClass()));
                     List<JmCheckPlanTfDTO> jmCheckPlanTfDTOS1 = new ArrayList<>();
                     for (JmCheckPlanTfDTO jmCheckPlanTfDTO : jmCheckPlanTfDTOS){
-                        if (jmCheckPlanMf.getSid().equals(jmCheckPlanTfDTO)){
+                        if (jmCheckPlanMf.getSid().equals(jmCheckPlanTfDTO.getSid())){
                             jmCheckPlanTfDTOS1.add(jmCheckPlanTfDTO);
                         }
                     }

@@ -94,4 +94,17 @@
         </where>
     </update>
 
+    <select id="getDepMoth" parameterType="com.BSMES.jd.main.dto.ResultType" resultType="com.BSMES.jd.main.dto.Report">
+        SELECT sum(recB.qty_ok) as qty,prd_no,prd_name,convert(date,rec.op_dd) as hpdate FROM jm_job_rec as rec JOIN jm_job_rec_b  as recB on rec.opsid = recB.opsid
+        <where>
+            <if test="begDd != null and begDd.toString().length()>0" >
+                and rec.op_dd &gt;= #{begDd}
+            </if>
+            <if test="endDd != null and endDd.toString().length()>0" >
+                and rec.op_dd &lt;= #{endDd}
+            </if>
+        </where>
+        GROUP BY prd_no,prd_name,convert(date,rec.op_dd)
+    </select>
+
 </mapper>

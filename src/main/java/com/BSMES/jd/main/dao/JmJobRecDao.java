@@ -1,9 +1,7 @@
 package com.BSMES.jd.main.dao;
 
 import com.BSMES.jd.common.dao.BaseDao;
-import com.BSMES.jd.main.dto.JmJobRecBDTO;
-import com.BSMES.jd.main.dto.JmJobRecDTO;
-import com.BSMES.jd.main.dto.JobRec;
+import com.BSMES.jd.main.dto.*;
 import com.BSMES.jd.main.entity.JmJobRecEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,5 +17,10 @@ public interface JmJobRecDao extends BaseDao<JmJobRecEntity> {
      * @param jmJobRecDTOS
      */
     public void editJobRecs(List<JmJobRecDTO> jmJobRecDTOS);
+
+    /**
+     * 日报表
+     */
+    public List<Report> getDepMoth(ResultType dto);
 
 }
