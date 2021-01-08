@@ -65,8 +65,9 @@ public class JmCheckPlanMfServiceImpl extends BaseServiceImpl<JmCheckPlanMfDao, 
                 jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
             }
             if (jmCheckPlanTfDTOS.size()>0){
-                JmCheckPlan jmCheckPlan = new JmCheckPlan();
+
                 for (JmCheckPlanMfDTO jmCheckPlanMfDTO : jmCheckPlanMfDTOS){
+                    JmCheckPlan jmCheckPlan = new JmCheckPlan();
                     jmCheckPlan.setJmCheckPlanMfDTO(jmCheckPlanMfDTO);
                     List<JmCheckPlanTfDTO> jmCheckPlanTfDTOS1 = new ArrayList<>();
                     for (JmCheckPlanTfDTO jmCheckPlanTfDTO : jmCheckPlanTfDTOS){
@@ -182,8 +183,8 @@ public class JmCheckPlanMfServiceImpl extends BaseServiceImpl<JmCheckPlanMfDao, 
                 jmCheckPlanTfDTOS = jmCheckPlanTfService.select(jmCheckPlanTfEntityQueryWrapper);
             }
             if (jmCheckPlanTfDTOS.size()>0){
-                JmCheckPlan jmCheckPlan = new JmCheckPlan();
                 for (JmCheckPlanMfEntity jmCheckPlanMf : jmCheckPlanMfEntityIPage.getRecords()){
+                    JmCheckPlan jmCheckPlan = new JmCheckPlan();
                     jmCheckPlan.setJmCheckPlanMfDTO(ConvertUtils.convert(jmCheckPlanMf,currentDtoClass()));
                     List<JmCheckPlanTfDTO> jmCheckPlanTfDTOS1 = new ArrayList<>();
                     for (JmCheckPlanTfDTO jmCheckPlanTfDTO : jmCheckPlanTfDTOS){

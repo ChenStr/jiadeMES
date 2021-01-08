@@ -6,6 +6,7 @@ import com.BSMES.jd.main.dao.JmOutMouldDao;
 import com.BSMES.jd.main.dto.JmOutMouldDTO;
 import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmOutMouldEntity;
+import com.BSMES.jd.main.service.InssysvarService;
 import com.BSMES.jd.main.service.JmOutMouldService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,7 +21,7 @@ public class JmOutMouldServiceImpl extends BaseServiceImpl<JmOutMouldDao, JmOutM
 
 
     @Autowired
-    InsorgServiceImpl inssysvarService;
+    InssysvarService inssysvarService;
 
     @Override
     public void beforeInsert(JmOutMouldDTO dto) {
