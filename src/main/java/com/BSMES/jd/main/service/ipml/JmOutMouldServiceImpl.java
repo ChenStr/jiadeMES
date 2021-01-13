@@ -136,6 +136,9 @@ public class JmOutMouldServiceImpl extends BaseServiceImpl<JmOutMouldDao, JmOutM
         if (MyUtils.StringIsNull(dto.getPrdName())){
             queryWrapper.eq("prd_name",dto.getPrdName());
         }
+        if (MyUtils.StringIsNull(dto.getDep())){
+            queryWrapper.like("dep",dto.getDep());
+        }
         if (dto.getBegDd()!=null){
             queryWrapper.ge("create_time",dto.getBegDd());
         }

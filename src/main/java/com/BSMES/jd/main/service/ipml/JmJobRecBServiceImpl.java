@@ -248,11 +248,14 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             //计算总数量
             Report report = new Report();
             BigDecimal sum = new BigDecimal("0");
+            BigDecimal qty = new BigDecimal("0");
             for (Report jmJobRecBDTO: jmJobRecBDTOS){
                 sum = sum.add(jmJobRecBDTO.getQty());
+                qty = qty.add(jmJobRecBDTO.getSqty());
             }
 
             report.setQty(sum);
+            report.setSqty(qty);
             LinkedHashMap<String,String> map = new LinkedHashMap<>();
             map.put("sid","调度单号");
             map.put("prdName","产品名称");

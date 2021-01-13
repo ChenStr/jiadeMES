@@ -28,6 +28,12 @@ public interface JmMoMfService extends BaseService<JmMoMfEntity, JmMoMfDTO> {
     public CommonReturn delMoMf(List<String> sids);
 
     /**
+     * 定时任务 修改调度单状态
+     * @return
+     */
+    public CommonReturn taskeditMoMf();
+
+    /**
      * 获取全部的调度单(制令单) 分页
      * @param dto queryWrapper 条件
      * @return

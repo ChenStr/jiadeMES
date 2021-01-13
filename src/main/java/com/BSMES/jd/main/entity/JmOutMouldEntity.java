@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -35,10 +36,14 @@ public class JmOutMouldEntity {
 
     public String smake;
 
+    public String dep;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date createTime;
 
     public String creator;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date updateTime;
 
     public String updator;

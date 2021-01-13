@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -355,6 +356,37 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
         PageInfo jmMoMfMorePageInfo = new PageInfo<JmMoMfMore>(jmMoMfMores);
 
         result.setAll(20000,jmMoMfMorePageInfo,"操作成功");
+        return result;
+    }
+
+    @DS("master")
+    @Scheduled(cron="0 30 7 * * ?")
+    @Override
+    public CommonReturn taskeditMoMf(){
+        CommonReturn result = new CommonReturn();
+        //寻找分派完毕的所有单据
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper.eq("id","DIS20201030013");
+        JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper);
+
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryEntityQueryWrapper1 = new QueryWrapper<>();
+        jmBsDictionaryEntityQueryWrapper1.eq("id","DIS20201030014");
+        JmBsDictionaryDTO jmBsDictionaryDTO1 = jmBsDictionaryService.selectOne(jmBsDictionaryEntityQueryWrapper1);
+
+        QueryWrapper<JmMoMfEntity> jmMoMfEntityQueryWrapper = new QueryWrapper<>();
+        jmMoMfEntityQueryWrapper.eq("state",jmBsDictionaryDTO.getCode());
+        List<JmMoMfDTO> jmMoMfDTOS = this.select(jmMoMfEntityQueryWrapper);
+
+        if (jmMoMfDTOS!=null && jmMoMfDTOS.size()!=0){
+            for (JmMoMfDTO jmMoMfDTO : jmMoMfDTOS){
+                //比较时间如果当前单据时间小于现在时间，那么就会修改其 state
+                if (jmMoMfDTO.getStaDd()!=null && jmMoMfDTO.getStaDd().compareTo(new Date())<0){
+                    jmMoMfDTO.setState(Integer.parseInt(jmBsDictionaryDTO1.getCode()));
+                }
+                this.editMoMf(jmMoMfDTO);
+            }
+        }
+
         return result;
     }
 

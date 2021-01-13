@@ -335,6 +335,7 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             //设置用户不能操作的属性
             try{
                 jmJobDao.updateJob(dto);
+                isComplete(dto);
                 result.setAll(20000,null,"操作成功");
             }catch (Exception e){
                 result.setAll(10001,null,"操作失败");
@@ -522,6 +523,55 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
         }
         return result;
     }
+
+    /**
+     * 计划单被修改时触发的方法
+     * @param dto 计划单
+     */
+    public void isComplete(JmJobDTO dto){
+        //判断计划单的状态是否被修改为已完成
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryDTOQueryWrapper = new QueryWrapper<>();
+        jmBsDictionaryDTOQueryWrapper.eq("id","DIS20201030015");
+        JmBsDictionaryDTO jmBsDictionaryDTO = jmBsDictionaryService.selectOne(jmBsDictionaryDTOQueryWrapper);
+        //已中止的状态查询
+        QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryDTOQueryWrapper2 = new QueryWrapper<>();
+        jmBsDictionaryDTOQueryWrapper2.eq("id","DIS20201030014");
+        JmBsDictionaryDTO jmBsDictionaryDTO2 = jmBsDictionaryService.selectOne(jmBsDictionaryDTOQueryWrapper2);
+        if (dto.getState().equals(jmBsDictionaryDTO.getCode()) || dto.getState().equals(jmBsDictionaryDTO2.getCode())){
+            //判断其他计划单是否也时已完成的状态
+            QueryWrapper<JmMoMfEntity> jmMoMfEntityQueryWrapper = new QueryWrapper<>();
+            jmMoMfEntityQueryWrapper.eq("sid",dto.getSid());
+            JmMoMfDTO jmMoMfDTO = jmMoMfService.selectOne(jmMoMfEntityQueryWrapper);
+            if (jmMoMfDTO!=null && jmMoMfDTO.getSid()!=null){
+                //查询其他的计划单
+                List<JmJobDTO> dtos = new ArrayList<>();
+                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
+                jmJobEntityQueryWrapper.eq("sid",dto.getSid());
+                dtos = this.select(jmJobEntityQueryWrapper);
+                //判断其他的计划单是否都已经完成了
+                Boolean flag = true;
+                for (JmJobDTO jmJobDTO : dtos){
+                    if (!(jmJobDTO.getState().equals(jmBsDictionaryDTO.getCode()) || jmJobDTO.getState().equals(jmBsDictionaryDTO2.getCode()))){
+                        flag = false;
+                    }
+                }
+                //修改时间
+                if(flag == true){
+                    QueryWrapper<JmBsDictionaryEntity> jmBsDictionaryDTOQueryWrapper1 = new QueryWrapper<>();
+                    jmBsDictionaryDTOQueryWrapper1.eq("id","DIS20210112002");
+                    JmBsDictionaryDTO jmBsDictionaryDTO1 = jmBsDictionaryService.selectOne(jmBsDictionaryDTOQueryWrapper1);
+                    int day = Integer.parseInt(jmBsDictionaryDTO1.getCode());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date());
+                    calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + day);
+                    Date date = calendar.getTime();
+                    jmMoMfDTO.setStaDd(date);
+                    jmMoMfService.editMoMf(jmMoMfDTO);
+                }
+            }
+        }
+    }
+
 
 
 }
