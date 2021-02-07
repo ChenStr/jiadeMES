@@ -32,6 +32,13 @@ public class ErpMfMoDTO extends BaseDTO {
     public String STA_DD;
 
     /**
+     * 实际完工日
+     */
+    @TableField("FIN_DD")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public String FIN_DD;
+
+    /**
      * 预完工日
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

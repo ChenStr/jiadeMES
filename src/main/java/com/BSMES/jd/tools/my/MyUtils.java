@@ -3,11 +3,13 @@ package com.BSMES.jd.tools.my;
 
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -268,16 +270,33 @@ public class MyUtils {
      */
     public static <T> void exportExcel(List<T> list, LinkedHashMap<String, String> map, String fileName, HttpServletResponse response,HashMap<String,Object> params) throws IOException, ParseException {
         //文件地址
+        String excel = null;
+        XSSFWorkbook wb = null;
+        XSSFSheet sheet = null;
 //        String excel = "E://java/jd/src/main/resources/static/modle1.xlsx";
-        String excel = "D://FAFMES/static/modle1.xlsx";
-        File fi = new File(excel);
+//        String excel = "D://FAFMES/static/modle1.xlsx";
+        Boolean flag = params.containsKey("address") && params.get("address")!=null;
 
-        XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(fi));
-        XSSFSheet sheet = wb.getSheetAt(0);
+        if (params.containsKey("address") && params.get("address")!=null){
+            excel = params.get("address").toString();
 
-//        //新建一张表
-//        XSSFWorkbook wb = new XSSFWorkbook();
-//        Sheet sheet = wb.createSheet("Goods");
+            File fi = new File(excel);
+
+            wb = new XSSFWorkbook(new FileInputStream(fi));
+            sheet = wb.getSheetAt(0);
+        }else{
+            //新建一张表
+            wb = new XSSFWorkbook();
+//            Sheet sheet = wb.createSheet("Goods");
+            sheet = wb.createSheet("Goods");
+
+            //合并单元格
+            CellRangeAddress region1 = new CellRangeAddress(0, 1, (short) 0, (short) 13);
+            sheet.addMergedRegion(region1);
+
+//            sheet.setDefaultColumnWidth(200*256);
+//            sheet.setDefaultRowHeight((short) (30*20));
+        }
 
         //设置样式
         XSSFCellStyle cellStyle = wb.createCellStyle();
@@ -287,9 +306,15 @@ public class MyUtils {
         cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        //设置单元格格式为文本
+//        XSSFDataFormat format = wb.createDataFormat();
+//        cellStyle.setDataFormat(format.getFormat("@"));
 
 
 
+
+
+        //setCellStyle
         XSSFFont cellFont = wb.createFont();
         cellFont.setFontName("Courier New");
         cellFont.setBold(false);
@@ -308,16 +333,9 @@ public class MyUtils {
         //定好格式
 
         SimpleDateFormat time = new SimpleDateFormat("yyyy年MM月dd日");
-//        String date = time.format(new Date());
-//        if (params.get("time")!=null){
-//            date = params.get("time").toString();
-//        }
-//
-//        Date date1 = time.parse(date);
+
         String date = params.get("time").toString();         //获得你要处理的时间 Date型
-//        String strDate= time.format(date); //格式化成yyyy-MM-dd格式的时间字符串
-//        Date newDate =time.parse(strDate);
-//        java.sql.Date resultDate = new java.sql.Date(newDate.getTime());
+
 
         Date date1 = null;
         try {
@@ -325,6 +343,8 @@ public class MyUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+
 
         String sorg = "";
 
@@ -375,8 +395,13 @@ public class MyUtils {
                         Cell cell = titleRow.createCell(item);
                         if (value!=null){
                             try {
-                                double bigval = new BigDecimal(value.toString()).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-                                cell.setCellValue(bigval);
+                                if(key.equals("mdNo")){
+                                    cell.setCellValue(value.toString());
+                                }else{
+                                    double bigval = new BigDecimal(value.toString()).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+                                    cell.setCellValue(bigval);
+                                }
+
 //                                BigDecimal bigval2 = new BigDecimal(value.toString()).setScale(2, BigDecimal.ROUND_UP).stripTrailingZeros();
 //                                cell.setCellValue(bigval2.toPlainString());
                             }catch (Exception e){
@@ -384,6 +409,7 @@ public class MyUtils {
 //                                e.printStackTrace();
                             }
                         }
+                        cell.setCellStyle(cellStyle);
 
 //                        try{
 ////                            cell.setCellValue(String.format("%.2f",value));
@@ -391,7 +417,6 @@ public class MyUtils {
 //                        }catch (Exception e){
 //                            e.printStackTrace();
 //                        }
-                        cell.setCellStyle(cellStyle);
 
                     }
                     item++;

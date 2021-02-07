@@ -46,4 +46,6 @@ public class JmOutMouldDTO extends BaseDTO {
 
     public String updator;
 
+    public String time;
+
 }

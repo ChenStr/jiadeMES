@@ -4,8 +4,12 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmJobDao;
 import com.BSMES.jd.main.dto.*;
+import com.BSMES.jd.main.dto.erp.ErpMfMoDTO;
+import com.BSMES.jd.main.dto.erp.ErpTfMoDTO;
 import com.BSMES.jd.main.entity.*;
 import com.BSMES.jd.main.service.*;
+import com.BSMES.jd.main.service.erp.ErpMfMoService;
+import com.BSMES.jd.main.service.erp.ErpTfMoService;
 import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,6 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -63,6 +70,15 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
 
     @Autowired
     JmBsDictionaryService jmBsDictionaryService;
+
+    @Autowired
+    ErpMfMoService erpMfMoService;
+
+    @Autowired
+    ErpTfMoService erpTfMoService;
+
+    @Value("${excel.address}")
+    private String address;
 
 
     @Override
@@ -459,7 +475,20 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             map.put("wqty","计划完成数");
             map.put("sqty","当月完成计划数");
             String fileName = "车间生产月报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+            if (dto.getBegDd()!=null){
+                map2.put("time",dto.getBegDd().toString());
+            }
+
+            map2.put("title","车间生产月报表");
+            map2.put("address",this.address);
+
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,map2);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
@@ -544,15 +573,22 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
             JmMoMfDTO jmMoMfDTO = jmMoMfService.selectOne(jmMoMfEntityQueryWrapper);
             if (jmMoMfDTO!=null && jmMoMfDTO.getSid()!=null){
                 //查询其他的计划单
-                List<JmJobDTO> dtos = new ArrayList<>();
-                QueryWrapper<JmJobEntity> jmJobEntityQueryWrapper = new QueryWrapper<>();
-                jmJobEntityQueryWrapper.eq("sid",dto.getSid());
-                dtos = this.select(jmJobEntityQueryWrapper);
+                JobJoin jobJoin = new JobJoin();
+                jobJoin.setSid(dto.getSid());
+                List<JobJoin> jobJoins = jmJobDao.findJob(jobJoin);
                 //判断其他的计划单是否都已经完成了
                 Boolean flag = true;
-                for (JmJobDTO jmJobDTO : dtos){
-                    if (!(jmJobDTO.getState().equals(jmBsDictionaryDTO.getCode()) || jmJobDTO.getState().equals(jmBsDictionaryDTO2.getCode()))){
+                BigDecimal sum = new BigDecimal("0");
+                for (JobJoin join : jobJoins){
+                    //是否完工
+                    Boolean iscomplete = join.getState().equals(jmBsDictionaryDTO.getCode()) || join.getState().equals(jmBsDictionaryDTO2.getCode());
+
+
+                    if (!iscomplete){
                         flag = false;
+                        sum = sum.add(join.getQtyPlan());
+                    }else{
+                        sum = sum.add(join.getQtyAlready());
                     }
                 }
                 //修改时间
@@ -568,6 +604,18 @@ public class JmJobServiceImpl extends BaseServiceImpl<JmJobDao , JmJobEntity , J
                     jmMoMfDTO.setStaDd(date);
                     jmMoMfService.editMoMf(jmMoMfDTO);
                 }
+                //修改 ERP 调度单
+                ResultType resultType = new ResultType();
+                resultType.setSid(jmMoMfDTO.getSid());
+                ErpMfMoDTO erpMfMoDTO = new ErpMfMoDTO();
+                erpMfMoDTO.setMO_NO(jmMoMfDTO.getSid());
+                erpMfMoDTO.setQTY(sum);
+                ErpTfMoDTO erpTfMoDTO = new ErpTfMoDTO();
+                erpTfMoDTO.setMO_NO(dto.getSid());
+                erpTfMoDTO.setQTY_STD(sum);
+                erpTfMoDTO.setQTY_RSV(sum);
+                erpMfMoService.editMfMo(erpMfMoDTO);
+                erpTfMoService.editTfMo(erpTfMoDTO);
             }
         }
     }

@@ -39,3 +39,6 @@ mybatis-plus:
   mapper-locations: mapper/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
+
+excel:
+  address: "D://FAFMES/static/modle1.xlsx"

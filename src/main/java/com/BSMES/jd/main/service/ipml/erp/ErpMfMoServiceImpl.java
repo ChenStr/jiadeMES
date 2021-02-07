@@ -11,11 +11,15 @@ import com.BSMES.jd.main.service.erp.ErpMfMoService;
 import com.BSMES.jd.main.service.erp.ErpTfMoService;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,11 +48,14 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
             dto.setCHK_MAN("ADMIN");
         }
         String str = dto.getMRP_NO()+"->";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
         dto.setUNIT("1");
         dto.setML_BY_MM("T");
         dto.setREM("MES生产计划下达");
         dto.setID_NO(str);
         dto.setCF_ID("T");
+        dto.setFIN_DD(dateFormat.format(new Date()));
+        qtyiszero(dto);
     }
 
     @Override
@@ -58,6 +65,7 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
         }else{
             dto.setCLOSE_ID("F");
         }
+        qtyiszero(dto);
     }
 
     @DS("erp")
@@ -125,5 +133,15 @@ public class ErpMfMoServiceImpl extends BaseServiceImpl<ErpMfMoDao, ErpMfMoEntit
             e.printStackTrace();
         }
         return result;
+    }
+
+    //新加同步判断逻辑
+    public ErpMfMoDTO qtyiszero(ErpMfMoDTO dto){
+        if ("".equals(dto.getQTY()) || dto.getQTY().equals(BigDecimal.ZERO)){
+            dto.setCLOSE_ID("T");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+            dto.setFIN_DD(dateFormat.format(new Date()));
+        }
+        return dto;
     }
 }

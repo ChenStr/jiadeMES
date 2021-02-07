@@ -39,6 +39,14 @@ public class ErpMfMoEntity {
     public String STA_DD;
 
     /**
+     * 实际完工日
+     */
+    @TableField("FIN_DD")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public String FIN_DD;
+
+
+    /**
      * 预完工日
      */
     @TableField("END_DD")

@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,9 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
 
     @Autowired
     ErpTfMoDao erpTfMoDao;
+
+    @Value("${excel.address}")
+    private String address;
 
     @Override
     public void beforeInsert(JmJobRecBDTO dto) {
@@ -272,8 +276,10 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             }
 
             map2.put("title","车间生产日报表");
+            map2.put("address",this.address);
 
             String fileName = "车间生产日报表.xlsx";
+
             jmJobRecBDTOS.add(report);
             MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,map2);
             result.setAll(20000,null,"操作成功");
@@ -317,8 +323,21 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
             map.put("qty","数量");
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+            if (dto.getBegDd()!=null){
+                map2.put("time",dto.getBegDd().toString());
+            }
+
+            map2.put("title","人员生产月生产报表");
+            map2.put("address",this.address);
+
             String fileName = "人员生产月生产报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,map2);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");
@@ -359,8 +378,21 @@ public class JmJobRecBServiceImpl extends BaseServiceImpl<JmJobRecBDao , JmJobRe
             map.put("prdNo","产品代号");
             map.put("prdName","产品名称");
             map.put("qty","数量");
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+            if (dto.getBegDd()!=null){
+                map2.put("time",dto.getBegDd().toString());
+            }
+
+            map2.put("title","设备生产月报表");
+            map2.put("address",this.address);
+
             String fileName = "设备生产月报表.xlsx";
-            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,null);
+            MyUtils.exportExcel(jmJobRecBDTOS,map,fileName,response,map2);
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(20000,null,"操作成功");

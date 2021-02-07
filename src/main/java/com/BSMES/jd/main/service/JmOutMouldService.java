@@ -19,6 +19,8 @@ public interface JmOutMouldService extends BaseService<JmOutMouldEntity, JmOutMo
 
     public CommonReturn delOut(List<String> sids);
 
+    public CommonReturn getOutExcel(ResultType dto);
+
     /**
      * 获取全部的设备 分页
      * @param dto queryWrapper 条件

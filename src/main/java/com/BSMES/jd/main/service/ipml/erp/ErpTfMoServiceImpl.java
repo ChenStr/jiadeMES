@@ -67,7 +67,14 @@ public class ErpTfMoServiceImpl extends BaseServiceImpl<ErpTfMoDao, ErpTfMoEntit
     @DS("erp")
     @Override
     public CommonReturn editTfMo(ErpTfMoDTO dto) {
-        return null;
+        CommonReturn result = new CommonReturn();
+        try{
+            this.edit(dto);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e){
+            result.setAll(10001,null,"操作失败");
+        }
+        return result;
     }
 
     @DS("erp")

@@ -4,6 +4,7 @@ import com.BSMES.jd.common.dto.CommonReturn;
 import com.BSMES.jd.common.service.impl.BaseServiceImpl;
 import com.BSMES.jd.main.dao.JmOutMouldDao;
 import com.BSMES.jd.main.dto.JmOutMouldDTO;
+import com.BSMES.jd.main.dto.Report;
 import com.BSMES.jd.main.dto.ResultType;
 import com.BSMES.jd.main.entity.JmOutMouldEntity;
 import com.BSMES.jd.main.service.InssysvarService;
@@ -12,8 +13,14 @@ import com.BSMES.jd.tools.my.MyUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -22,6 +29,12 @@ public class JmOutMouldServiceImpl extends BaseServiceImpl<JmOutMouldDao, JmOutM
 
     @Autowired
     InssysvarService inssysvarService;
+
+    @Autowired
+    HttpServletResponse response;
+
+    @Value("${excel.address}")
+    private String address;
 
     @Override
     public void beforeInsert(JmOutMouldDTO dto) {
@@ -102,6 +115,51 @@ public class JmOutMouldServiceImpl extends BaseServiceImpl<JmOutMouldDao, JmOutM
             result.setAll(20000,null,"操作成功");
         }catch (Exception e) {
             result.setAll(10001, null, "操作失败");
+        }
+        return result;
+    }
+
+    @Override
+    public CommonReturn getOutExcel(ResultType dto) {
+        CommonReturn result = new CommonReturn();
+        try{
+            List<JmOutMouldDTO> jmOutMouldDTOS = this.select(this.getQueryWrapper(dto));
+            LinkedHashMap<String,String> map = new LinkedHashMap<>();
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            jmOutMouldDTOS.stream().forEach(T->T.setTime(time.format(T.getUpdateTime())));
+            map.put("sid","单号");
+            map.put("rsNo","机台号");
+            map.put("mdNo","模具代号");
+            map.put("prdNo","产品代号");
+            map.put("prdName","产品名称");
+            map.put("allMdNumber","全模具数");
+            map.put("outMdNumber","出模具数");
+            map.put("mdMan","模具负责人");
+            map.put("smake","记录人");
+            map.put("dep","部门代号");
+            map.put("time","更新时间");
+            map.put("updator","更新人");
+            String fileName = "出模率明细报表.xlsx";
+
+            HashMap<String,Object> map2 = new HashMap<>();
+
+            if (dto.getDep()!=null){
+                map2.put("sorg",dto.getDep());
+            }
+
+            java.util.Date date = new Date();
+            map2.put("time",date.toString());
+
+
+            map2.put("title","出模率明细报表");
+//            map2.put("address",this.address);
+
+            MyUtils.exportExcel(jmOutMouldDTOS,map,fileName,response,map2);
+            result.setAll(20000,null,"操作成功");
+        }catch (Exception e) {
+            result.setAll(20000,null,"操作成功");
+//            result.setAll(40000,null,"操作失败");
+            e.printStackTrace();
         }
         return result;
     }

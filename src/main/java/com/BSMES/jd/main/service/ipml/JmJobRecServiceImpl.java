@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,9 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
 
     @Autowired
     JmBsDictionaryService jmBsDictionaryService;
+
+    @Value("${excel.address}")
+    private String address;
 
 
     @Autowired
@@ -292,6 +296,7 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
             e.printStackTrace();
             System.out.println("修改模具寿命失败");
         }
+        System.out.println("执行了定时任务方法");
 
         return result;
     }
@@ -467,10 +472,12 @@ public class JmJobRecServiceImpl extends BaseServiceImpl<JmJobRecDao , JmJobRecE
         }
 
         map2.put("title","车间生产月报表");
+        map2.put("address",this.address);
 
         String fileName = "车间生产月报表.xlsx";
 
         MyUtils.exportExcel(depMotherList,map,fileName,response,map2);
+
 
         result.setAll(20000,depMothers,"没有查找结果，建议仔细核对查找条件");
         return result;

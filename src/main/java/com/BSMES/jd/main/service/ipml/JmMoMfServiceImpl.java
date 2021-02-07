@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -272,6 +273,11 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
             if (dto.getState()!=null){
                 erpMfMoDTO.setCLOSE_ID(dto.getState().toString());
             }
+            if (dto.getStaDd()!=null){
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                erpMfMoDTO.setFIN_DD(dateFormat.format(dto.getStaDd()));
+            }
+
 
             ErpTfMoDTO erpTfMoDTO = new ErpTfMoDTO();
             erpTfMoDTO.setMO_NO(dto.getSid());
@@ -386,7 +392,7 @@ public class JmMoMfServiceImpl extends BaseServiceImpl<JmMoMfDao, JmMoMfEntity, 
                 this.editMoMf(jmMoMfDTO);
             }
         }
-
+        System.out.println("执行了定时方法");
         return result;
     }
 
